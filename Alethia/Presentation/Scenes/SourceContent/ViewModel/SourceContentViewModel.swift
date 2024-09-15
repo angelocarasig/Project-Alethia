@@ -2,214 +2,185 @@
 //  SourceContentViewModel.swift
 //  Alethia
 //
-//  Created by Angelo Carasig on 5/9/2024.
+//  Created by Angelo Carasig on 14/9/2024.
 //
 
 import Foundation
 import RealmSwift
 
 @Observable
-final class SourceContentViewModel: ObservableObject {
-    typealias SourceResult = SourceContentViewModel._SourceResult
-    typealias SourceManga = SourceContentViewModel._SourceManga
+final class SCVM {
+    // Use Cases
+    private var fetchHostSourceContentUseCase: FetchHostSourceContentUseCase
+    private var observeSourceMangaUseCase: ObserveSourceMangaUseCase
     
-    private let observeMangaIds: ObserveMangaIdsUseCase
-    private let fetchHostSourceContent: FetchHostSourceContentUseCase
+    // To be displayed in SourceContent
+    var rootResults: [SourceResult]
+    /// When fetchedRootResults is set, re-init the observer
+    private var fetchedRootResults: [SourceResult] {
+        didSet {
+            Task {
+                await generateObserver()
+            }
+        }
+    }
     
-    fileprivate var observer: NotificationToken?
+    // To be displayed in SourceContentGrid
+    var pathResults: [SourceManga]
+    /// When fetchedPathResults is set, re-init the observer
+    private var fetchedPathResults: [SourceManga] {
+        didSet {
+            Task {
+                await generateObserver()
+            }
+        }
+    }
     
+    // Observer
+    private var observer: NotificationToken?
+    
+    // Host + Source
     var activeHost: Host
     var activeSource: Source
     
-    var isFetchingRoutes: Bool = false
-    var customRoutesResults: [SourceResult] = []
-    var customHasLoaded: Bool = false
+    // Root SourceContent Items
+    var isLoadingRootContent: Bool // Loading indicator
     
-    var isFetchingPathContent: Bool = false
-    var isFetchingNextPage: Bool = false
-    var specificRoutePath: String?
-    var specificRouteResults: [SourceManga] = []
-    var page: Int = 0
-    var specificHasLoaded: Bool = false
+    // Path SourceContentGrid Items
+    /// This var is used to keep track on the the current SourceContentGrid. If the active path doesn't match we reset a lot of variables
+    var activePath: String?
+    
+    /// When page changes, it should fetch path content
+    var currentPage: Int {
+        didSet {
+            Task { await fetchPathContent(path: activePath ?? "") }
+        }
+    }
+    var isLoadingPathContent: Bool // Loading indicator
     
     init(
-        observeMangaIds: ObserveMangaIdsUseCase,
-        fetchHostSourceContent: FetchHostSourceContentUseCase,
+        fetchHostSourceContentUseCase: FetchHostSourceContentUseCase,
+        observeSourceMangaUseCase: ObserveSourceMangaUseCase,
         activeHost: Host,
         activeSource: Source
     ) {
-        self.observeMangaIds = observeMangaIds
-        self.fetchHostSourceContent = fetchHostSourceContent
+        self.fetchHostSourceContentUseCase = fetchHostSourceContentUseCase
+        self.observeSourceMangaUseCase = observeSourceMangaUseCase
+        
+        self.rootResults = []
+        self.fetchedRootResults = []
+        
+        self.pathResults = []
+        self.fetchedPathResults = []
+        
+        self.observer = nil
+        
         self.activeHost = activeHost
         self.activeSource = activeSource
+        
+        self.isLoadingRootContent = false
+        
+        self.activePath = nil
+        self.currentPage = 0
+        self.isLoadingPathContent = false
     }
     
-    func onAppear() {
+    // Use when root page loads
+    func onRootPageLoad() {
         Task {
-            await initializeObserver()
-            await fetchAllRoutes()
+            await fetchRootContent()
         }
     }
     
-    private func initializeObserver() async {
-        await updateObserver()
-    }
-    
-    private func updateObserver() async {
-        observer?.invalidate()
-        
-        let allMangaIds = extractAllMangaIds()
-        
-        observer = await observeMangaIds.execute(ids: allMangaIds) { [weak self] mangaId, inLibrary in
-            guard let self = self else { return }
-            print("Updating library status~")
-            self.updateLibraryStatus(for: mangaId, inLibrary: inLibrary)
+    // Use when grid page loads
+    func onGridPageLoad(path: String) {
+        Task {
+            await fetchPathContent(path: path)
         }
     }
     
-    private func extractAllMangaIds() -> [String] {
-        var ids: [String] = []
+    func generateObserver() async {
+        // Invalidate and recreate
+        self.observer?.invalidate()
         
-        ids.append(contentsOf: specificRouteResults.map { $0.title })
-        
-        for routeResult in customRoutesResults {
-            ids.append(contentsOf: routeResult.results.map { $0.title })
+        // Observer initialized passing in fetched results and checks if they exist in library
+        // NotifToken updates when anything changes
+        observer = await observeSourceMangaUseCase.execute(roots: fetchedRootResults, paths: fetchedPathResults) { updatedRoots, updatedPaths in
+            self.rootResults = updatedRoots
+            self.pathResults = updatedPaths
         }
-        
-        return ids
     }
     
-    func fetchAllRoutes() async {
-        guard !customHasLoaded else { return }
+    func fetchRootContent() async {
+        // Don't trigger if root content is already loading
+        guard !isLoadingRootContent else { return }
         
-        isFetchingRoutes = true
-        customRoutesResults = []
+        isLoadingRootContent = true
         
         await withTaskGroup(of: SourceResult?.self) { taskGroup in
-            for (index, sourceRoute) in activeSource.routes.enumerated() {
+            for (index, route) in activeSource.routes.enumerated() {
                 taskGroup.addTask {
-                    do {
-                        let result = try await self.fetchHostSourceContent.execute(
-                            host: self.activeHost,
-                            source: self.activeSource,
-                            path: sourceRoute.path,
-                            page: 0
-                        )
-                        
-                        let mappedResult = result.map { SourceManga($0, inLibrary: false) }
-                        let sourceResult = SourceResult(index: index, name: sourceRoute.name, path: sourceRoute.path, results: mappedResult)
-                        
-                        return sourceResult
-                    } catch {
-                        print("Failed to fetch content for route: \(sourceRoute.name), error: \(error)")
-                        return nil
-                    }
+                    // Make API call
+                    let result = try? await self.fetchHostSourceContentUseCase.execute(
+                        host: self.activeHost,
+                        source: self.activeSource,
+                        path: route.path,
+                        page: 0
+                    )
+                    
+                    // return mapped result
+                    return result.map { SourceResult(index: index, name: route.name, path: route.path, results: $0.map { SourceManga($0, inLibrary: false) }) }
                 }
             }
             
-            var fetchedResults: [SourceResult] = []
+            var results: [SourceResult] = []
+            for await task in taskGroup {
+                if let result = task { results.append(result) }
+            }
             
-            for await taskResult in taskGroup {
-                if let result = taskResult {
-                    fetchedResults.append(result)
-                }
-            }
-                        
-            customRoutesResults = fetchedResults.sorted(by: { $0.index < $1.index })
+            // Assign to results based on their order
+            // No pagination in this result so we don't need to handle duplicates or paginated appending responses
+            fetchedRootResults = results.sorted(by: { $0.index < $1.index })
+            
+            isLoadingRootContent = false
         }
-        
-        for x in customRoutesResults {
-            print("\(x.name) : \(x.results.count) count")
-        }
-        
-        customHasLoaded = true
-        isFetchingRoutes = false
-        
-        // Update observer to include new manga IDs
-        await updateObserver()
     }
     
-    func fetchPathContent(path: String) async throws {
-        if specificRoutePath != path {
-            specificRoutePath = path
-            refreshPage()
+    func fetchPathContent(path: String) async {
+        // If path changed, reset content
+        if self.activePath != path {
+            self.activePath = path
+            resetPathContent()
         }
         
-        guard !specificHasLoaded, !isFetchingPathContent else { return }
+        // Prevent from triggering if already loading
+        guard !isLoadingPathContent else { return }
         
-        isFetchingPathContent = true
+        isLoadingPathContent = true
         
-        let resultContent = try await fetchHostSourceContent.execute(
-            host: activeHost,
-            source: activeSource,
-            path: path,
-            page: page
-        )
-        
-        let mappedResults = resultContent.map { SourceManga($0, inLibrary: false) }
-        specificRouteResults.append(contentsOf: mappedResults)
-        specificHasLoaded = true
-        isFetchingPathContent = false
-        
-        // Update observer to include new manga IDs
-        await updateObserver()
-    }
-    
-    func fetchNextPageContent() async throws {
-        guard !isFetchingNextPage else { return }
-        guard let path = specificRoutePath else { return }
-        
-        isFetchingNextPage = true
-        
-        let resultContent = try await fetchHostSourceContent.execute(
-            host: activeHost,
-            source: activeSource,
-            path: path,
-            page: page
-        )
-        
-        let mappedResults = resultContent.map { SourceManga($0, inLibrary: false) }
-        specificRouteResults.append(contentsOf: mappedResults)
-        isFetchingNextPage = false
-        
-        await updateObserver()
-    }
-    
-    func incrementPage() {
-        page += 1
-    }
-    
-    func refreshPage() {
-        page = 0
-        specificRouteResults = []
-        specificHasLoaded = false
-    }
-    
-    func specificDismissed() {
-        page = 0
-        specificRouteResults = []
-        specificHasLoaded = false
-    }
-}
-
-// MARK: - Observer Functionality
-
-extension SourceContentViewModel {
-    private func updateLibraryStatus(for mangaId: String, inLibrary: Bool) {
-        print("Manga ID: \(mangaId)")
-        if let index = specificRouteResults.firstIndex(where: { $0.title == mangaId }) {
-            print("Updating \(specificRouteResults[index].title.prefix(10)) to \(inLibrary)")
-            specificRouteResults[index].inLibrary = inLibrary
-        
-            // Don't return early here since the same manga could be both in a specific and custom route
+        do {
+            // Make API call
+            let results = try await fetchHostSourceContentUseCase.execute(
+                host: activeHost,
+                source: activeSource,
+                path: path,
+                page: currentPage
+            )
+            
+            // Just append to path results, duplicates assume it was updated more than once recently for instance
+            fetchedPathResults.append(contentsOf: results.map { SourceManga($0, inLibrary: false) })
+            
+        } catch {
+            print("Error fetching content for path: \(path), error: \(error.localizedDescription)")
         }
         
-        // Update customRoutesResults
-        for i in 0..<customRoutesResults.count {
-            if let resultIndex = customRoutesResults[i].results.firstIndex(where: { $0.title == mangaId }) {
-                print("Updating \(customRoutesResults[i].results[resultIndex].title.prefix(10)) to \(inLibrary)")
-                customRoutesResults[i].results[resultIndex].inLibrary = inLibrary
-            }
-        }
+        isLoadingPathContent = false
+    }
+    
+    func resetPathContent() {
+        // Reset everything to init state
+        currentPage = 0
+        isLoadingPathContent = false
+        fetchedPathResults = []
     }
 }
