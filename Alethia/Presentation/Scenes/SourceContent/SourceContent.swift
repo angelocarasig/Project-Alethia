@@ -10,13 +10,14 @@ import LucideIcons
 
 struct SourceContent: View {
     // Use @Bindable not @State: https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro
-    @Bindable var vm: SourceContentViewModel
+    @Bindable var vm: SCVM
     
     private let useCaseFactory: UseCaseFactory = UseCaseFactory.shared
     
     var body: some View {
-        VStack {
-            if vm.isFetchingRoutes {
+        print("Source Content Rerendered!")
+        return VStack {
+            if vm.isLoadingRootContent {
                 ProgressView()
             } else {
                 ContentView()
@@ -24,7 +25,7 @@ struct SourceContent: View {
         }
         .navigationTitle(vm.activeSource.name)
         .onAppear {
-            vm.onAppear()
+            vm.onRootPageLoad()
         }
     }
 }
@@ -35,9 +36,9 @@ private extension SourceContent {
         MangaDetailsScreen(
             vm: MangaDetailsViewModel(
                 listManga: manga,
-                observer: useCaseFactory.makeObserveMangaDbChangesUseCase(),
-                fetchHostSourceManga: useCaseFactory.makeFetchHostSourceMangaUseCase(),
-                addMangaToLibrary: useCaseFactory.makeAddMangaToLibraryUseCase()
+                fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
+                observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
+                addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase()
             )
         )
     }
@@ -48,7 +49,7 @@ private extension SourceContent {
         ScrollView {
             Spacer().frame(height: 12)
             
-            ForEach(vm.customRoutesResults) { result in
+            ForEach(vm.rootResults) { result in
                 VStack(alignment: .leading, spacing: 20) {
                     NavigationLink(
                         destination: SourceContentGrid(
@@ -98,9 +99,9 @@ private extension SourceContent {
     let useCaseFactory = UseCaseFactory.shared
     
     return SourceContent(
-        vm: SourceContentViewModel(
-            observeMangaIds: useCaseFactory.makeObserveMangaIdsUseCase(),
-            fetchHostSourceContent: useCaseFactory.makeFetchHostSourceContentUseCase(),
+        vm: SCVM(
+            fetchHostSourceContentUseCase: useCaseFactory.makeFetchHostSourceContentUseCase(),
+            observeSourceMangaUseCase: useCaseFactory.makeObserveSourceMangaUseCase(),
             activeHost: host,
             activeSource: source1
         ))

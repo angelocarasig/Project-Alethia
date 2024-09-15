@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		AA5ACC872C8DE08F002EA38F /* CardOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5ACC862C8DE08F002EA38F /* CardOverlay.swift */; };
+		AA5ACC882C8DEC91002EA38F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = AA9325042C893CBE006338E8 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AA5AF4AF2C954EBB002BD0A7 /* SourceManga.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4AE2C954EBB002BD0A7 /* SourceManga.swift */; };
+		AA5AF4B12C954F1C002BD0A7 /* SourceResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4B02C954F1C002BD0A7 /* SourceResult.swift */; };
+		AA5AF4B32C95A43C002BD0A7 /* SourceContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4B22C95A43C002BD0A7 /* SourceContentViewModel.swift */; };
+		AA5AF4B52C95A9A2002BD0A7 /* ObserveSourceMangaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4B42C95A9A2002BD0A7 /* ObserveSourceMangaUseCase.swift */; };
+		AA5AF4B72C969045002BD0A7 /* MangaEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4B62C969045002BD0A7 /* MangaEvent.swift */; };
+		AA5AF4B92C9692FC002BD0A7 /* ObserveMangaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4B82C9692FC002BD0A7 /* ObserveMangaUseCase.swift */; };
 		AA9324DE2C893BEB006338E8 /* AlethiaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */; };
 		AA9324E22C893BEC006338E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E12C893BEC006338E8 /* Assets.xcassets */; };
 		AA9324E52C893BEC006338E8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E42C893BEC006338E8 /* Preview Assets.xcassets */; };
@@ -62,7 +69,6 @@
 		AA9325AF2C897C3A006338E8 /* AddHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325AE2C897C3A006338E8 /* AddHostView.swift */; };
 		AA9325B12C8985B7006338E8 /* TestHostUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325B02C8985B7006338E8 /* TestHostUseCase.swift */; };
 		AA9325B82C8997C5006338E8 /* SourceContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325B72C8997C5006338E8 /* SourceContent.swift */; };
-		AA9325BA2C899EE5006338E8 /* SourceContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325B92C899EE5006338E8 /* SourceContentViewModel.swift */; };
 		AA9325BC2C899FF0006338E8 /* FetchHostSourceContentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325BB2C899FF0006338E8 /* FetchHostSourceContentUseCase.swift */; };
 		AA9325BF2C89C6F1006338E8 /* LucideIcons in Frameworks */ = {isa = PBXBuildFile; productRef = AA9325BE2C89C6F1006338E8 /* LucideIcons */; };
 		AA9325C22C89C714006338E8 /* Icon+Lucide.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325C12C89C714006338E8 /* Icon+Lucide.swift */; };
@@ -87,14 +93,32 @@
 		AA9325F62C8C13F1006338E8 /* MangaDetailsChapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325F52C8C13F1006338E8 /* MangaDetailsChapters.swift */; };
 		AA9325F92C8C144E006338E8 /* +Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325F82C8C144E006338E8 /* +Tags.swift */; };
 		AA9325FB2C8C15ED006338E8 /* Double+Clean.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325FA2C8C15ED006338E8 /* Double+Clean.swift */; };
-		AA9325FD2C8D6B45006338E8 /* ObserveMangaDbChangesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325FC2C8D6B45006338E8 /* ObserveMangaDbChangesUseCase.swift */; };
 		AA9325FF2C8D81BF006338E8 /* RealmProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325FE2C8D81BF006338E8 /* RealmProvider.swift */; };
-		AA9326022C8D9B31006338E8 /* SourceContentViewModel+Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9326012C8D9B31006338E8 /* SourceContentViewModel+Structs.swift */; };
-		AA9326042C8DA891006338E8 /* ObserveMangaIdsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9326032C8DA891006338E8 /* ObserveMangaIdsUseCase.swift */; };
+		AAD5F97F2C90235100DA882B /* +Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD5F97E2C90235100DA882B /* +Skeleton.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AA5ACC892C8DEC91002EA38F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AA5ACC882C8DEC91002EA38F /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AA5ACC862C8DE08F002EA38F /* CardOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardOverlay.swift; sourceTree = "<group>"; };
+		AA5AF4AE2C954EBB002BD0A7 /* SourceManga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceManga.swift; sourceTree = "<group>"; };
+		AA5AF4B02C954F1C002BD0A7 /* SourceResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceResult.swift; sourceTree = "<group>"; };
+		AA5AF4B22C95A43C002BD0A7 /* SourceContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceContentViewModel.swift; sourceTree = "<group>"; };
+		AA5AF4B42C95A9A2002BD0A7 /* ObserveSourceMangaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveSourceMangaUseCase.swift; sourceTree = "<group>"; };
+		AA5AF4B62C969045002BD0A7 /* MangaEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaEvent.swift; sourceTree = "<group>"; };
+		AA5AF4B82C9692FC002BD0A7 /* ObserveMangaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveMangaUseCase.swift; sourceTree = "<group>"; };
 		AA9324DA2C893BEB006338E8 /* Alethia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alethia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlethiaApp.swift; sourceTree = "<group>"; };
 		AA9324E12C893BEC006338E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -148,7 +172,6 @@
 		AA9325AE2C897C3A006338E8 /* AddHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHostView.swift; sourceTree = "<group>"; };
 		AA9325B02C8985B7006338E8 /* TestHostUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHostUseCase.swift; sourceTree = "<group>"; };
 		AA9325B72C8997C5006338E8 /* SourceContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceContent.swift; sourceTree = "<group>"; };
-		AA9325B92C899EE5006338E8 /* SourceContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceContentViewModel.swift; sourceTree = "<group>"; };
 		AA9325BB2C899FF0006338E8 /* FetchHostSourceContentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchHostSourceContentUseCase.swift; sourceTree = "<group>"; };
 		AA9325C12C89C714006338E8 /* Icon+Lucide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Icon+Lucide.swift"; sourceTree = "<group>"; };
 		AA9325C52C89CBC6006338E8 /* MangaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaCard.swift; sourceTree = "<group>"; };
@@ -171,10 +194,8 @@
 		AA9325F52C8C13F1006338E8 /* MangaDetailsChapters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailsChapters.swift; sourceTree = "<group>"; };
 		AA9325F82C8C144E006338E8 /* +Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+Tags.swift"; sourceTree = "<group>"; };
 		AA9325FA2C8C15ED006338E8 /* Double+Clean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Clean.swift"; sourceTree = "<group>"; };
-		AA9325FC2C8D6B45006338E8 /* ObserveMangaDbChangesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveMangaDbChangesUseCase.swift; sourceTree = "<group>"; };
 		AA9325FE2C8D81BF006338E8 /* RealmProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProvider.swift; sourceTree = "<group>"; };
-		AA9326012C8D9B31006338E8 /* SourceContentViewModel+Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SourceContentViewModel+Structs.swift"; sourceTree = "<group>"; };
-		AA9326032C8DA891006338E8 /* ObserveMangaIdsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveMangaIdsUseCase.swift; sourceTree = "<group>"; };
+		AAD5F97E2C90235100DA882B /* +Skeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+Skeleton.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +213,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA5AF4AD2C954EB1002BD0A7 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				AA5AF4AE2C954EBB002BD0A7 /* SourceManga.swift */,
+				AA5AF4B62C969045002BD0A7 /* MangaEvent.swift */,
+				AA5AF4B02C954F1C002BD0A7 /* SourceResult.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
 		AA9324D12C893BEB006338E8 = {
 			isa = PBXGroup;
 			children = (
@@ -283,8 +314,8 @@
 				AA9325BB2C899FF0006338E8 /* FetchHostSourceContentUseCase.swift */,
 				AA9325CF2C8A97F7006338E8 /* FetchHostSourceMangaUseCase.swift */,
 				AA9325DA2C8AB67D006338E8 /* AddMangaToLibraryUseCase.swift */,
-				AA9326032C8DA891006338E8 /* ObserveMangaIdsUseCase.swift */,
-				AA9325FC2C8D6B45006338E8 /* ObserveMangaDbChangesUseCase.swift */,
+				AA5AF4B42C95A9A2002BD0A7 /* ObserveSourceMangaUseCase.swift */,
+				AA5AF4B82C9692FC002BD0A7 /* ObserveMangaUseCase.swift */,
 			);
 			path = "Use Cases";
 			sourceTree = "<group>";
@@ -487,6 +518,7 @@
 		AA9325C32C89CBB6006338E8 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				AA5AF4AD2C954EB1002BD0A7 /* Types */,
 				AA9325C02C89C708006338E8 /* Extensions */,
 				AA9325C42C89CBBA006338E8 /* Components */,
 			);
@@ -526,6 +558,7 @@
 			isa = PBXGroup;
 			children = (
 				AA9325E42C8AE666006338E8 /* +TitleAuthorArtist.swift */,
+				AAD5F97E2C90235100DA882B /* +Skeleton.swift */,
 				AA9325E82C8AE7DE006338E8 /* +ActionButtons.swift */,
 				AA9325EA2C8C11BB006338E8 /* +Backdrop.swift */,
 				AA9325F82C8C144E006338E8 /* +Tags.swift */,
@@ -546,8 +579,7 @@
 		AA9326002C8D9B1C006338E8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				AA9325B92C899EE5006338E8 /* SourceContentViewModel.swift */,
-				AA9326012C8D9B31006338E8 /* SourceContentViewModel+Structs.swift */,
+				AA5AF4B22C95A43C002BD0A7 /* SourceContentViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -562,6 +594,7 @@
 				AA9324D62C893BEB006338E8 /* Sources */,
 				AA9324D72C893BEB006338E8 /* Frameworks */,
 				AA9324D82C893BEB006338E8 /* Resources */,
+				AA5ACC892C8DEC91002EA38F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -635,12 +668,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA9325FB2C8C15ED006338E8 /* Double+Clean.swift in Sources */,
+				AA5AF4B72C969045002BD0A7 /* MangaEvent.swift in Sources */,
 				AA9325352C89679F006338E8 /* Manga.swift in Sources */,
 				AA9325DB2C8AB67D006338E8 /* AddMangaToLibraryUseCase.swift in Sources */,
 				AA9325892C896931006338E8 /* RealmActor.swift in Sources */,
 				AA9325D62C8AB451006338E8 /* MangaDetailsScreen.swift in Sources */,
 				AA9325992C896D72006338E8 /* SourcesScreen.swift in Sources */,
-				AA9326042C8DA891006338E8 /* ObserveMangaIdsUseCase.swift in Sources */,
 				AA93257E2C896931006338E8 /* TestHostProtocol.swift in Sources */,
 				AA9325872C896931006338E8 /* RealmSourceRoute.swift in Sources */,
 				AA9325E92C8AE7DE006338E8 /* +ActionButtons.swift in Sources */,
@@ -657,16 +690,17 @@
 				AA9325C82C89CBF6006338E8 /* Haptics+.swift in Sources */,
 				AA93252F2C89679F006338E8 /* Chapter.swift in Sources */,
 				AA9325312C89679F006338E8 /* ContentStatus.swift in Sources */,
+				AA5AF4B92C9692FC002BD0A7 /* ObserveMangaUseCase.swift in Sources */,
 				AA9325D22C8A9AD0006338E8 /* FetchSourceManga.swift in Sources */,
 				AA5ACC872C8DE08F002EA38F /* CardOverlay.swift in Sources */,
 				AA9325A02C896DC3006338E8 /* UseCaseFactory.swift in Sources */,
 				AA9325802C896931006338E8 /* NetworkService.swift in Sources */,
-				AA9325FD2C8D6B45006338E8 /* ObserveMangaDbChangesUseCase.swift in Sources */,
 				AA93257B2C896931006338E8 /* testHost.swift in Sources */,
 				AA93257C2C896931006338E8 /* FetchSourceListManga.swift in Sources */,
 				AA9325BC2C899FF0006338E8 /* FetchHostSourceContentUseCase.swift in Sources */,
 				AA9325342C89679F006338E8 /* ListManga.swift in Sources */,
 				AA9325A62C896E54006338E8 /* AddHostUseCase.swift in Sources */,
+				AA5AF4AF2C954EBB002BD0A7 /* SourceManga.swift in Sources */,
 				AA93253A2C89679F006338E8 /* MangaRepository.swift in Sources */,
 				AA9325382C89679F006338E8 /* SourceRoute.swift in Sources */,
 				AA9325DD2C8AC3C2006338E8 /* FetchSourceMangaProtocol.swift in Sources */,
@@ -680,15 +714,15 @@
 				AA93257D2C896931006338E8 /* URL+AppendingPaths.swift in Sources */,
 				AA9325EE2C8C1235006338E8 /* MangaDetailsDescription.swift in Sources */,
 				AA9325322C89679F006338E8 /* Group.swift in Sources */,
+				AAD5F97F2C90235100DA882B /* +Skeleton.swift in Sources */,
 				AA9325912C896931006338E8 /* MangaRemoteDataSource.swift in Sources */,
 				AA9325D82C8AB5E5006338E8 /* MangaDetailsViewModel.swift in Sources */,
-				AA9326022C8D9B31006338E8 /* SourceContentViewModel+Structs.swift in Sources */,
 				AA9325812C896931006338E8 /* RealmChapter.swift in Sources */,
 				AA9325B12C8985B7006338E8 /* TestHostUseCase.swift in Sources */,
 				AA9325AF2C897C3A006338E8 /* AddHostView.swift in Sources */,
-				AA9325BA2C899EE5006338E8 /* SourceContentViewModel.swift in Sources */,
 				AA9325792C896931006338E8 /* MangaDTO.swift in Sources */,
 				AA9325302C89679F006338E8 /* ContentRating.swift in Sources */,
+				AA5AF4B52C95A9A2002BD0A7 /* ObserveSourceMangaUseCase.swift in Sources */,
 				AA9325392C89679F006338E8 /* HostRepository.swift in Sources */,
 				AA9325EB2C8C11BB006338E8 /* +Backdrop.swift in Sources */,
 				AA9324DE2C893BEB006338E8 /* AlethiaApp.swift in Sources */,
@@ -710,7 +744,9 @@
 				AA93258D2C896931006338E8 /* NetworkMonitor.swift in Sources */,
 				AA9325D02C8A97F7006338E8 /* FetchHostSourceMangaUseCase.swift in Sources */,
 				AA9325A42C896DF6006338E8 /* SourcesViewModel.swift in Sources */,
+				AA5AF4B12C954F1C002BD0A7 /* SourceResult.swift in Sources */,
 				AA93257A2C896931006338E8 /* OriginDTO.swift in Sources */,
+				AA5AF4B32C95A43C002BD0A7 /* SourceContentViewModel.swift in Sources */,
 				AA9325762C896931006338E8 /* ChapterDTO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -860,6 +896,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Alethia.Alethia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -889,6 +929,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Alethia.Alethia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

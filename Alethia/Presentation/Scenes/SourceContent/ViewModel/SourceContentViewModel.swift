@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 @Observable
-final class SCVM {
+final class SCVM { // TODO: Refactor name
     // Use Cases
     private var fetchHostSourceContentUseCase: FetchHostSourceContentUseCase
     private var observeSourceMangaUseCase: ObserveSourceMangaUseCase
@@ -85,8 +85,15 @@ final class SCVM {
         self.isLoadingPathContent = false
     }
     
+    deinit {
+        observer?.invalidate()
+    }
+    
     // Use when root page loads
     func onRootPageLoad() {
+        // Don't trigger if content already present
+        guard rootResults.isEmpty else { return }
+        
         Task {
             await fetchRootContent()
         }
@@ -94,6 +101,9 @@ final class SCVM {
     
     // Use when grid page loads
     func onGridPageLoad(path: String) {
+        // Don't trigger if content already present
+        guard pathResults.isEmpty else { return }
+        
         Task {
             await fetchPathContent(path: path)
         }

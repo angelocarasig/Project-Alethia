@@ -33,81 +33,107 @@ final class MangaLocalDataSource {
     }
     
     @RealmActor
-    func observeMangaIds(ids: [String], callback: @escaping (String, Bool) -> Void) async -> NotificationToken? {
+    func observeSourceManga(roots: [SourceResult], paths: [SourceManga], callback: @escaping ([SourceResult], [SourceManga]) -> Void) async -> NotificationToken? {
         guard let storage = await realmProvider.realm() else { return nil }
-        
         let observer = storage.objects(RealmManga.self)
         
-        print("Creating new observer... (ID: \(UUID().uuidString)")
+        let handler: (Results<RealmManga>) -> Void = { objects in
+            /// 1. Iterate through each source result
+            /// 2. Iterate through each source manga
+            /// 3. Find source manga in db
+            /// 4. Append to new array if exists or not
+            /// 5. Trigger callback with new [SourceResult] and [SourceManga] arrays
+            
+            // Set > Dictionary in this case. Calculate once only here to be used in output roots/paths
+            let set: Set<String> = Set(objects.flatMap { manga in
+                manga.normalizedTitles
+                    .split(separator: "|")
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+            })
+            
+            let outputRoots: [SourceResult] = roots.map { root -> SourceResult in
+                let updatedResults = root.results.map { result -> SourceManga in
+                    let isInLibrary = set.contains(result.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines))
+                    
+                    let updatedResult = result
+                    updatedResult.inLibrary = isInLibrary
+                    return updatedResult
+                }
+                
+                return SourceResult(
+                    index: root.index,
+                    name: root.name,
+                    path: root.path,
+                    results: updatedResults
+                )
+            }
+            
+            let outputPaths: [SourceManga] = paths.map { path -> SourceManga in
+                return SourceManga(
+                    id: path.id,
+                    title: path.title,
+                    coverUrl: path.coverUrl,
+                    origin: path.origin,
+                    inLibrary: set.contains(path.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines))
+                )
+            }
+            
+            callback(outputRoots, outputPaths)
+        }
         
         return observer.observe { changes in
             switch changes {
-            case .initial(let objects):
-                print("Initial objects count: \(objects.count)")
-                for id in ids {
-                    let normalizedId = id.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
-                    
-                    // Check if any manga object matches the current id
-                    if let matchingManga = objects.first(where: { manga in
-                        let allTitles = [manga.title] + manga.alternativeTitles.map { $0 }
-                        let normalizedTitles = allTitles.map { $0.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }
-                        return normalizedTitles.contains(normalizedId)
-                    }) {
-                        // If a matching manga is found, trigger the callback with the matched id
-                        print("ID '\(id)' matches with manga: '\(matchingManga.title)'")
-                        callback(id, true)
-                    } else {
-                        // If no match, trigger the callback with false for that id
-                        callback(id, false)
-                    }
-                }
+            case let .initial(objects):
+                handler(objects)
                 
-            case .update(let objects, let deletions, let insertions, let modifications):
-                for manga in objects {
-                    let isInLibrary = ids.contains { $0 == manga.normalizedTitles }
-                    print("\(manga.title.prefix(10))... is \(isInLibrary ? "in" : "not in") library!")
-                    callback(manga.normalizedTitles, isInLibrary)
-                }
+            case .update(let objects, _, _, _):
+                handler(objects)
                 
-                if !deletions.isEmpty {
-                    for index in deletions {
-                        let deletedMangaTitle = ids[index]
-                        callback(deletedMangaTitle, false)
-                    }
-                }
-                
-            case .error(let error):
-                print("Error observing manga: \(error)")
+            case .error:
+                print("Error")
             }
         }
     }
     
     @RealmActor
-    func observeMangaDbChanges() async -> NotificationToken? {
+    func observeManga(manga: Manga, callback: @escaping (MangaEvent) -> Void) async -> NotificationToken? {
         guard let storage = await realmProvider.realm() else { return nil }
         
-        let observer = storage.objects(RealmManga.self)
+        /// TODO: Stricter Querying
+        /// CASE 1 - "Fate" not in library but "Fate Grand Order" in library - Don't create false positive
+        /// CASE 2 - Identical titles "Fate" and "Fate" but different manga. - need some form of unique differentiation/identification
+        ///
         
-        return observer.observe { [weak self] (changes: RealmCollectionChange) in
+        let query = "|" + manga.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) + "|"
+        let observer = storage.objects(RealmManga.self).where { $0.normalizedTitles.contains(query) }
+        
+        return observer.observe { changes in
             switch changes {
-            case .initial(_):
-                break
-                
-            case .update(let objects, let deletions, let insertions, let modifications):
-                for manga in objects {
-                    if let manga = manga as? RealmManga {
-                        print("Manga Title: \(manga.title)")
-                    }
+            case .initial(let objects), .update(let objects, _, _, _):
+                guard objects.count <= 1 else {
+                    callback(.errorOccurred("Multiple manga found with the same title"))
+                    return
                 }
                 
-                print("Deleted at indices: \(deletions)")
-                print("Inserted at indices: \(insertions)")
-                print("Modified at indices: \(modifications)")
-                break
+                let manga = objects.first
                 
-            case .error(_):
-                break
+                print("Manga Title is: \(String(describing: manga?.title))")
+                
+                /// Cases
+                /// 1. Manga added/removed from library event
+                /// 2. Source added/removed from library event
+                /// ...
+                
+                // # 1
+                callback(MangaEvent.inLibrary(manga != nil))
+                
+                // # 2 - If the origins is not empty or if manga doesn't exist, source is not present (false)
+                callback(MangaEvent.sourcePresent( manga?.origins.isEmpty ?? false ))
+                
+            case .error(let error):
+                print("Error when observing manga: \(error)")
             }
         }
     }
+    
 }

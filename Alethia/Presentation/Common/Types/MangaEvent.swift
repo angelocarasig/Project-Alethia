@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+enum MangaEvent {
+    case inLibrary(Bool)
+    case sourcePresent(Bool)
+    case errorOccurred(String)
+}

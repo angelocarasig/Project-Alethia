@@ -57,7 +57,9 @@ final class RealmManga: Object {
     private func computeNormalizedTitles() -> String {
         let allTitles = Set([title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)] +
                             alternativeTitles.map { $0.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) })
-        return allTitles.joined(separator: ", ")
+        
+        // Add pipe delimiter at the start and end to ensure exact match searchability
+        return "|" + allTitles.joined(separator: "|") + "|"
     }
     
     func toDomain() -> Manga {

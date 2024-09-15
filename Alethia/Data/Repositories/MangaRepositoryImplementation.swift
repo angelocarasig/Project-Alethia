@@ -19,12 +19,12 @@ final class MangaRepositoryImplementation {
 }
 
 extension MangaRepositoryImplementation: MangaRepository {
-    func observeMangaIds(ids: [String], callback: @escaping (String, Bool) -> Void) async -> RealmSwift.NotificationToken? {
-        return await local.observeMangaIds(ids: ids, callback: callback)
+    func observeSourceManga(roots: [SourceResult], paths: [SourceManga], callback: @escaping ([SourceResult], [SourceManga]) -> Void) async -> RealmSwift.NotificationToken? {
+        return await local.observeSourceManga(roots: roots, paths: paths, callback: callback)
     }
-
-    func observeMangaDbChanges() async -> NotificationToken? {
-        return await local.observeMangaDbChanges()
+    
+    func observeManga(manga: Manga, callback: @escaping (MangaEvent) -> Void) async -> NotificationToken? {
+        return await local.observeManga(manga: manga, callback: callback)
     }
     
     func addMangaToLibrary(_ manga: Manga) async -> Bool {

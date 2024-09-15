@@ -29,6 +29,8 @@ final class UseCaseFactory {
     }()
 }
 
+// MARK - Host Repository
+
 extension UseCaseFactory {
     func makeAddHostUseCase() -> AddHostUseCase {
         return AddHostUseCaseImpl(host: hostRepository)
@@ -49,13 +51,17 @@ extension UseCaseFactory {
     func makeFetchHostSourceMangaUseCase() -> FetchHostSourceMangaUseCase {
         return FetchHostSourceMangaImpl(repo: hostRepository)
     }
-    
-    func makeObserveMangaIdsUseCase() -> ObserveMangaIdsUseCase {
-        return ObserveMangaIdsImpl(repo: mangaRepository)
+}
+
+// MARK - Manga Repository
+
+extension UseCaseFactory {
+    func makeObserveSourceMangaUseCase() -> ObserveSourceMangaUseCase {
+        return ObserveSourceMangaImpl(repo: mangaRepository)
     }
     
-    func makeObserveMangaDbChangesUseCase() -> ObserveMangaDbChangesUseCase {
-        return ObserveMangaDbChangesImpl(repo: mangaRepository)
+    func makeObserveMangaUseCase() -> ObserveMangaUseCase {
+        return ObserveMangaImpl(repo: mangaRepository)
     }
     
     func makeAddMangaToLibraryUseCase() -> AddMangaToLibraryUseCase {

@@ -10,14 +10,14 @@ import SwiftUI
 struct SourceContentGrid: View {
     let title: String
     let path: String
-    @ObservedObject var vm: SourceContentViewModel
+    @Bindable var vm: SCVM
     
     let useCaseFactory = UseCaseFactory.shared
     let dimensions = DimensionsCache.shared.dimensions
     
     var body: some View {
         VStack {
-            if vm.isFetchingPathContent {
+            if vm.pathResults.isEmpty && vm.isLoadingPathContent {
                 ProgressView()
             } else {
                 ScrollView {
@@ -27,13 +27,17 @@ struct SourceContentGrid: View {
                         columns: [GridItem(.adaptive(minimum: dimensions.width), spacing: 0)],
                         spacing: 0
                     ) {
-                        ForEach(vm.specificRouteResults, id: \.id) { sourceManga in
+                        ForEach(vm.pathResults, id: \.id) { sourceManga in
                             let manga = sourceManga.toListManga()
                             
-                            MangaCard(item: manga, destination: toMangaDetails(manga))
+                            // TODO: not updating until onAppear again
+                            MangaCard(item: manga, destination: toMangaDetails(manga), isInLibrary: sourceManga.inLibrary)
                                 .onAppear {
+                                    // TODO: block onLastItemAppeared() if results from recent is empty array
+                                    // Or if no scroll action occurred? idk
+                                    
                                     // If last one is in view, trigger a load more
-                                    if sourceManga == vm.specificRouteResults.last {
+                                    if sourceManga == vm.pathResults.last {
                                         onLastItemAppeared()
                                     }
                                 }
@@ -41,7 +45,7 @@ struct SourceContentGrid: View {
                     }
                     .padding(.horizontal, 10)
                     
-                    if vm.isFetchingNextPage {
+                    if vm.isLoadingPathContent {
                         ProgressView()
                             .padding(.vertical)
                     }
@@ -65,54 +69,29 @@ private extension SourceContentGrid {
         MangaDetailsScreen(
             vm: MangaDetailsViewModel(
                 listManga: manga,
-                observer: useCaseFactory.makeObserveMangaDbChangesUseCase(),
-                fetchHostSourceManga: useCaseFactory.makeFetchHostSourceMangaUseCase(),
-                addMangaToLibrary: useCaseFactory.makeAddMangaToLibraryUseCase()
+                fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
+                observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
+                addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase()
             )
         )
     }
 }
 
+// MARK - on functions
+
 private extension SourceContentGrid {
     func onAppear() {
-        print("On Appear")
-        
-        Task {
-            if path != vm.specificRoutePath || !vm.specificHasLoaded {
-                do {
-                    try await vm.fetchPathContent(path: path)
-                } catch {
-                    print("Error fetching path content: \(error.localizedDescription)")
-                }
-            }
-        }
+        vm.onGridPageLoad(path: path)
     }
     
     func onRefresh() {
         print("On Refresh")
-        Task {
-            vm.refreshPage()
-            do {
-                try await vm.fetchPathContent(path: path)
-            } catch {
-                print("Error fetching path content: \(error.localizedDescription)")
-            }
-        }
+        vm.resetPathContent()
     }
     
     func onLastItemAppeared() {
         print("Last Item Appeared")
-        Task {
-            if !vm.isFetchingNextPage {
-                vm.incrementPage()
-                
-                do {
-                    try await vm.fetchNextPageContent()
-                } catch {
-                    print("Error fetching next page: \(error.localizedDescription)")
-                }
-            }
-        }
+        vm.currentPage += 1
     }
 }
 
@@ -136,9 +115,9 @@ private extension SourceContentGrid {
     return SourceContentGrid(
         title: "Some Title",
         path: "Some Path",
-        vm: SourceContentViewModel(
-            observeMangaIds: useCaseFactory.makeObserveMangaIdsUseCase(),
-            fetchHostSourceContent: useCaseFactory.makeFetchHostSourceContentUseCase(),
+        vm: SCVM(
+            fetchHostSourceContentUseCase: useCaseFactory.makeFetchHostSourceContentUseCase(),
+            observeSourceMangaUseCase: useCaseFactory.makeObserveSourceMangaUseCase(),
             activeHost: host,
             activeSource: source1
         )

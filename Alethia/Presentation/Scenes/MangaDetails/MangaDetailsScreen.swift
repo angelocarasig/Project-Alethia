@@ -11,17 +11,22 @@ struct MangaDetailsScreen: View {
     @Bindable var vm: MangaDetailsViewModel
     
     var body: some View {
-        ZStack {
+        print("MangaDetailsScreen is re-rendering with listManga title: \(vm.listManga.title)")
+        print("Manga is: \(String(describing: vm.manga?.title))")
+        print("Fetched Manga is: \(String(describing: vm.fetchedManga?.title))")
+        
+        return ZStack {
             if let manga = vm.manga {
                 ContentView(manga)
+                    .transition(.blurReplace(.downUp))
             } else {
-                ProgressView("Loading Manga...")
+                SkeletonView()
+                    .transition(.blurReplace(.downUp))
             }
         }
         .onAppear {
             Task {
-                await vm.initObserver()
-                try await vm.fetchMangaDetails()
+                try await vm.onOpen()
             }
         }
     }
@@ -29,9 +34,7 @@ struct MangaDetailsScreen: View {
 
 private extension MangaDetailsScreen {
     func addToLibrary() async {
-        Task {
-            await vm.addToLibrary()
-        }
+        await vm.addToLibrary()
     }
     
     func removeFrom() async {
@@ -53,9 +56,8 @@ private extension MangaDetailsScreen {
                     
                     ActionButtons(
                         manga: manga,
-                        inLibrary: false,
-                        addToLibrary: {await addToLibrary()},
-                        removeFromLibrary: {await removeFrom()}
+                        addToLibrary: { await addToLibrary() },
+                        removeFromLibrary: { await removeFrom() }
                     )
                     
                     Gap(12)
@@ -91,6 +93,9 @@ private extension MangaDetailsScreen {
                 )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .refreshable {
+                print("Triggered Refresh!")
+            }
         }
     }
 }
@@ -107,9 +112,9 @@ private extension MangaDetailsScreen {
     
     let vm = MangaDetailsViewModel(
         listManga: someListManga,
-        observer: useCaseFactory.makeObserveMangaDbChangesUseCase(),
-        fetchHostSourceManga: useCaseFactory.makeFetchHostSourceMangaUseCase(),
-        addMangaToLibrary: useCaseFactory.makeAddMangaToLibraryUseCase()
+        fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
+        observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
+        addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase()
     )
     
     return MangaDetailsScreen(vm: vm)
