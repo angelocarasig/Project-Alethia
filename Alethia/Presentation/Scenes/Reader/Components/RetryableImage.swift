@@ -32,11 +32,10 @@ struct RetryableImage: View {
                 .resizable()
                 .id(reloadID) // Forces KFImage to reload when reloadID changes
                 .tag(index)
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .scaledToFit()
+                .frame(maxWidth: .infinity) // take up entire width of screen
                 .edgesIgnoringSafeArea(.all)
             
-            // Display the Retry button or progress indicator based on loading progress
             if let progress = loadingProgress {
                 if progress == 0 {
                     // Image failed to load; show Retry button

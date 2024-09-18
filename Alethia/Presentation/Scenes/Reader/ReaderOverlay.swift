@@ -28,70 +28,77 @@ struct ReaderOverlay<Content: View>: View {
     var body: some View {
         ZStack {
             content
-            
-            // Top Overlay
-            VStack {
-                HStack {
-                    Button(action: {
-                        vm.cycleReadingDirection()
-                    }) {
-                        Text("Change Reading Direction (Currently: \(vm.config.readerDirection))")
-                            .foregroundColor(.white)
+            // On tap functions
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation {
+                        vm.displayOverlay.toggle()
                     }
-                    .padding(.leading)
+                }
+            
+            if vm.displayOverlay {
+                // Top Overlay
+                VStack {
+                    HStack {
+                        Button(action: {
+                            vm.cycleReadingDirection()
+                        }) {
+                            Text("Change Reading Direction (Currently: \(vm.config.readerDirection))")
+                                .foregroundColor(.white)
+                        }
+                        .padding(.leading)
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                Text("Back")
+                            }
+                            .foregroundColor(.white)
+                        }
+                        .padding(.trailing)
+                    }
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black.opacity(0.5)) // Apply background here
                     
                     Spacer()
-                    
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("Back")
-                        }
-                        .foregroundColor(.white)
-                    }
-                    .padding(.trailing)
                 }
-                .padding(.top, 10)
-                .frame(maxWidth: .infinity)
-                .background(Color.black.opacity(0.5)) // Apply background here
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            
-            // Bottom Overlay
-            VStack {
-                Spacer()
-                
+                // Bottom Overlay
                 VStack {
-                    if vm.chapterContent.count > 0 {
-                        Slider(
-                            value: pageBinding,
-                            in: 0...Double(vm.chapterContent.count - 1),
-                            step: 1
-                        )
-                        .padding([.leading, .trailing], 20)
-                        .onChange(of: vm.currentPage) {
-                            Haptics.selection()
+                    Spacer()
+                    
+                    VStack {
+                        if vm.chapterContent.count > 0 {
+                            Slider(
+                                value: pageBinding,
+                                in: 0...Double(vm.chapterContent.count - 1),
+                                step: 1
+                            )
+                            .padding([.leading, .trailing], 20)
+                            .onChange(of: vm.currentPage) {
+                                Haptics.selection()
+                            }
+                            
+                            Text("Page \(vm.currentPage + 1) of \(vm.chapterContent.count)")
+                                .foregroundColor(.white)
+                        } else {
+                            Text("Loading pages...")
+                                .foregroundColor(.white)
+                                .padding()
                         }
-                        
-                        Text("Page \(vm.currentPage + 1) of \(vm.chapterContent.count)")
-                            .foregroundColor(.white)
-                    } else {
-                        Text("Loading pages...")
-                            .foregroundColor(.white)
-                            .padding()
                     }
+                    .padding()
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(8)
                 }
-                .padding()
-                .background(Color.black.opacity(0.5))
-                .cornerRadius(8)
+                .frame(maxWidth: .infinity, alignment: .bottom)
             }
-            .frame(maxWidth: .infinity, alignment: .bottom)
-
-            
         }
         .onAppear {
             vm.onOpen()

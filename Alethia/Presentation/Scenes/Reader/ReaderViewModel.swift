@@ -40,12 +40,15 @@ final class ReaderViewModel {
     }
     var loadingProgress: [URL:Double] = [:]
     
+    var displayOverlay: Bool
+    
     init(
         fetchHostSourceMangaChapterContentUseCase: FetchHostSourceMangaChapterContentUseCase,
         chapter: Chapter
     ) {
         self.fetchHostSourceMangaChapterContentUseCase = fetchHostSourceMangaChapterContentUseCase
         self.chapter = chapter
+        self.displayOverlay = true
     }
     
     func onOpen() {

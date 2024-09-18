@@ -11,7 +11,7 @@ import VTabView
 private struct ViewOffsetKey: PreferenceKey {
     typealias Value = CGFloat
     static var defaultValue: CGFloat = 0
-
+    
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }
@@ -27,17 +27,23 @@ struct VerticalReaderView: View {
     
     var body: some View {
         if isPaginated {
-            // Paginated vertical reader using VTabView
-            VTabView(selection: $currentPage) {
-                ForEach(chapterContent.indices, id: \.self) { index in
-                    RetryableImage(url: chapterContent[index], index: index)
-                        .tag(index)
+            // Paginated (single page within screen)
+            ScrollView {
+                VTabView(selection: $currentPage) {
+                    ForEach(chapterContent.indices, id: \.self) { index in
+                        RetryableImage(url: chapterContent[index], index: index)
+                            .tag(index)
+                    }
                 }
+                .frame(
+                    width: UIScreen.main.bounds.width,
+                    height: UIScreen.main.bounds.height
+                )
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .edgesIgnoringSafeArea(.all)
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         } else {
-            // Continuous vertical scrolling reader (Webtoon mode)
+            // Infinite scroll (manhwas)
             ScrollView {
                 ScrollViewReader { scrollViewProxy in
                     LazyVStack(spacing: 0) {
