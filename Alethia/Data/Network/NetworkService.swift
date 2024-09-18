@@ -42,19 +42,6 @@ final class NetworkService {
 }
 
 extension NetworkService {
-    func buildMangaURL(repository: Host, source: Source, slug: String) throws -> URL {
-        guard let baseURL = URL(string: repository.baseUrl) else {
-            throw NetworkError.missingURL
-        }
-        
-        let url = URL.appendingPaths(baseURL.absoluteString, source.path, "manga", slug)
-        guard let finalURL = url else {
-            throw NetworkError.missingURL
-        }
-        
-        return finalURL
-    }
-    
     func buildPagedURL(host: Host, source: Source, path: String, page: Int) throws -> URL {
         guard let baseURL = URL(string: host.baseUrl) else {
             throw NetworkError.missingURL
@@ -72,6 +59,22 @@ extension NetworkService {
         }
         
         return finalURL
+    }
+    
+    func buildMangaURL(host: Host, source: Source, slug: String) throws -> URL {
+        guard let url = URL.appendingPaths(host.baseUrl, source.path, "manga", slug) else {
+            throw NetworkError.missingURL
+        }
+        
+        return url
+    }
+    
+    func buildChapterURL(host: Host, source: Source, chapter: Chapter) throws -> URL {
+        guard let url = URL.appendingPaths(host.baseUrl, source.path, "chapter", chapter.slug) else {
+            throw NetworkError.missingURL
+        }
+        
+        return url
     }
 }
 

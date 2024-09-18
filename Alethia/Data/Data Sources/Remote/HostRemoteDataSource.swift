@@ -38,4 +38,8 @@ extension HostRemoteDataSource {
         )
         .toDomain()
     }
+    
+    func getChapterContent(host: Host, source: Source, chapter: Chapter) async throws -> [URL] {
+        return try await networkService.getChapterContent(host: host, source: source, chapter: chapter)
+    }
 }

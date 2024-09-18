@@ -16,6 +16,8 @@ final class RealmProvider {
         if realm == nil {
             let config = Realm.Configuration(deleteRealmIfMigrationNeeded: false)
             realm = try? await Realm(configuration: config, actor: RealmActor.shared)
+            
+            print("Realm file location: \(realm?.configuration.fileURL?.absoluteString ?? "No file URL")")
         }
         
         return realm

@@ -44,7 +44,7 @@ extension MangaDetailsScreen {
             }
             Spacer()
         }
-        .ignoresSafeArea(edges: .top)
+        .ignoresSafeArea(.container, edges: .top)
     }
 }
 

@@ -27,7 +27,11 @@ extension MangaRepositoryImplementation: MangaRepository {
         return await local.observeManga(manga: manga, callback: callback)
     }
     
-    func addMangaToLibrary(_ manga: Manga) async -> Bool {
-        return await local.addMangaToLibrary(RealmManga(manga))
+    func addMangaToLibrary(_ manga: Manga) async -> Void {
+        await local.addMangaToLibrary(RealmManga(manga))
+    }
+    
+    func removeMangaFromLibrary(_ manga: Manga) async -> Void {
+        await local.removeMangaFromLibrary(manga)
     }
 }

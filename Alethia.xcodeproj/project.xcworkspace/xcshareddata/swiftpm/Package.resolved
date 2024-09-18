@@ -1,5 +1,5 @@
 {
-  "originHash" : "ef991abbd1320f66f34fa444428465b03277196fce049f1912fb94c110d972f5",
+  "originHash" : "fc68201e7be0251dfc0cacd3992ee7b772047dbbc4dbe3ac78ddd17b82a9f5db",
   "pins" : [
     {
       "identity" : "kingfisher",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "b528bd06ae70fbd2936d9561a456fb6ea65bc7ff",
         "version" : "2.5.0"
+      }
+    },
+    {
+      "identity" : "swiftui-vertical-tab-view",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lorenzofiamingo/swiftui-vertical-tab-view",
+      "state" : {
+        "revision" : "e029f75f9c43e52e351528a78e293a997200b9f8",
+        "version" : "2.0.0"
       }
     }
   ],

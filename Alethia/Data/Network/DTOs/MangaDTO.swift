@@ -15,7 +15,7 @@ struct MangaDTO: Decodable {
     let alternativeTitles: [String]
     let author: String
     let artist: String
-    let synopsis: String
+    let synopsis: String?
     
     let updatedAt: Date
     let createdAt: Date
@@ -39,7 +39,7 @@ struct MangaDTO: Decodable {
             alternativeTitles: alternativeTitles,
             author: author,
             artist: artist,
-            synopsis: synopsis,
+            synopsis: synopsis ?? "No Description Available.",
             lastReadAt: updatedAt,
             addedAt: createdAt,
             contentRating: ContentRating(rawValue: contentRating) ?? .unknown,

@@ -136,36 +136,39 @@ struct ChapterButtons: View {
     
     @ViewBuilder
     private func chapterRow(chapter: Chapter) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Chapter \(chapter.chapterNumber.clean)\(chapter.chapterTitle.isEmpty ? "" : " - \(chapter.chapterTitle)")")
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
+        NavigationLink(destination: ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(for: chapter))) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Chapter \(chapter.chapterNumber.clean)\(chapter.chapterTitle.isEmpty ? "" : " - \(chapter.chapterTitle)")")
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                    
+                    Spacer().frame(height: 4)
+                    
+                    Text(chapter.date, style: .date)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                    
+                    Text(chapter.author)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
                 
-                Spacer().frame(height: 4)
+                Spacer()
                 
-                Text(chapter.date, style: .date)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-                
-                Text(chapter.author)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                if isNew(chapter: chapter) {
+                    Text("NEW")
+                        .font(.system(size: 16))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                        .background(Color("AlertColor"))
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
             }
-            
-            Spacer()
-            
-            if isNew(chapter: chapter) {
-                Text("NEW")
-                    .font(.system(size: 16))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 8)
-                    .background(Color("AlertColor"))
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
+            .padding(.vertical, 8)
         }
-        .padding(.vertical, 8)
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -213,7 +216,7 @@ struct ChapterButtons: View {
         author: "The Author",
         date: Date()
     )
-
+    
     sampleChapters.append(chapter1)
     sampleChapters.append(chapter2)
     sampleChapters.append(chapter3)

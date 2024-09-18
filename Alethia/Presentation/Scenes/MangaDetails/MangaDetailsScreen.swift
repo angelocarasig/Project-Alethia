@@ -11,11 +11,7 @@ struct MangaDetailsScreen: View {
     @Bindable var vm: MangaDetailsViewModel
     
     var body: some View {
-        print("MangaDetailsScreen is re-rendering with listManga title: \(vm.listManga.title)")
-        print("Manga is: \(String(describing: vm.manga?.title))")
-        print("Fetched Manga is: \(String(describing: vm.fetchedManga?.title))")
-        
-        return ZStack {
+        ZStack {
             if let manga = vm.manga {
                 ContentView(manga)
                     .transition(.blurReplace(.downUp))
@@ -29,6 +25,9 @@ struct MangaDetailsScreen: View {
                 try await vm.onOpen()
             }
         }
+        .onDisappear {
+            vm.onClose()
+        }
     }
 }
 
@@ -38,7 +37,7 @@ private extension MangaDetailsScreen {
     }
     
     func removeFrom() async {
-        print("removed from library")
+        await vm.removeFromLibrary()
     }
     
     @ViewBuilder
@@ -114,7 +113,8 @@ private extension MangaDetailsScreen {
         listManga: someListManga,
         fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
         observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
-        addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase()
+        addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase(),
+        removeMangaFromLibraryUseCase: useCaseFactory.makeRemoveMangaFromLibraryUseCase()
     )
     
     return MangaDetailsScreen(vm: vm)

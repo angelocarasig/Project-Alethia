@@ -101,6 +101,12 @@ final class SCVM { // TODO: Refactor name
     
     // Use when grid page loads
     func onGridPageLoad(path: String) {
+        // If new path is different, reset content
+        if self.activePath != path {
+            self.activePath = path
+            resetPathContent()
+        }
+        
         // Don't trigger if content already present
         guard pathResults.isEmpty else { return }
         
@@ -157,12 +163,6 @@ final class SCVM { // TODO: Refactor name
     }
     
     func fetchPathContent(path: String) async {
-        // If path changed, reset content
-        if self.activePath != path {
-            self.activePath = path
-            resetPathContent()
-        }
-        
         // Prevent from triggering if already loading
         guard !isLoadingPathContent else { return }
         

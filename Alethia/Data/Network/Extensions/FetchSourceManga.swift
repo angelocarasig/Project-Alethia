@@ -9,7 +9,7 @@ import Foundation
 
 extension NetworkService: FetchSourceMangaProtocol {
     func fetchSourceManga(host: Host, source: Source, slug: String) async throws -> MangaDTO {
-        let url = try buildMangaURL(repository: host, source: source, slug: slug)
+        let url = try buildMangaURL(host: host, source: source, slug: slug)
         
         return try await request(url: url)
     }

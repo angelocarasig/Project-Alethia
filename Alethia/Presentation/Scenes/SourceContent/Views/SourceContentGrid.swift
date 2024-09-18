@@ -16,7 +16,9 @@ struct SourceContentGrid: View {
     let dimensions = DimensionsCache.shared.dimensions
     
     var body: some View {
-        VStack {
+        print("Source Content Grid Loading with path: \(path)")
+        
+        return VStack {
             if vm.pathResults.isEmpty && vm.isLoadingPathContent {
                 ProgressView()
             } else {
@@ -53,11 +55,10 @@ struct SourceContentGrid: View {
                 .refreshable {
                     onRefresh()
                 }
-                
-                .onAppear {
-                    onAppear()
-                }
             }
+        }
+        .onAppear {
+            onAppear()
         }
         .navigationTitle(title)
     }
@@ -66,14 +67,8 @@ struct SourceContentGrid: View {
 private extension SourceContentGrid {
     @ViewBuilder
     func toMangaDetails(_ manga: ListManga) -> some View {
-        MangaDetailsScreen(
-            vm: MangaDetailsViewModel(
-                listManga: manga,
-                fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
-                observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
-                addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase()
-            )
-        )
+        let viewModelFactory = ViewModelFactory.shared
+        MangaDetailsScreen(vm: viewModelFactory.makeMangaDetailsViewModel(for: manga))
     }
 }
 
@@ -85,12 +80,10 @@ private extension SourceContentGrid {
     }
     
     func onRefresh() {
-        print("On Refresh")
         vm.resetPathContent()
     }
     
     func onLastItemAppeared() {
-        print("Last Item Appeared")
         vm.currentPage += 1
     }
 }

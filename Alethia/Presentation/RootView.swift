@@ -11,6 +11,7 @@ struct RootView: View {
     private let appFactory = UseCaseFactory.shared
     
     var body: some View {
+        // TODO: Blur in tabs not working for manga details
         TabView {
             Text("Library")
                 .tabItem {

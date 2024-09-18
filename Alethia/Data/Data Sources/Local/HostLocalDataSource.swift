@@ -58,4 +58,8 @@ final class HostLocalDataSource {
         
         return manga?.toDomain()
     }
+    
+    func getChapterContent(host: Host, source: Source, chapter: Chapter) async throws -> [URL] {
+        throw NetworkError.requestFailed
+    }
 }

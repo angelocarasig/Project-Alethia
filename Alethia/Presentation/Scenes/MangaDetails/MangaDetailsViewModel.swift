@@ -27,23 +27,36 @@ final class MangaDetailsViewModel {
     private let observeMangaUseCase: ObserveMangaUseCase
     private let fetchHostSourceMangaUseCase: FetchHostSourceMangaUseCase
     private let addMangaToLibraryUseCase: AddMangaToLibraryUseCase
+    private let removeMangaFromLibraryUseCase: RemoveMangaFromLibraryUseCase
     
     init(
         listManga: ListManga,
         fetchHostSourceMangaUseCase: FetchHostSourceMangaUseCase,
         observeMangaUseCase: ObserveMangaUseCase,
-        addMangaToLibraryUseCase: AddMangaToLibraryUseCase
+        addMangaToLibraryUseCase: AddMangaToLibraryUseCase,
+        removeMangaFromLibraryUseCase: RemoveMangaFromLibraryUseCase
     ) {
         self.listManga = listManga
         
         self.observeMangaUseCase = observeMangaUseCase
         self.fetchHostSourceMangaUseCase = fetchHostSourceMangaUseCase
         self.addMangaToLibraryUseCase = addMangaToLibraryUseCase
+        self.removeMangaFromLibraryUseCase = removeMangaFromLibraryUseCase
     }
     
     func onOpen() async throws {
         print("On Open Triggered.")
         try await fetchMangaDetails()
+    }
+    
+    func onClose() {
+        print("On Close Triggered.")
+//        observer?.invalidate()
+//        observer = nil
+//        manga = nil
+//        fetchedManga = nil
+//        inLibrary = false
+//        sourcePresent = false
     }
     
     /// Fetch manga details from host and source using the ActiveHostManager
@@ -88,24 +101,15 @@ final class MangaDetailsViewModel {
         observer?.invalidate()
     }
     
-    func addToLibrary() async -> Bool {
-        guard let manga = manga else { return false }
-
-        // Perform the add operation
-        let added = await addMangaToLibraryUseCase.execute(manga)
-
-        if added {
-            print("Manga added to library.")
-        } else {
-            print("Failed to add manga to library.")
-        }
-
-        // Ensure that `manga` is not modified or reset after this call
-        return added
+    func addToLibrary() async {
+        guard let manga = manga else { return }
+        
+        await addMangaToLibraryUseCase.execute(manga)
     }
     
-    func removeFromLibrary() async -> Bool {
-        // Implementation to remove manga from the library
-        return true
+    func removeFromLibrary() async {
+        guard let manga = manga else { return }
+        
+        await removeMangaFromLibraryUseCase.execute(manga)
     }
 }

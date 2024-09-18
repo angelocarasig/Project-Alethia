@@ -19,17 +19,33 @@ final class MangaLocalDataSource {
     }
     
     @RealmActor
-    func addMangaToLibrary(_ manga: RealmManga, update: Bool = false) async -> Bool {
+    func addMangaToLibrary(_ manga: RealmManga, update: Bool = false) async -> Void {
         guard
             let storage = await realmProvider.realm(),
             !(update && storage.object(ofType: RealmManga.self, forPrimaryKey: manga.id) == nil)
-        else { return false }
+        else { return }
         
         storage.writeAsync {
             storage.add(manga, update: .modified)
         }
+    }
+    
+    @RealmActor
+    func removeMangaFromLibrary(_ manga: Manga) async -> Void {
+        guard let storage = await realmProvider.realm() else { return }
         
-        return true
+        do {
+            if let mangaToDelete = storage.object(ofType: RealmManga.self, forPrimaryKey: manga.id) {
+                try storage.write {
+                    storage.delete(mangaToDelete)
+                    print("Manga successfully removed from library.")
+                }
+            } else {
+                print("Manga not found in the library.")
+            }
+        } catch {
+            print("Failed to remove manga: \(error.localizedDescription)")
+        }
     }
     
     @RealmActor
@@ -125,9 +141,11 @@ final class MangaLocalDataSource {
                 /// ...
                 
                 // # 1
+                print("Current manga is \(manga != nil ? "in" : "not in") library!")
                 callback(MangaEvent.inLibrary(manga != nil))
                 
                 // # 2 - If the origins is not empty or if manga doesn't exist, source is not present (false)
+                print("Current manga has \(manga?.origins.isEmpty ?? false ? "non-empty (\(manga!.origins.count))" : "empty") source list!")
                 callback(MangaEvent.sourcePresent( manga?.origins.isEmpty ?? false ))
                 
             case .error(let error):

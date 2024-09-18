@@ -12,11 +12,8 @@ struct SourceContent: View {
     // Use @Bindable not @State: https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro
     @Bindable var vm: SCVM
     
-    private let useCaseFactory: UseCaseFactory = UseCaseFactory.shared
-    
     var body: some View {
-        print("Source Content Rerendered!")
-        return VStack {
+        VStack {
             if vm.isLoadingRootContent {
                 ProgressView()
             } else {
@@ -33,14 +30,8 @@ struct SourceContent: View {
 private extension SourceContent {
     @ViewBuilder
     func toMangaDetails(_ manga: ListManga) -> some View {
-        MangaDetailsScreen(
-            vm: MangaDetailsViewModel(
-                listManga: manga,
-                fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
-                observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
-                addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase()
-            )
-        )
+        let viewModelFactory = ViewModelFactory.shared
+        MangaDetailsScreen(vm: viewModelFactory.makeMangaDetailsViewModel(for: manga))
     }
 }
 
