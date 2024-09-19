@@ -107,7 +107,62 @@ private extension MangaDetailsScreen {
                     
                     Tags(tags: manga.tags)
                     
+                    Gap(12)
+                    
+                    Divider().frame(height: 6)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Alternative Titles")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        ForEach(manga.alternativeTitles, id: \.self) { title in
+                            Text(title)
+                                .font(.system(size: 16))
+                                .foregroundColor(Color("TextColor").opacity(0.75))
+                            
+                            Gap(2)
+                        }
+                    }
+                    
                     Gap(22)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Content Rating")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Text(manga.contentRating.rawValue)
+                            .font(.system(size: 16))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 8)
+                            .foregroundColor(Color("TextColor"))
+                            .background(Color("TintColor"))
+                            .cornerRadius(8)
+                    }
+                    
+                    Gap(20)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Content Status")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Text(manga.contentStatus.rawValue)
+                            .font(.system(size: 16))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 8)
+                            .foregroundColor(Color("TextColor"))
+                            .background(Color("TintColor"))
+                            .cornerRadius(8)
+                    }
+                    
+                    Gap(12)
+                    
+                    Divider().frame(height: 6)
                 }
                 .padding(.leading, 12)
                 .padding(.trailing, 16)

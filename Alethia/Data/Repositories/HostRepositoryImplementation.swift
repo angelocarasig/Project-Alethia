@@ -40,7 +40,7 @@ extension HostRepositoryImplementation: HostRepository {
     func fetchHostSourceManga(host: Host?, source: Source?, listManga: ListManga) async throws -> Manga {
         // Attempt to fetch from local storage first
         if let localManga = await local.getManga(listManga: listManga) {
-            // print("Fetched from Local!")
+             print("Fetched from Local!")
             return localManga
         }
         
@@ -50,7 +50,7 @@ extension HostRepositoryImplementation: HostRepository {
         }
         
         // If not found locally, fetch from remote
-        // print("Fetched from Remote!")
+         print("Fetched from Remote!")
         return try await remote.fetchSourceManga(host: host, source: source, listManga: listManga)
     }
     

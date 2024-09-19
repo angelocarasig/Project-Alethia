@@ -113,6 +113,7 @@
 		AA5AF5A92C9C3DA7002BD0A7 /* ObserveMangaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF5892C9C3DA7002BD0A7 /* ObserveMangaUseCase.swift */; };
 		AA5AF5AA2C9C3DA7002BD0A7 /* ObserveSourceMangaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF58A2C9C3DA7002BD0A7 /* ObserveSourceMangaUseCase.swift */; };
 		AA5AF5AB2C9C3DA7002BD0A7 /* RemoveMangaFromLibraryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF58B2C9C3DA7002BD0A7 /* RemoveMangaFromLibraryUseCase.swift */; };
+		AA5AF5AE2C9C6A6C002BD0A7 /* LibraryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF5AD2C9C6A6C002BD0A7 /* LibraryScreen.swift */; };
 		AA9324E22C893BEC006338E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E12C893BEC006338E8 /* Assets.xcassets */; };
 		AA9324E52C893BEC006338E8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E42C893BEC006338E8 /* Preview Assets.xcassets */; };
 		AA9324FF2C893C85006338E8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AA9324FE2C893C85006338E8 /* Kingfisher */; };
@@ -183,6 +184,7 @@
 		AA5AF5892C9C3DA7002BD0A7 /* ObserveMangaUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveMangaUseCase.swift; sourceTree = "<group>"; };
 		AA5AF58A2C9C3DA7002BD0A7 /* ObserveSourceMangaUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveSourceMangaUseCase.swift; sourceTree = "<group>"; };
 		AA5AF58B2C9C3DA7002BD0A7 /* RemoveMangaFromLibraryUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveMangaFromLibraryUseCase.swift; sourceTree = "<group>"; };
+		AA5AF5AD2C9C6A6C002BD0A7 /* LibraryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryScreen.swift; sourceTree = "<group>"; };
 		AA9324DA2C893BEB006338E8 /* Alethia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alethia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlethiaApp.swift; sourceTree = "<group>"; };
 		AA9324E12C893BEC006338E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 		AA5AF4E42C9ABC6A002BD0A7 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				AA5AF5AD2C9C6A6C002BD0A7 /* LibraryScreen.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -430,8 +433,8 @@
 				AA93259D2C896DAC006338E8 /* Application */,
 				AA9325922C896C8A006338E8 /* Presentation */,
 				AA93254A2C89691B006338E8 /* Data */,
-				AA9325482C8967A3006338E8 /* Resources */,
 				AA5AF5942C9C3DA7002BD0A7 /* Domain */,
+				AA9325482C8967A3006338E8 /* Resources */,
 			);
 			path = Alethia;
 			sourceTree = "<group>";
@@ -889,6 +892,7 @@
 				AA5AF53A2C9C3468002BD0A7 /* FetchSourceListManga.swift in Sources */,
 				AA5AF5A22C9C3DA7002BD0A7 /* FetchHostSourceContentUseCase.swift in Sources */,
 				AA5AF53B2C9C3468002BD0A7 /* URL+AppendingPaths.swift in Sources */,
+				AA5AF5AE2C9C6A6C002BD0A7 /* LibraryScreen.swift in Sources */,
 				AA5AF59C2C9C3DA7002BD0A7 /* Origin.swift in Sources */,
 				AA5AF53C2C9C3468002BD0A7 /* NetworkService.swift in Sources */,
 				AA5AF53D2C9C3468002BD0A7 /* NetworkMonitor.swift in Sources */,

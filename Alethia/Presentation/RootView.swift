@@ -21,7 +21,7 @@ struct RootView: View {
                     ActiveHostManager.shared.clearActiveHost()
                 }
             
-            Text("Library")
+            LibraryScreen()
                 .tabItem {
                     Image(systemName: "books.vertical.fill")
                     Text("Library")

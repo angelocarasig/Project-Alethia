@@ -5,7 +5,6 @@
 //  Created by Angelo Carasig on 6/9/2024.
 //
 
-import Foundation
 import RealmSwift
 import SwiftUI
 
@@ -41,6 +40,8 @@ final class MangaDetailsViewModel {
     ) {
         self.listManga = listManga
         
+        print("New MDVM for \(listManga.title)")
+        
         self.observeMangaUseCase = observeMangaUseCase
         self.fetchHostSourceMangaUseCase = fetchHostSourceMangaUseCase
         self.addMangaToLibraryUseCase = addMangaToLibraryUseCase
@@ -48,27 +49,34 @@ final class MangaDetailsViewModel {
     }
     
     func onOpen() async throws {
-        // When switching back to this it should reset it to false
-        isFullScreen = false
+        // TODO: On Appear check the current manga details (manga details from source tabs chapters are showing in a manga from home tab
         try await fetchMangaDetails()
     }
     
     func onClose() {
-        //        observer?.invalidate()
-        //        observer = nil
-        //        manga = nil
-        //        fetchedManga = nil
-        //        inLibrary = false
-        //        sourcePresent = false
+        observer?.invalidate()
+        observer = nil
+        manga = nil
+        fetchedManga = nil
+        inLibrary = false
+        sourcePresent = false
     }
     
     /// Fetch manga details from host and source using the ActiveHostManager
     func fetchMangaDetails() async throws {
+        print("Fetching Manga Details for \(listManga.title)")
         fetchedManga = try await fetchHostSourceMangaUseCase.execute(
             host: ActiveHostManager.shared.getActiveHost(),
             source: ActiveHostManager.shared.getActiveSource(),
             listManga: listManga
         )
+        
+        if let fetchedManga = fetchedManga {
+            print("Fetched Manga: \(fetchedManga.title), Chapters: \(fetchedManga.origins.first?.chapters.count ?? 0)")
+            print("Last Chapter is Number \(fetchedManga.origins.first?.chapters.last?.chapterNumber) with title \(fetchedManga.origins.first?.chapters.last?.chapterTitle)")
+        } else {
+            print("Fetched Manga is nil for \(listManga.title)")
+        }
     }
     
     /// When fetchedManga is set, this function should be called as a side-effect

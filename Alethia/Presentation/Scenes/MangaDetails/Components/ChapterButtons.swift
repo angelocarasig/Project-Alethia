@@ -122,6 +122,7 @@ private extension ChapterButtons {
                 }
             }
             .padding(.vertical, 8)
+            .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
     }

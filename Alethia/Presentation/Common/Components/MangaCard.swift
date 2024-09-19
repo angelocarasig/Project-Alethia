@@ -24,7 +24,7 @@ struct MangaCard: View {
     var body: some View {
         let dimensions = DimensionsCache.shared.dimensions
         
-        NavigationLink(destination: toMangaDetails(item)) {
+        NavigationLink(destination: toMangaDetails(item).id(item.id)) {
             VStack(alignment: .leading) {
                 ZStack(alignment: .topLeading) {
                     if isImageLoading {
@@ -61,7 +61,8 @@ struct MangaCard: View {
                 }
                 
                 Text(item.title)
-                    .font(.caption)
+                    .font(.system(size: 14))
+                    .fontWeight(.medium)
                     .lineLimit(2)
                     .frame(width: dimensions.width, height: 40, alignment: .topLeading)
                     .truncationMode(.tail)

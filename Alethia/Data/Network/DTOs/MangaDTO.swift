@@ -49,7 +49,7 @@ struct MangaDTO: Decodable {
             groups: [],
             origins: [
                 Origin(
-                    id: sourceId,
+                    id: UUID().uuidString,
                     sourceId: sourceId,
                     mangaId: mangaId,
                     slug: slug,

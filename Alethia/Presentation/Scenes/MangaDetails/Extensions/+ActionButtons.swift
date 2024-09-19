@@ -35,6 +35,7 @@ extension MangaDetailsScreen {
             .frame(maxWidth: .infinity)
             .foregroundStyle(vm.inLibrary ? Color("BackgroundColor") : .white)
             .background(vm.inLibrary ? Color("TextColor") : Color("TintColor"), in: .rect(cornerRadius: 12, style: .continuous))
+            .animation(.easeInOut(duration: 0.3), value: vm.inLibrary)
             
             // TODO: If ActiveHost is nil, need a prompt to confirm, and if done, pops the stack and goes back to wherever they came from
             Button {
@@ -48,13 +49,14 @@ extension MangaDetailsScreen {
                 }
             } label: {
                 Text(Image(systemName: "plus.square.dashed"))
-                Text(vm.inLibrary ? "Source Registered" : "Add Source")
+                Text(vm.inLibrary ? "\(manga.origins.count == 1 ? "1 Source" : "\(manga.origins.count) Sources")" : "Add Source")
             }
             .fontWeight(.medium)
             .padding(.vertical, 14)
             .frame(maxWidth: .infinity)
             .foregroundStyle(vm.inLibrary ? Color("BackgroundColor") : .white)
             .background(vm.inLibrary ? Color("TextColor") : Color("TintColor"), in: .rect(cornerRadius: 12, style: .continuous))
+            .animation(.easeInOut(duration: 0.3), value: vm.inLibrary)
         }
     }
 }
