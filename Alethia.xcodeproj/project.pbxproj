@@ -36,6 +36,9 @@
 		AA5AF4F32C9BBB39002BD0A7 /* CategoriedManga.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4F22C9BBB39002BD0A7 /* CategoriedManga.swift */; };
 		AA5AF4F52C9BCF14002BD0A7 /* FetchChapterContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4F42C9BCF14002BD0A7 /* FetchChapterContent.swift */; };
 		AA5AF4F82C9BD0C6002BD0A7 /* LocalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4F72C9BD0C6002BD0A7 /* LocalError.swift */; };
+		AA5AF4FA2C9BE43A002BD0A7 /* ChapterPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4F92C9BE43A002BD0A7 /* ChapterPlayer.swift */; };
+		AA5AF4FE2C9BF2E4002BD0A7 /* ColorCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF4FD2C9BF2E4002BD0A7 /* ColorCacheManager.swift */; };
+		AA5AF5082C9C042D002BD0A7 /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = AA5AF5072C9C042D002BD0A7 /* DominantColors */; };
 		AA9324DE2C893BEB006338E8 /* AlethiaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */; };
 		AA9324E22C893BEC006338E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E12C893BEC006338E8 /* Assets.xcassets */; };
 		AA9324E52C893BEC006338E8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E42C893BEC006338E8 /* Preview Assets.xcassets */; };
@@ -111,7 +114,7 @@
 		AA9325EB2C8C11BB006338E8 /* +Backdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325EA2C8C11BB006338E8 /* +Backdrop.swift */; };
 		AA9325EE2C8C1235006338E8 /* MangaDetailsDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325ED2C8C1235006338E8 /* MangaDetailsDescription.swift */; };
 		AA9325F42C8C13C3006338E8 /* MangaDetailsTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325F32C8C13C3006338E8 /* MangaDetailsTabs.swift */; };
-		AA9325F62C8C13F1006338E8 /* MangaDetailsChapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325F52C8C13F1006338E8 /* MangaDetailsChapters.swift */; };
+		AA9325F62C8C13F1006338E8 /* ChapterButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325F52C8C13F1006338E8 /* ChapterButtons.swift */; };
 		AA9325F92C8C144E006338E8 /* +Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325F82C8C144E006338E8 /* +Tags.swift */; };
 		AA9325FB2C8C15ED006338E8 /* Double+Clean.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325FA2C8C15ED006338E8 /* Double+Clean.swift */; };
 		AA9325FF2C8D81BF006338E8 /* RealmProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9325FE2C8D81BF006338E8 /* RealmProvider.swift */; };
@@ -160,6 +163,8 @@
 		AA5AF4F22C9BBB39002BD0A7 /* CategoriedManga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriedManga.swift; sourceTree = "<group>"; };
 		AA5AF4F42C9BCF14002BD0A7 /* FetchChapterContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchChapterContent.swift; sourceTree = "<group>"; };
 		AA5AF4F72C9BD0C6002BD0A7 /* LocalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalError.swift; sourceTree = "<group>"; };
+		AA5AF4F92C9BE43A002BD0A7 /* ChapterPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterPlayer.swift; sourceTree = "<group>"; };
+		AA5AF4FD2C9BF2E4002BD0A7 /* ColorCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCacheManager.swift; sourceTree = "<group>"; };
 		AA9324DA2C893BEB006338E8 /* Alethia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alethia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlethiaApp.swift; sourceTree = "<group>"; };
 		AA9324E12C893BEC006338E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -232,7 +237,7 @@
 		AA9325EA2C8C11BB006338E8 /* +Backdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+Backdrop.swift"; sourceTree = "<group>"; };
 		AA9325ED2C8C1235006338E8 /* MangaDetailsDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailsDescription.swift; sourceTree = "<group>"; };
 		AA9325F32C8C13C3006338E8 /* MangaDetailsTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailsTabs.swift; sourceTree = "<group>"; };
-		AA9325F52C8C13F1006338E8 /* MangaDetailsChapters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailsChapters.swift; sourceTree = "<group>"; };
+		AA9325F52C8C13F1006338E8 /* ChapterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterButtons.swift; sourceTree = "<group>"; };
 		AA9325F82C8C144E006338E8 /* +Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+Tags.swift"; sourceTree = "<group>"; };
 		AA9325FA2C8C15ED006338E8 /* Double+Clean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Clean.swift"; sourceTree = "<group>"; };
 		AA9325FE2C8D81BF006338E8 /* RealmProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProvider.swift; sourceTree = "<group>"; };
@@ -244,6 +249,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA5AF5082C9C042D002BD0A7 /* DominantColors in Frameworks */,
 				AA9325E22C8AE632006338E8 /* Flow in Frameworks */,
 				AA9325BF2C89C6F1006338E8 /* LucideIcons in Frameworks */,
 				AA5AF4D22C9709D3002BD0A7 /* VTabView in Frameworks */,
@@ -623,6 +629,7 @@
 				AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */,
 				AA93259F2C896DC3006338E8 /* UseCaseFactory.swift */,
 				AA5AF4BA2C96C291002BD0A7 /* ViewModelFactory.swift */,
+				AA5AF4FD2C9BF2E4002BD0A7 /* ColorCacheManager.swift */,
 				AA9325C92C89CEA6006338E8 /* DimensionsCache.swift */,
 				AA9325DE2C8AC7A5006338E8 /* ActiveHostManager.swift */,
 			);
@@ -705,7 +712,8 @@
 			children = (
 				AA9325ED2C8C1235006338E8 /* MangaDetailsDescription.swift */,
 				AA9325F32C8C13C3006338E8 /* MangaDetailsTabs.swift */,
-				AA9325F52C8C13F1006338E8 /* MangaDetailsChapters.swift */,
+				AA9325F52C8C13F1006338E8 /* ChapterButtons.swift */,
+				AA5AF4F92C9BE43A002BD0A7 /* ChapterPlayer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -733,6 +741,7 @@
 				AA9325BE2C89C6F1006338E8 /* LucideIcons */,
 				AA9325E12C8AE632006338E8 /* Flow */,
 				AA5AF4D12C9709D3002BD0A7 /* VTabView */,
+				AA5AF5072C9C042D002BD0A7 /* DominantColors */,
 			);
 			productName = Alethia;
 			productReference = AA9324DA2C893BEB006338E8 /* Alethia.app */;
@@ -768,6 +777,8 @@
 				AA9325BD2C89C6F1006338E8 /* XCRemoteSwiftPackageReference "lucide-icons-swift" */,
 				AA9325E02C8AE632006338E8 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
 				AA5AF4D02C9709D3002BD0A7 /* XCRemoteSwiftPackageReference "swiftui-vertical-tab-view" */,
+				AA5AF5032C9C0180002BD0A7 /* XCRemoteSwiftPackageReference "ColorKit" */,
+				AA5AF5062C9C042D002BD0A7 /* XCRemoteSwiftPackageReference "DominantColors" */,
 			);
 			productRefGroup = AA9324DB2C893BEB006338E8 /* Products */;
 			projectDirPath = "";
@@ -803,6 +814,7 @@
 				AA5AF4D42C9928A8002BD0A7 /* ReaderOverlay.swift in Sources */,
 				AA9325D62C8AB451006338E8 /* MangaDetailsScreen.swift in Sources */,
 				AA9325992C896D72006338E8 /* SourcesScreen.swift in Sources */,
+				AA5AF4FE2C9BF2E4002BD0A7 /* ColorCacheManager.swift in Sources */,
 				AA93257E2C896931006338E8 /* TestHostProtocol.swift in Sources */,
 				AA9325872C896931006338E8 /* RealmSourceRoute.swift in Sources */,
 				AA5AF4F02C9ADDE3002BD0A7 /* CarouselView.swift in Sources */,
@@ -811,7 +823,7 @@
 				AA5AF4DF2C9A769C002BD0A7 /* VerticalReaderView.swift in Sources */,
 				AA9325CA2C89CEA6006338E8 /* DimensionsCache.swift in Sources */,
 				AA5AF4E82C9ABC76002BD0A7 /* HomeViewModel.swift in Sources */,
-				AA9325F62C8C13F1006338E8 /* MangaDetailsChapters.swift in Sources */,
+				AA9325F62C8C13F1006338E8 /* ChapterButtons.swift in Sources */,
 				AA93258E2C896931006338E8 /* HostLocalDataSource.swift in Sources */,
 				AA93258C2C896931006338E8 /* MangaRepositoryImplementation.swift in Sources */,
 				AA9325A82C896F03006338E8 /* RemoveHostUseCase.swift in Sources */,
@@ -871,6 +883,7 @@
 				AA9325EB2C8C11BB006338E8 /* +Backdrop.swift in Sources */,
 				AA9324DE2C893BEB006338E8 /* AlethiaApp.swift in Sources */,
 				AA5AF4C32C96DDDE002BD0A7 /* ReaderScreen.swift in Sources */,
+				AA5AF4FA2C9BE43A002BD0A7 /* ChapterPlayer.swift in Sources */,
 				AA9325C22C89C714006338E8 /* Icon+Lucide.swift in Sources */,
 				AA9325F42C8C13C3006338E8 /* MangaDetailsTabs.swift in Sources */,
 				AA93257F2C896931006338E8 /* FetchSourceListMangaProtocol.swift in Sources */,
@@ -1119,6 +1132,22 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		AA5AF5032C9C0180002BD0A7 /* XCRemoteSwiftPackageReference "ColorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Boris-Em/ColorKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		AA5AF5062C9C042D002BD0A7 /* XCRemoteSwiftPackageReference "DominantColors" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DenDmitriev/DominantColors.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.1;
+			};
+		};
 		AA9324FD2C893C85006338E8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -1158,6 +1187,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AA5AF4D02C9709D3002BD0A7 /* XCRemoteSwiftPackageReference "swiftui-vertical-tab-view" */;
 			productName = VTabView;
+		};
+		AA5AF5072C9C042D002BD0A7 /* DominantColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA5AF5062C9C042D002BD0A7 /* XCRemoteSwiftPackageReference "DominantColors" */;
+			productName = DominantColors;
 		};
 		AA9324FE2C893C85006338E8 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

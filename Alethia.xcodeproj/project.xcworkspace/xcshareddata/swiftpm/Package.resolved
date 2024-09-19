@@ -1,6 +1,24 @@
 {
-  "originHash" : "fc68201e7be0251dfc0cacd3992ee7b772047dbbc4dbe3ac78ddd17b82a9f5db",
+  "originHash" : "bfb2464ab8ff6ab41d9bc8e7fd1855a0dac08ebf619ab9131e22c32d71e8e907",
   "pins" : [
+    {
+      "identity" : "colorkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Boris-Em/ColorKit.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "6e4375a6126eac0a29893c607ae318bdbe33310c"
+      }
+    },
+    {
+      "identity" : "dominantcolors",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/DenDmitriev/DominantColors.git",
+      "state" : {
+        "revision" : "c2b8ad9768fd984729624eaa8203aa9a23b06909",
+        "version" : "1.2.1"
+      }
+    },
     {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",

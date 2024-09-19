@@ -14,6 +14,8 @@ final class MangaDetailsViewModel {
     var manga: Manga?
     var inLibrary: Bool = false
     var sourcePresent: Bool = false
+    var showAlert: Bool = false
+    var isFullScreen: Bool = false
     
     var fetchedManga: Manga? {
         didSet {
@@ -46,16 +48,18 @@ final class MangaDetailsViewModel {
     }
     
     func onOpen() async throws {
+        // When switching back to this it should reset it to false
+        isFullScreen = false
         try await fetchMangaDetails()
     }
     
     func onClose() {
-//        observer?.invalidate()
-//        observer = nil
-//        manga = nil
-//        fetchedManga = nil
-//        inLibrary = false
-//        sourcePresent = false
+        //        observer?.invalidate()
+        //        observer = nil
+        //        manga = nil
+        //        fetchedManga = nil
+        //        inLibrary = false
+        //        sourcePresent = false
     }
     
     /// Fetch manga details from host and source using the ActiveHostManager

@@ -11,18 +11,26 @@ struct MangaDetailsScreen: View {
     @Bindable var vm: MangaDetailsViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @State private var showAlert: Bool = false
-    
     var body: some View {
         ZStack {
             if let manga = vm.manga {
                 ContentView(manga)
+                    .blur(radius: vm.isFullScreen ? 6 : 0)
+                    .animation(.easeInOut(duration: 0.3), value: vm.isFullScreen)
                     .transition(.blurReplace(.downUp))
+                
+                ChapterPlayer(
+                    chapters: manga.origins.first?.chapters ?? [],
+                    imageURL: URL(string: manga.coverUrl)!,
+                    isFullScreen: $vm.isFullScreen
+                )
             } else {
                 SkeletonView()
                     .transition(.blurReplace(.downUp))
             }
         }
+        // So chapter player takes up as much width as it can with respect to stack toolbar
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             Task {
                 try await vm.onOpen()
@@ -31,10 +39,10 @@ struct MangaDetailsScreen: View {
         .onDisappear {
             vm.onClose()
         }
-        .alert(isPresented: $showAlert) {
+        .alert(isPresented: $vm.showAlert) {
             Alert(
                 title: Text("Remove Manga from Library?"),
-                message: Text("Removing this Manga from the library will redirect you to the previous screen after removal. Are you sure you want to remove it?"),
+                message: Text("You will be redireced to the previous screen after removal. Are you sure you want to remove this manga?"),
                 primaryButton: .destructive(Text("Remove"), action: {
                     Task {
                         await removeFrom()
@@ -64,7 +72,7 @@ private extension MangaDetailsScreen {
     
     private func checkAndRemoveFromLibrary() {
         if ActiveHostManager.shared.getActiveHost() == nil || ActiveHostManager.shared.getActiveSource() == nil {
-            showAlert = true
+            vm.showAlert = true
         } else {
             Task {
                 await removeFrom()
@@ -100,8 +108,6 @@ private extension MangaDetailsScreen {
                     Tags(tags: manga.tags)
                     
                     Gap(22)
-                    
-                    MangaScreenTabs(manga: manga)
                 }
                 .padding(.leading, 12)
                 .padding(.trailing, 16)

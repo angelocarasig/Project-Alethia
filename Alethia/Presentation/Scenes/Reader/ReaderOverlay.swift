@@ -84,7 +84,8 @@ struct ReaderOverlay<Content: View>: View {
                             if vm.currentPage < vm.chapterContent.count {
                                 Slider(
                                     value: pageBinding,
-                                    in: 0...Double(vm.chapterContent.count - 1),
+                                    // Handle 1 page chapters
+                                    in: 0...Double(max(1, vm.chapterContent.count - 1)),
                                     step: 1
                                 )
                                 .padding([.leading, .trailing], 20)

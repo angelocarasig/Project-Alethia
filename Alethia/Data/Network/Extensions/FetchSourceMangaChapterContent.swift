@@ -14,6 +14,8 @@ extension NetworkService: FetchSourceMangaChapterContentProtocol {
         print("Fetching chapter content at url: \(url.absoluteString)")
         let result: [String] = try await request(url: url)
         
+        print("Result count: \(result.count)")
+        
         return result.map { URL(string: $0)! }
     }
 }

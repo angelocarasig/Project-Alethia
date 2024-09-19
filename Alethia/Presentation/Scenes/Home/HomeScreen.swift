@@ -12,7 +12,6 @@ struct HomeScreen: View {
     @Bindable var vm: HomeViewModel
     
     @State var activeTab: MangaTabs = .recentlyRead
-    @Namespace private var animation
     
     enum MangaTabs: String, CaseIterable {
         case featured = "Featured"
