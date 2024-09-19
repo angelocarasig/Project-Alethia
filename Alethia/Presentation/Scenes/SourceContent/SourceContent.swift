@@ -28,14 +28,6 @@ struct SourceContent: View {
 }
 
 private extension SourceContent {
-    @ViewBuilder
-    func toMangaDetails(_ manga: ListManga) -> some View {
-        let viewModelFactory = ViewModelFactory.shared
-        MangaDetailsScreen(vm: viewModelFactory.makeMangaDetailsViewModel(for: manga))
-    }
-}
-
-private extension SourceContent {
     func ContentView() -> some View {
         ScrollView {
             Spacer().frame(height: 12)
@@ -66,7 +58,7 @@ private extension SourceContent {
                     LazyHStack(spacing: 10) {
                         ForEach(result.results.prefix(20)) { manga in
                             let listManga = manga.toListManga()
-                            MangaCard(item: listManga, destination: toMangaDetails(listManga), isInLibrary: manga.inLibrary)
+                            MangaCard(item: listManga, isInLibrary: manga.inLibrary)
                         }
                     }
                     .padding(.horizontal, 16)

@@ -68,6 +68,10 @@ extension UseCaseFactory {
         return ObserveMangaImpl(repo: mangaRepository)
     }
     
+    func makeObserveLibraryMangaUseCase() -> ObserveLibraryMangaUseCase {
+        return ObserveLibraryMangaImpl(repo: mangaRepository)
+    }
+    
     func makeAddMangaToLibraryUseCase() -> AddMangaToLibraryUseCase {
         return AddMangaToLibaryImpl(repo: mangaRepository)
     }

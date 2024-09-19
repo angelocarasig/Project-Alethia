@@ -37,18 +37,21 @@ extension HostRepositoryImplementation: HostRepository {
         return try await remote.fetchHostSourceContent(host: host, source: source, path: path, page: page)
     }
     
-    func fetchHostSourceManga(host: Host?, source: Source?, slug: String) async throws -> Manga {
+    func fetchHostSourceManga(host: Host?, source: Source?, listManga: ListManga) async throws -> Manga {
         // Attempt to fetch from local storage first
-        if let localManga = await local.getManga(slug: slug) {
+        if let localManga = await local.getManga(listManga: listManga) {
+            // print("Fetched from Local!")
             return localManga
         }
         
+        // Must have a valid host or source to fetch from remote
         guard let host = host, let source = source else {
             throw NetworkError.inactiveRepository
         }
         
         // If not found locally, fetch from remote
-        return try await remote.fetchSourceManga(host: host, source: source, slug: slug)
+        // print("Fetched from Remote!")
+        return try await remote.fetchSourceManga(host: host, source: source, listManga: listManga)
     }
     
     func fetchHostSourceMangaChapterContent(host: Host?, source: Source?, chapter: Chapter) async throws -> [URL] {

@@ -26,19 +26,21 @@ let defaultConfig: ReaderConfig = ReaderConfig(
 
 @Observable
 final class ReaderViewModel {
-    private let chapter: Chapter
+    let chapter: Chapter
     var chapterContent: [URL] = []
     
     private var fetchHostSourceMangaChapterContentUseCase: FetchHostSourceMangaChapterContentUseCase
-    private let PRELOAD_PAGE_RANGE = 5
+    
+    private var imagePrefetcher: ImagePrefetcher?
+    private let prefetchRange = 5 // Number of images to prefetch before and after current page
     
     var config: ReaderConfig = defaultConfig
     var currentPage: Int = 0 {
         didSet {
-            
+            prefetchImages()
         }
     }
-    var loadingProgress: [URL:Double] = [:]
+    var loadingProgress: [URL: Double] = [:]
     
     var displayOverlay: Bool
     
@@ -51,9 +53,16 @@ final class ReaderViewModel {
         self.displayOverlay = true
     }
     
+    deinit {
+        // Remove observer and cancel any ongoing prefetching tasks
+        NotificationCenter.default.removeObserver(self)
+        imagePrefetcher?.stop()
+    }
+    
     func onOpen() {
         Task {
             try await getChapterContent()
+            prefetchImages() // Start prefetching after content is loaded
         }
     }
     
@@ -70,11 +79,43 @@ final class ReaderViewModel {
         }
     }
     
-    private func getChapterContent() async throws -> Void {
+    private func getChapterContent() async throws {
         chapterContent = try await fetchHostSourceMangaChapterContentUseCase.execute(
             host: ActiveHostManager.shared.getActiveHost(),
             source: ActiveHostManager.shared.getActiveSource(),
             chapter: chapter
         )
+    }
+    
+    private func prefetchImages() {
+        // Cancel any ongoing prefetching tasks
+        imagePrefetcher?.stop()
+        
+        guard !chapterContent.isEmpty else { return }
+        
+        // Calculate the range of indices to prefetch
+        let startIndex = max(0, currentPage - prefetchRange)
+        let endIndex = min(chapterContent.count - 1, currentPage + prefetchRange)
+        
+        // If there are no new images to prefetch, return early
+        guard startIndex <= endIndex else { return }
+        
+        let urlsToPrefetch = Array(chapterContent[startIndex...endIndex])
+        
+        // Create and start the prefetcher with options
+        imagePrefetcher = ImagePrefetcher(
+            urls: urlsToPrefetch,
+            options: [.cacheOriginalImage],
+            progressBlock: nil,
+            completionHandler: { skippedResources, failedResources, completedResources in
+                print("Prefetched images: \(completedResources.count)")
+            }
+        )
+        imagePrefetcher?.start()
+    }
+    
+    @objc private func handleMemoryWarning() {
+        // Handle memory warning by clearing memory cache
+        ImageCache.default.clearMemoryCache()
     }
 }

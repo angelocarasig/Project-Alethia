@@ -57,23 +57,32 @@ final class MangaLocalDataSource {
             /// 1. Iterate through each source result
             /// 2. Iterate through each source manga
             /// 3. Find source manga in db
-            /// 4. Append to new array if exists or not
-            /// 5. Trigger callback with new [SourceResult] and [SourceManga] arrays
+            /// 4. Set isInLibrary value for if its in library or not
+            /// 5. If it's in library, retrieve that manga's ID and set the ID to that value, and set its origin to .Local, otherwise .Remote so that it can be retrieved from local instead
+            /// 6. Trigger callback with new [SourceResult] and [SourceManga] arrays
             
-            // Set > Dictionary in this case. Calculate once only here to be used in output roots/paths
-            let set: Set<String> = Set(objects.flatMap { manga in
+            // Dictionary where dict[mangaNormalizedTitle] = mangaId
+            let data: [String: String] = Dictionary(uniqueKeysWithValues: objects.flatMap { manga in
                 manga.normalizedTitles
                     .split(separator: "|")
-                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+                    .map { normalizedTitle in
+                        (normalizedTitle.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), manga.id)
+                    }
             })
             
             let outputRoots: [SourceResult] = roots.map { root -> SourceResult in
                 let updatedResults = root.results.map { result -> SourceManga in
-                    let isInLibrary = set.contains(result.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines))
+                    let title = result.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                    let isInLibrary = data.keys.contains(title)
                     
-                    let updatedResult = result
-                    updatedResult.inLibrary = isInLibrary
-                    return updatedResult
+                    return SourceManga(
+                        id: isInLibrary ? data[title]! : result.slug,
+                        slug: result.slug,
+                        title: result.title,
+                        coverUrl: result.coverUrl,
+                        origin: isInLibrary ? .Local : .Remote,
+                        inLibrary: isInLibrary
+                    )
                 }
                 
                 return SourceResult(
@@ -85,12 +94,16 @@ final class MangaLocalDataSource {
             }
             
             let outputPaths: [SourceManga] = paths.map { path -> SourceManga in
+                let title = path.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                let isInLibrary = data.keys.contains(title)
+                
                 return SourceManga(
-                    id: path.id,
+                    id: isInLibrary ? data[title]! : path.slug,
+                    slug: path.slug,
                     title: path.title,
                     coverUrl: path.coverUrl,
-                    origin: path.origin,
-                    inLibrary: set.contains(path.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines))
+                    origin: isInLibrary ? .Local : .Remote,
+                    inLibrary: isInLibrary
                 )
             }
             
@@ -133,7 +146,7 @@ final class MangaLocalDataSource {
                 
                 let manga = objects.first
                 
-                print("Manga Title is: \(String(describing: manga?.title))")
+                // print("Manga Title is: \(String(describing: manga?.title))")
                 
                 /// Cases
                 /// 1. Manga added/removed from library event
@@ -141,11 +154,11 @@ final class MangaLocalDataSource {
                 /// ...
                 
                 // # 1
-                print("Current manga is \(manga != nil ? "in" : "not in") library!")
+                // print("Current manga is \(manga != nil ? "in" : "not in") library!")
                 callback(MangaEvent.inLibrary(manga != nil))
                 
                 // # 2 - If the origins is not empty or if manga doesn't exist, source is not present (false)
-                print("Current manga has \(manga?.origins.isEmpty ?? false ? "non-empty (\(manga!.origins.count))" : "empty") source list!")
+                // print("Current manga has \(manga?.origins.isEmpty ?? false ? "non-empty (\(manga!.origins.count))" : "empty") source list!")
                 callback(MangaEvent.sourcePresent( manga?.origins.isEmpty ?? false ))
                 
             case .error(let error):
@@ -154,4 +167,33 @@ final class MangaLocalDataSource {
         }
     }
     
+    @RealmActor
+    func observeLibraryManga(callback: @escaping ([Manga]) -> Void) async -> NotificationToken? {
+        guard let storage = await realmProvider.realm() else { return nil }
+        
+        let observer = storage.objects(RealmManga.self)
+        
+        return observer.observe { changes in
+            switch changes {
+            case let .initial(objects):
+                let manga = Array(objects.map { $0.toDomain() })
+                
+                // print("Initial Triggered!")
+                // print("Manga Count: \(manga.count)")
+                
+                callback(manga)
+                
+            case let .update(objects, _, _, _):
+                let manga = Array(objects.map { $0.toDomain() })
+                
+                // print("Update Triggered!")
+                // print("Manga Count: \(manga.count)")
+                
+                callback(manga)
+                
+            case .error(let error):
+                print("Error while observing library manga: \(error.localizedDescription)")
+            }
+        }
+    }
 }

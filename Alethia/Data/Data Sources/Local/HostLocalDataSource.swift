@@ -45,18 +45,16 @@ final class HostLocalDataSource {
     }
     
     @RealmActor
-    func getManga(slug: String) async -> Manga? {
+    func getManga(listManga: ListManga) async -> Manga? {
         guard let storage = await realmProvider.realm() else { return nil }
         
-        // Search for the RealmOrigin object that matches the given slug
-        guard let matchingOrigin = storage.objects(RealmOrigin.self).filter("slug == %@", slug).first else {
+        guard listManga.origin == .Local else { return nil }
+        
+        guard let result = storage.object(ofType: RealmManga.self, forPrimaryKey: listManga.id) else {
             return nil
         }
         
-        // Retrieve the associated RealmManga object using the mangaId from the matching origin
-        let manga = storage.objects(RealmManga.self).filter("id == %@", matchingOrigin.mangaId).first
-        
-        return manga?.toDomain()
+        return result.toDomain()
     }
     
     func getChapterContent(host: Host, source: Source, chapter: Chapter) async throws -> [URL] {

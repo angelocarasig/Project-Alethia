@@ -39,4 +39,10 @@ final class ViewModelFactory {
             chapter: chapter
         )
     }
+    
+    func makeHomeViewModel() -> HomeViewModel {
+        return HomeViewModel(
+            observeLibraryMangaUseCase: useCaseFactory.makeObserveLibraryMangaUseCase()
+        )
+    }
 }

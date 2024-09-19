@@ -27,14 +27,18 @@ struct ReaderOverlay<Content: View>: View {
     
     var body: some View {
         ZStack {
-            content
-            // On tap functions
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    withAnimation {
-                        vm.displayOverlay.toggle()
+            if vm.chapterContent.count <= 0 {
+                Text("Loading Content...")
+            } else {
+                content
+                // On tap functions
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation {
+                            vm.displayOverlay.toggle()
+                        }
                     }
-                }
+            }
             
             if vm.displayOverlay {
                 // Top Overlay
@@ -74,19 +78,24 @@ struct ReaderOverlay<Content: View>: View {
                     Spacer()
                     
                     VStack {
+                        // only show once chapter content is loaded
                         if vm.chapterContent.count > 0 {
-                            Slider(
-                                value: pageBinding,
-                                in: 0...Double(vm.chapterContent.count - 1),
-                                step: 1
-                            )
-                            .padding([.leading, .trailing], 20)
-                            .onChange(of: vm.currentPage) {
-                                Haptics.selection()
+                            // If not last page, show slider
+                            if vm.currentPage < vm.chapterContent.count {
+                                Slider(
+                                    value: pageBinding,
+                                    in: 0...Double(vm.chapterContent.count - 1),
+                                    step: 1
+                                )
+                                .padding([.leading, .trailing], 20)
+                                .onChange(of: vm.currentPage) {
+                                    Haptics.selection()
+                                }
+                                
+                                Text("Page \(vm.currentPage + 1) of \(vm.chapterContent.count)")
+                                    .foregroundColor(.white)
                             }
                             
-                            Text("Page \(vm.currentPage + 1) of \(vm.chapterContent.count)")
-                                .foregroundColor(.white)
                         } else {
                             Text("Loading pages...")
                                 .foregroundColor(.white)

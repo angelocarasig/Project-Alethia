@@ -11,18 +11,32 @@ struct RootView: View {
     private let appFactory = UseCaseFactory.shared
     
     var body: some View {
-        // TODO: Blur in tabs not working for manga details
         TabView {
+            HomeScreen(vm: ViewModelFactory.shared.makeHomeViewModel())
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Home")
+                }
+                .onAppear {
+                    ActiveHostManager.shared.clearActiveHost()
+                }
+            
             Text("Library")
                 .tabItem {
                     Image(systemName: "books.vertical.fill")
                     Text("Library")
+                }
+                .onAppear {
+                    ActiveHostManager.shared.clearActiveHost()
                 }
             
             Text("Search")
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
+                }
+                .onAppear {
+                    ActiveHostManager.shared.clearActiveHost()
                 }
             
             SourcesScreen(vm: SourcesViewModel(
@@ -40,11 +54,8 @@ struct RootView: View {
                     Image(systemName: "clock.fill")
                     Text("History")
                 }
-            
-            Text("Settings")
-                .tabItem {
-                    Image(systemName: "gearshape.fill")
-                    Text("Settings")
+                .onAppear {
+                    ActiveHostManager.shared.clearActiveHost()
                 }
         }
     }

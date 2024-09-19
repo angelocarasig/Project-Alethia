@@ -30,11 +30,13 @@ extension HostRemoteDataSource {
         .map { $0.toDomain() }
     }
     
-    func fetchSourceManga(host: Host, source: Source, slug: String) async throws -> Manga {
+    func fetchSourceManga(host: Host, source: Source, listManga: ListManga) async throws -> Manga {
+        guard listManga.origin == .Remote else { throw NetworkError.invalidData }
+        
         return try await networkService.fetchSourceManga(
             host: host,
             source: source,
-            slug: slug
+            slug: listManga.id
         )
         .toDomain()
     }

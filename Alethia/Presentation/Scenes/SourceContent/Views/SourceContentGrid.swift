@@ -33,7 +33,7 @@ struct SourceContentGrid: View {
                             let manga = sourceManga.toListManga()
                             
                             // TODO: not updating until onAppear again
-                            MangaCard(item: manga, destination: toMangaDetails(manga), isInLibrary: sourceManga.inLibrary)
+                            MangaCard(item: manga, isInLibrary: sourceManga.inLibrary)
                                 .onAppear {
                                     // TODO: block onLastItemAppeared() if results from recent is empty array
                                     // Or if no scroll action occurred? idk
@@ -63,16 +63,6 @@ struct SourceContentGrid: View {
         .navigationTitle(title)
     }
 }
-
-private extension SourceContentGrid {
-    @ViewBuilder
-    func toMangaDetails(_ manga: ListManga) -> some View {
-        let viewModelFactory = ViewModelFactory.shared
-        MangaDetailsScreen(vm: viewModelFactory.makeMangaDetailsViewModel(for: manga))
-    }
-}
-
-// MARK - on functions
 
 private extension SourceContentGrid {
     func onAppear() {

@@ -20,6 +20,7 @@ private struct ViewOffsetKey: PreferenceKey {
 /// A view that displays the reader in vertical mode, supporting both paginated and continuous scrolling.
 struct VerticalReaderView: View {
     @Binding var currentPage: Int
+    let chapter: Chapter
     let isPaginated: Bool
     let chapterContent: [URL]
     
@@ -69,7 +70,6 @@ struct VerticalReaderView: View {
                         }
                     }
                     .onChange(of: currentPage) {
-                        // Programmatically scroll to the new page
                         withAnimation(.bouncy) {
                             scrollViewProxy.scrollTo(currentPage, anchor: .top)
                         }

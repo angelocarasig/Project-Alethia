@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import SwiftUI
 
 @Observable
 final class MangaDetailsViewModel {
@@ -45,12 +46,10 @@ final class MangaDetailsViewModel {
     }
     
     func onOpen() async throws {
-        print("On Open Triggered.")
         try await fetchMangaDetails()
     }
     
     func onClose() {
-        print("On Close Triggered.")
 //        observer?.invalidate()
 //        observer = nil
 //        manga = nil
@@ -64,7 +63,7 @@ final class MangaDetailsViewModel {
         fetchedManga = try await fetchHostSourceMangaUseCase.execute(
             host: ActiveHostManager.shared.getActiveHost(),
             source: ActiveHostManager.shared.getActiveSource(),
-            slug: listManga.id
+            listManga: listManga
         )
     }
     

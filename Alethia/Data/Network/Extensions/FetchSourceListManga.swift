@@ -23,8 +23,6 @@ extension NetworkService: FetchSourceListMangaProtocol {
             page: page
         )
         
-        print("Fetching List Manga : ", url.absoluteString)
-        
         return try await request(url: url)
     }
 }

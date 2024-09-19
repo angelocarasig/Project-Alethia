@@ -36,6 +36,7 @@ extension MangaDetailsScreen {
             .foregroundStyle(vm.inLibrary ? Color("BackgroundColor") : .white)
             .background(vm.inLibrary ? Color("TextColor") : Color("TintColor"), in: .rect(cornerRadius: 12, style: .continuous))
             
+            // TODO: If ActiveHost is nil, need a prompt to confirm, and if done, pops the stack and goes back to wherever they came from
             Button {
                 Task {
                     if (vm.inLibrary) {

@@ -9,6 +9,9 @@ import SwiftUI
 
 struct MangaDetailsScreen: View {
     @Bindable var vm: MangaDetailsViewModel
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var showAlert: Bool = false
     
     var body: some View {
         ZStack {
@@ -28,6 +31,18 @@ struct MangaDetailsScreen: View {
         .onDisappear {
             vm.onClose()
         }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Remove Manga from Library?"),
+                message: Text("Removing this Manga from the library will redirect you to the previous screen after removal. Are you sure you want to remove it?"),
+                primaryButton: .destructive(Text("Remove"), action: {
+                    Task {
+                        await removeFrom()
+                    }
+                }),
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 
@@ -38,6 +53,23 @@ private extension MangaDetailsScreen {
     
     func removeFrom() async {
         await vm.removeFromLibrary()
+        
+        if ActiveHostManager.shared.getActiveHost() == nil || ActiveHostManager.shared.getActiveSource() == nil {
+            print("Active Host or Active Source is null. Dismissing...")
+            DispatchQueue.main.async {
+                dismiss()
+            }
+        }
+    }
+    
+    private func checkAndRemoveFromLibrary() {
+        if ActiveHostManager.shared.getActiveHost() == nil || ActiveHostManager.shared.getActiveSource() == nil {
+            showAlert = true
+        } else {
+            Task {
+                await removeFrom()
+            }
+        }
     }
     
     @ViewBuilder
@@ -56,7 +88,7 @@ private extension MangaDetailsScreen {
                     ActionButtons(
                         manga: manga,
                         addToLibrary: { await addToLibrary() },
-                        removeFromLibrary: { await removeFrom() }
+                        removeFromLibrary: { checkAndRemoveFromLibrary() }
                     )
                     
                     Gap(12)

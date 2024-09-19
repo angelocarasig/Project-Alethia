@@ -19,6 +19,7 @@ struct ListMangaDTO: Decodable {
             id: slug,
             title: title,
             coverUrl: coverUrl,
+            // Data from DTO will always be from Remote
             origin: ListManga.Origin.Remote
         )
     }

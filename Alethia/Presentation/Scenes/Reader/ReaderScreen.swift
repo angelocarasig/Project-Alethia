@@ -20,15 +20,17 @@ struct ReaderScreen: View {
     
     @ViewBuilder
     var readerView: some View {
-        if vm.config.readerDirection == .LTR || vm.config.readerDirection == .RTL {
+        if vm.config.readerDirection == ReaderDirection.LTR || vm.config.readerDirection == ReaderDirection.RTL {
             HorizontalReaderView(
                 currentPage: $vm.currentPage,
+                chapter: vm.chapter,
                 isRTL: vm.config.readerDirection == .RTL,
                 chapterContent: vm.chapterContent
             )
         } else {
             VerticalReaderView(
                 currentPage: $vm.currentPage,
+                chapter: vm.chapter,
                 isPaginated: vm.config.readerDirection == .Vertical,
                 chapterContent: vm.chapterContent
             )
