@@ -113,7 +113,6 @@
 		AA5AF5A92C9C3DA7002BD0A7 /* ObserveMangaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF5892C9C3DA7002BD0A7 /* ObserveMangaUseCase.swift */; };
 		AA5AF5AA2C9C3DA7002BD0A7 /* ObserveSourceMangaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF58A2C9C3DA7002BD0A7 /* ObserveSourceMangaUseCase.swift */; };
 		AA5AF5AB2C9C3DA7002BD0A7 /* RemoveMangaFromLibraryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF58B2C9C3DA7002BD0A7 /* RemoveMangaFromLibraryUseCase.swift */; };
-		AA5AF5AC2C9C3DA7002BD0A7 /* AddHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5AF58F2C9C3DA7002BD0A7 /* AddHost.swift */; };
 		AA9324E22C893BEC006338E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E12C893BEC006338E8 /* Assets.xcassets */; };
 		AA9324E52C893BEC006338E8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA9324E42C893BEC006338E8 /* Preview Assets.xcassets */; };
 		AA9324FF2C893C85006338E8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AA9324FE2C893C85006338E8 /* Kingfisher */; };
@@ -184,7 +183,6 @@
 		AA5AF5892C9C3DA7002BD0A7 /* ObserveMangaUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveMangaUseCase.swift; sourceTree = "<group>"; };
 		AA5AF58A2C9C3DA7002BD0A7 /* ObserveSourceMangaUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveSourceMangaUseCase.swift; sourceTree = "<group>"; };
 		AA5AF58B2C9C3DA7002BD0A7 /* RemoveMangaFromLibraryUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveMangaFromLibraryUseCase.swift; sourceTree = "<group>"; };
-		AA5AF58F2C9C3DA7002BD0A7 /* AddHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddHost.swift; sourceTree = "<group>"; };
 		AA9324DA2C893BEB006338E8 /* Alethia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alethia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlethiaApp.swift; sourceTree = "<group>"; };
 		AA9324E12C893BEC006338E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -390,53 +388,13 @@
 			path = Manga;
 			sourceTree = "<group>";
 		};
-		AA5AF58D2C9C3DA7002BD0A7 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
-		AA5AF58E2C9C3DA7002BD0A7 /* New Group1 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group1";
-			sourceTree = "<group>";
-		};
 		AA5AF5902C9C3DA7002BD0A7 /* Use Cases */ = {
 			isa = PBXGroup;
 			children = (
 				AA5AF5852C9C3DA7002BD0A7 /* Host */,
 				AA5AF58C2C9C3DA7002BD0A7 /* Manga */,
-				AA5AF58D2C9C3DA7002BD0A7 /* New Group */,
-				AA5AF58E2C9C3DA7002BD0A7 /* New Group1 */,
-				AA5AF58F2C9C3DA7002BD0A7 /* AddHost.swift */,
 			);
 			path = "Use Cases";
-			sourceTree = "<group>";
-		};
-		AA5AF5912C9C3DA7002BD0A7 /* Host */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Host;
-			sourceTree = "<group>";
-		};
-		AA5AF5922C9C3DA7002BD0A7 /* Manga */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Manga;
-			sourceTree = "<group>";
-		};
-		AA5AF5932C9C3DA7002BD0A7 /* UseCases */ = {
-			isa = PBXGroup;
-			children = (
-				AA5AF5912C9C3DA7002BD0A7 /* Host */,
-				AA5AF5922C9C3DA7002BD0A7 /* Manga */,
-			);
-			path = UseCases;
 			sourceTree = "<group>";
 		};
 		AA5AF5942C9C3DA7002BD0A7 /* Domain */ = {
@@ -445,7 +403,6 @@
 				AA5AF57C2C9C3DA7002BD0A7 /* Entities */,
 				AA5AF57F2C9C3DA7002BD0A7 /* Repositories */,
 				AA5AF5902C9C3DA7002BD0A7 /* Use Cases */,
-				AA5AF5932C9C3DA7002BD0A7 /* UseCases */,
 			);
 			name = Domain;
 			path = ../Domain;
@@ -904,7 +861,6 @@
 				AA5AF5442C9C357F002BD0A7 /* SourcesScreen.swift in Sources */,
 				AA5AF5A32C9C3DA7002BD0A7 /* FetchHostSourceMangaUseCase.swift in Sources */,
 				AA5AF5452C9C357F002BD0A7 /* SourcesViewModel.swift in Sources */,
-				AA5AF5AC2C9C3DA7002BD0A7 /* AddHost.swift in Sources */,
 				AA5AF5462C9C357F002BD0A7 /* HostSourceCard.swift in Sources */,
 				AA5AF5472C9C357F002BD0A7 /* AddHostView.swift in Sources */,
 				AA5AF5432C9C348B002BD0A7 /* RootView.swift in Sources */,
