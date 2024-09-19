@@ -19,6 +19,32 @@ final class MangaLocalDataSource {
     }
     
     @RealmActor
+    func getChapterOrigin(_ chapter: Chapter) async -> Origin? {
+        guard let storage = await realmProvider.realm() else { return nil }
+        return storage.object(ofType: RealmOrigin.self, forPrimaryKey: chapter.originId)?.toDomain()
+    }
+    
+    @RealmActor
+    func getChapterSource(_ origin: Origin) async -> Source? {
+        guard let storage = await realmProvider.realm() else { return nil }
+        return storage.object(ofType: RealmSource.self, forPrimaryKey: origin.sourceId)?.toDomain()
+    }
+    
+    @RealmActor
+    func getChapterHost(_ source: Source) async -> Host? {
+        guard let storage = await realmProvider.realm() else { return nil }
+        
+        let predicate = NSPredicate(format: "ANY sources.id == %@", source.id)
+        
+        guard let realmHost = storage.objects(RealmHost.self).filter(predicate).first else {
+            return nil
+        }
+        
+        return realmHost.toDomain()
+    }
+
+    
+    @RealmActor
     func addMangaToLibrary(_ manga: RealmManga, update: Bool = false) async -> Void {
         guard
             let storage = await realmProvider.realm(),

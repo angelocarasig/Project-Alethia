@@ -38,4 +38,29 @@ extension MangaRepositoryImplementation: MangaRepository {
     func removeMangaFromLibrary(_ manga: Manga) async -> Void {
         await local.removeMangaFromLibrary(manga)
     }
+    
+    func fetchChapterContent(_ chapter: Chapter) async throws -> [URL] {
+        guard let origin = await local.getChapterOrigin(chapter) else {
+            print("Could not find an origin when fetching chapter content!")
+            throw LocalError.notFound
+        }
+        
+        print("Origin: ", origin)
+        
+        guard let source = await local.getChapterSource(origin) else {
+            print("Could not find a source when fetching chapter content!")
+            throw LocalError.notFound
+        }
+        
+        print("Source: ", source)
+        
+        guard let host = await local.getChapterHost(source) else {
+            print("Could not find a host when fetching chapter content!")
+            throw LocalError.notFound
+        }
+        
+        print("Host: ", host)
+        
+        return try await remote.fetchChapterContent(host: host, source: source, chapter: chapter)
+    }
 }

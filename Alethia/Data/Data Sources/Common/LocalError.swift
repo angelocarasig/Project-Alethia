@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+enum LocalError: Error {
+    case notFound
+    
+    var errorDescription: String? {
+        switch self {
+        case .notFound:
+            return "Could not find the given realm object."
+        }
+    }
+}

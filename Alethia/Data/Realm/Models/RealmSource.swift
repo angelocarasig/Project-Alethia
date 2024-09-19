@@ -9,6 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmSource: Object, Identifiable {
+    @Persisted(primaryKey: true) var id: String
     @Persisted var name: String
     @Persisted var path: String
     @Persisted var routes: List<RealmSourceRoute>
@@ -16,6 +17,7 @@ class RealmSource: Object, Identifiable {
     
     convenience init(_ sourceObject: Source) {
         self.init()
+        self.id = sourceObject.id
         self.name = sourceObject.name
         self.path = sourceObject.path
         self.routes.append(objectsIn: sourceObject.routes.map { RealmSourceRoute($0) })
@@ -25,7 +27,7 @@ class RealmSource: Object, Identifiable {
     func toDomain() -> Source {
         return Source(
             // just needs to be unique in this case
-            id: UUID().uuidString,
+            id: id,
             name: name,
             path: path,
             routes: routes.map { $0.toDomain() },

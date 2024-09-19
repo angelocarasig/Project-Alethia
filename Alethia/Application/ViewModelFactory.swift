@@ -35,7 +35,7 @@ final class ViewModelFactory {
     
     func makeReaderViewModel(for chapter: Chapter) -> ReaderViewModel {
         return ReaderViewModel(
-            fetchHostSourceMangaChapterContentUseCase: useCaseFactory.makeFetchHostSourceMangaChapterContentUseCase(), 
+            fetchChapterContentUseCase: useCaseFactory.makeFetchChapterContentUseCase(), 
             chapter: chapter
         )
     }

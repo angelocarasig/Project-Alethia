@@ -29,9 +29,9 @@ struct MangaDTO: Decodable {
     let tags: [String]
     let chapters: [ChapterDTO]
     
-    func toDomain() -> Manga {
+    func toDomain(source: Source) -> Manga {
         let mangaId = UUID().uuidString
-        let sourceId = UUID().uuidString
+        let sourceId = source.id
         
         return Manga(
             id: mangaId,

@@ -29,7 +29,7 @@ final class ReaderViewModel {
     let chapter: Chapter
     var chapterContent: [URL] = []
     
-    private var fetchHostSourceMangaChapterContentUseCase: FetchHostSourceMangaChapterContentUseCase
+    private var fetchChapterContentUseCase: FetchChapterContentUseCase
     
     private var imagePrefetcher: ImagePrefetcher?
     private let prefetchRange = 5 // Number of images to prefetch before and after current page
@@ -45,10 +45,10 @@ final class ReaderViewModel {
     var displayOverlay: Bool
     
     init(
-        fetchHostSourceMangaChapterContentUseCase: FetchHostSourceMangaChapterContentUseCase,
+        fetchChapterContentUseCase: FetchChapterContentUseCase,
         chapter: Chapter
     ) {
-        self.fetchHostSourceMangaChapterContentUseCase = fetchHostSourceMangaChapterContentUseCase
+        self.fetchChapterContentUseCase = fetchChapterContentUseCase
         self.chapter = chapter
         self.displayOverlay = true
     }
@@ -80,11 +80,7 @@ final class ReaderViewModel {
     }
     
     private func getChapterContent() async throws {
-        chapterContent = try await fetchHostSourceMangaChapterContentUseCase.execute(
-            host: ActiveHostManager.shared.getActiveHost(),
-            source: ActiveHostManager.shared.getActiveSource(),
-            chapter: chapter
-        )
+        chapterContent = try await fetchChapterContentUseCase.execute(chapter)
     }
     
     private func prefetchImages() {

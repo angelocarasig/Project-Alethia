@@ -38,7 +38,8 @@ extension HostRemoteDataSource {
             source: source,
             slug: listManga.id
         )
-        .toDomain()
+        .toDomain(source: source)
+        // The fetch request needs to map the source id from the source this originates from
     }
     
     func getChapterContent(host: Host, source: Source, chapter: Chapter) async throws -> [URL] {

@@ -51,10 +51,6 @@ extension UseCaseFactory {
     func makeFetchHostSourceMangaUseCase() -> FetchHostSourceMangaUseCase {
         return FetchHostSourceMangaImpl(repo: hostRepository)
     }
-    
-    func makeFetchHostSourceMangaChapterContentUseCase() -> FetchHostSourceMangaChapterContentUseCase {
-        return FetchHostSourceMangaChapterContentImpl(repo: hostRepository)
-    }
 }
 
 // MARK - Manga Repository
@@ -78,5 +74,9 @@ extension UseCaseFactory {
     
     func makeRemoveMangaFromLibraryUseCase() -> RemoveMangaFromLibraryUseCase {
         return RemoveMangaFromLibraryImpl(repo: mangaRepository)
+    }
+    
+    func makeFetchChapterContentUseCase() -> FetchChapterContentUseCase {
+        return FetchChapterContentImpl(repo: mangaRepository)
     }
 }

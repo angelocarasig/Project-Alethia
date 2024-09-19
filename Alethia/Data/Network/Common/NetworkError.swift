@@ -1,6 +1,6 @@
 //
 //  NetworkError.swift
-//  Illithia
+//  Alethia
 //
 //  Created by Angelo Carasig on 3/9/2024.
 //
