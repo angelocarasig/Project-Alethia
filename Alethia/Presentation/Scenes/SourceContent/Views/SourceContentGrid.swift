@@ -78,33 +78,3 @@ private extension SourceContentGrid {
         vm.currentPage += 1
     }
 }
-
-#Preview {
-    let useCaseFactory = UseCaseFactory.shared
-    
-    let source1 = Source(
-        id: UUID().uuidString,
-        name: "Some Source",
-        referer: "Some referer",
-        path: "/some_path",
-        routes: [],
-        enabled: true
-    )
-    
-    let host = Host(
-        name: "Some Host",
-        sources: [source1],
-        baseUrl: "https://some.host"
-    )
-    
-    return SourceContentGrid(
-        title: "Some Title",
-        path: "Some Path",
-        vm: SCVM(
-            fetchHostSourceContentUseCase: useCaseFactory.makeFetchHostSourceContentUseCase(),
-            observeSourceMangaUseCase: useCaseFactory.makeObserveSourceMangaUseCase(),
-            activeHost: host,
-            activeSource: source1
-        )
-    )
-}

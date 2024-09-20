@@ -15,6 +15,7 @@ struct SourceDTO: Decodable {
     let updatedAt: Date
     let createdAt: Date
     let url: String
+    let coverUrl: String
     let chapters: [ChapterDTO]
 
     func toDomain() -> Origin {
@@ -26,6 +27,7 @@ struct SourceDTO: Decodable {
             updatedAt: updatedAt,
             createdAt: createdAt,
             url: url,
+            coverUrl: coverUrl,
             chapters: chapters.map { $0.toDomain() }
         )
     }

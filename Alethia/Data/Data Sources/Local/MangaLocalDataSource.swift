@@ -13,6 +13,12 @@ final class MangaLocalDataSource {
     private let realmProvider = RealmProvider()
     
     @RealmActor
+    func getManga(id: String) async -> RealmManga? {
+        guard let storage = await realmProvider.realm() else { return nil }
+        return storage.object(ofType: RealmManga.self, forPrimaryKey: id)
+    }
+    
+    @RealmActor
     func getManga(name: String) async -> RealmManga? {
         guard let storage = await realmProvider.realm() else { return nil }
         return storage.objects(RealmManga.self).filter("title == %@", name).first
@@ -43,6 +49,17 @@ final class MangaLocalDataSource {
         return realmHost.toDomain()
     }
     
+    @RealmActor
+    func getOriginParents(_ origin: Origin) async -> (Host, Source)? {
+        guard let storage = await realmProvider.realm() else { return nil }
+        
+        guard let source = await getChapterSource(origin),
+              let host = await getChapterHost(source) else {
+            return nil
+        }
+        
+        return (host, source)
+    }
     
     @RealmActor
     func addMangaToLibrary(_ manga: RealmManga, update: Bool = false) async -> Void {
@@ -75,6 +92,18 @@ final class MangaLocalDataSource {
     }
     
     @RealmActor
+    func addOriginToMangaOrigins(manga: Manga, origin: Origin) async {
+        guard let storage = await realmProvider.realm(),
+              let manga = await getManga(id: manga.id)
+        else { return }
+        
+        // Not sure if this is even right tbh lol
+        storage.writeAsync {
+            manga.origins.append(RealmOrigin(origin))
+        }
+    }
+    
+    @RealmActor
     func observeSourceManga(roots: [SourceResult], paths: [SourceManga], callback: @escaping ([SourceResult], [SourceManga]) -> Void) async -> NotificationToken? {
         guard let storage = await realmProvider.realm() else { return nil }
         let observer = storage.objects(RealmManga.self)
@@ -97,9 +126,19 @@ final class MangaLocalDataSource {
             })
             
             let outputRoots: [SourceResult] = roots.map { root -> SourceResult in
-                let updatedResults = root.results.map { result -> SourceManga in
+                let updatedResults = root.results.enumerated().map { (index, result) -> SourceManga in
                     let title = result.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
                     let isInLibrary = data.keys.contains(title)
+                    
+                    // If change happens, add a mapping
+                    let og = root.results[index]
+                    if root.results[index].inLibrary != isInLibrary && result.slug != data[title]!
+                    {
+                        AlternativeHostManager.shared.addAlternativeMapping(
+                            original: result.slug,
+                            replacement: data[title]!
+                        )
+                    }
                     
                     return SourceManga(
                         id: isInLibrary ? data[title]! : result.slug,
@@ -189,10 +228,10 @@ final class MangaLocalDataSource {
                     
                     // Return true if the active source is present in the manga's origins.
                     // Default to false if manga.origins is []
-                    callback(MangaEvent.sourcePresent(manga?.origins.contains(where: { $0.sourceId == activeSource.id }) ?? false ))
+                    callback(MangaEvent.sourcePresent(manga?.origins.contains(where: { $0.sourceId == activeSource.id }) ?? false, manga?.toDomain() ))
                 } else {
                     // Return true if activeSource is null (meaning this is coming from a different tab)
-                    callback(MangaEvent.sourcePresent(true))
+                    callback(MangaEvent.sourcePresent(true, (manga?.toDomain()) ))
                 }
                 
                 

@@ -30,7 +30,7 @@ struct MangaDetailsScreen: View {
             }
         }
         // Attach the animation to the ZStack, triggered by changes in vm.manga
-        .animation(.easeInOut(duration: 0.5), value: vm.manga != nil)
+        .animation(.easeInOut(duration: 0.25), value: vm.manga != nil)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             Task {
@@ -56,11 +56,11 @@ struct MangaDetailsScreen: View {
 }
 
 private extension MangaDetailsScreen {
-    func addToLibrary() async {
+    private func addToLibrary() async {
         await vm.addToLibrary()
     }
     
-    func removeFrom() async {
+    private func removeFrom() async {
         await vm.removeFromLibrary()
         
         if ActiveHostManager.shared.getActiveHost() == nil || ActiveHostManager.shared.getActiveSource() == nil {
@@ -81,6 +81,10 @@ private extension MangaDetailsScreen {
         }
     }
     
+    private func addOrigin() async {
+        await vm.addOrigin()
+    }
+    
     @ViewBuilder
     func ContentView(_ manga: Manga) -> some View {
         Backdrop(coverUrl: URL(string: manga.coverUrl)!)
@@ -97,7 +101,8 @@ private extension MangaDetailsScreen {
                     ActionButtons(
                         manga: manga,
                         addToLibrary: { await addToLibrary() },
-                        removeFromLibrary: { checkAndRemoveFromLibrary() }
+                        removeFromLibrary: { checkAndRemoveFromLibrary() },
+                        addOrigin: { await addOrigin() }
                     )
                     
                     Gap(12)
@@ -107,6 +112,24 @@ private extension MangaDetailsScreen {
                     Gap(22)
                     
                     Tags(tags: manga.tags)
+                    
+                    Gap(12)
+                    
+                    Divider().frame(height: 6)
+                    
+                    ExpandableList(name: "Sources") {
+                        VStack(spacing: 8) {
+                            ForEach(vm.originData, id: \.origin.id) { origin in
+                                // If theres an active host
+                                if ActiveHostManager.shared.hasActiveHost() && origin.origin.slug == vm.newOriginData?.origin.slug {
+                                    OriginCell(data: origin, sourcePresent: vm.sourcePresent)
+                                }
+                                else {
+                                    OriginCell(data: origin, sourcePresent: true)
+                                }
+                            }
+                        }
+                    }
                     
                     Gap(12)
                     
@@ -165,25 +188,3 @@ private extension MangaDetailsScreen {
         }
     }
 }
-
-#Preview {
-    let someListManga = ListManga(
-        id: "",
-        title: "Some Manga",
-        coverUrl: "Some URL",
-        origin: ListManga.Origin.Local
-    )
-    
-    let useCaseFactory = UseCaseFactory.shared
-    
-    let vm = MangaDetailsViewModel(
-        listManga: someListManga,
-        fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
-        observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
-        addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase(),
-        removeMangaFromLibraryUseCase: useCaseFactory.makeRemoveMangaFromLibraryUseCase()
-    )
-    
-    return MangaDetailsScreen(vm: vm)
-}
-

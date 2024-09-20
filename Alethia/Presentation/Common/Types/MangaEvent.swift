@@ -9,6 +9,7 @@ import Foundation
 
 enum MangaEvent {
     case inLibrary(Bool)
-    case sourcePresent(Bool)
+    // If source is present and something changed we should update
+    case sourcePresent(Bool, Manga?)
     case errorOccurred(String)
 }

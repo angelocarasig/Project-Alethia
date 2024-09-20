@@ -20,7 +20,6 @@ final class ViewModelFactory {
         cache.countLimit = 100
         return cache
     }()
-
     
     func makeMangaDetailsViewModel(for manga: ListManga) -> MangaDetailsViewModel {
         if let cachedViewModel = MDVMCache.object(forKey: manga.id as NSString) {
@@ -30,9 +29,12 @@ final class ViewModelFactory {
         let viewModel = MangaDetailsViewModel(
             listManga: manga,
             fetchHostSourceMangaUseCase: useCaseFactory.makeFetchHostSourceMangaUseCase(),
+            fetchNewOriginDataUseCase: useCaseFactory.makeFetchNewOriginDataUseCase(),
             observeMangaUseCase: useCaseFactory.makeObserveMangaUseCase(),
+            getOriginParentsUseCase: useCaseFactory.makeGetOriginParentsUseCase(),
             addMangaToLibraryUseCase: useCaseFactory.makeAddMangaToLibraryUseCase(),
-            removeMangaFromLibraryUseCase: useCaseFactory.makeRemoveMangaFromLibraryUseCase()
+            removeMangaFromLibraryUseCase: useCaseFactory.makeRemoveMangaFromLibraryUseCase(),
+            addOriginToMangaOriginsUseCase: useCaseFactory.makeAddOriginToMangaOriginsUseCase()
         )
         
         MDVMCache.setObject(viewModel, forKey: manga.id as NSString)

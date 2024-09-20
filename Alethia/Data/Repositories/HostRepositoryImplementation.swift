@@ -73,4 +73,8 @@ extension HostRepositoryImplementation: HostRepository {
         print("Could not fetch chapter content from local data source... fetching from remote...")
         return try await remote.getChapterContent(host: host, source: source, chapter: chapter)
     }
+    
+    func fetchNewOriginData(host: Host, source: Source, slug: String) async throws -> OriginCellData {
+        return try await remote.fetchNewOriginData(host: host, source: source, slug: slug)
+    }
 }

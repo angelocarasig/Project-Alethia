@@ -34,4 +34,8 @@ protocol HostRepository {
     /// Pass in ListManga which contains an origin property that determines if its from local or remote.
     /// Use that value to fetch from local or remote.
     func fetchHostSourceManga(host: Host?, source: Source?, listManga: ListManga) async throws -> Manga
+    
+    /// Eh? Why another function similar to above? - above fetches from local first then remote, the one below will only fetch if host manager is on a source
+    /// We don't care about anything else besides the slug similarly
+    func fetchNewOriginData(host: Host, source: Source, slug: String) async throws -> OriginCellData
 }

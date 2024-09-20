@@ -31,12 +31,20 @@ extension MangaRepositoryImplementation: MangaRepository {
         return await local.observeLibraryManga(callback: callback)
     }
     
+    func getOriginParents(_ origin: Origin) async -> (Host, Source)? {
+        return await local.getOriginParents(origin)
+    }
+    
     func addMangaToLibrary(_ manga: Manga) async -> Void {
         await local.addMangaToLibrary(RealmManga(manga))
     }
     
     func removeMangaFromLibrary(_ manga: Manga) async -> Void {
         await local.removeMangaFromLibrary(manga)
+    }
+    
+    func addOriginToMangaOrigins(manga: Manga, origin: Origin) async {
+        await local.addOriginToMangaOrigins(manga: manga, origin: origin)
     }
     
     func fetchChapterContent(_ chapter: Chapter) async throws -> [URL] {

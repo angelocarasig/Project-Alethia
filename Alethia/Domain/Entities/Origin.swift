@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Origin {
+struct Origin: Identifiable {
     /// Unique Identifier for the source for the given manga.
     let id: String
     
@@ -28,6 +28,9 @@ struct Origin {
     
     /// URL pointing to the manga for this source.
     let url: String
+    
+    /// CoverURL for this version of the manga.
+    let coverUrl: String
     
     /// List of chapters items belonging to this source for its associated manga.
     let chapters: Array<Chapter>

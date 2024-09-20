@@ -16,6 +16,7 @@ final class RealmOrigin: Object {
     @Persisted var updatedAt: Date
     @Persisted var createdAt: Date
     @Persisted var url: String
+    @Persisted var coverUrl: String
     @Persisted var chapters: List<RealmChapter>
     
     convenience init(_ origin: Origin) {
@@ -28,6 +29,7 @@ final class RealmOrigin: Object {
         updatedAt = origin.updatedAt
         createdAt = origin.createdAt
         url = origin.url
+        coverUrl = origin.coverUrl
         chapters.append(objectsIn: origin.chapters.map { RealmChapter($0) })
     }
     
@@ -40,6 +42,7 @@ final class RealmOrigin: Object {
             updatedAt: updatedAt,
             createdAt: createdAt,
             url: url,
+            coverUrl: coverUrl,
             chapters: chapters.map { $0.toDomain() }
         )
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct HostSourceCard: View {
     let host: Host
@@ -13,9 +14,12 @@ struct HostSourceCard: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "square.stack.3d.down.dottedline")
+            KFImage(URL(fileURLWithPath: source.icon))
                 .resizable()
-                .frame(width: 20, height: 20)
+                .scaledToFill()
+                .frame(width: 40, height: 40)
+                .cornerRadius(4)
+                .clipped()
                 .padding(.trailing, 10)
             
             VStack(alignment: .leading) {
@@ -29,17 +33,3 @@ struct HostSourceCard: View {
     }
 }
 
-#Preview {
-    let source1 = Source(
-        id: UUID().uuidString,
-        name: "Some enabled source",
-        referer: "Some referer",
-        path: "/source1",
-        routes: [],
-        enabled: true
-    )
-    
-    let host = Host(name: "Some Host", sources: [source1], baseUrl: "Some URL")
-    
-    return HostSourceCard(host: host, source: source1)
-}

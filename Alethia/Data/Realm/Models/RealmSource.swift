@@ -11,6 +11,7 @@ import RealmSwift
 class RealmSource: Object, Identifiable {
     @Persisted(primaryKey: true) var id: String
     @Persisted var name: String
+    @Persisted var icon: String
     @Persisted var path: String
     @Persisted var routes: List<RealmSourceRoute>
     @Persisted var enabled: Bool
@@ -19,6 +20,7 @@ class RealmSource: Object, Identifiable {
         self.init()
         self.id = sourceObject.id
         self.name = sourceObject.name
+        self.icon = sourceObject.icon
         self.path = sourceObject.path
         self.routes.append(objectsIn: sourceObject.routes.map { RealmSourceRoute($0) })
         self.enabled = sourceObject.enabled
@@ -29,6 +31,7 @@ class RealmSource: Object, Identifiable {
             // just needs to be unique in this case
             id: id,
             name: name,
+            icon: icon,
             referer: "Some referer",
             path: path,
             routes: routes.map { $0.toDomain() },

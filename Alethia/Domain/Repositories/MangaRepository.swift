@@ -21,10 +21,11 @@ protocol MangaRepository {
     func observeLibraryManga(callback: @escaping ([Manga]) -> Void) async -> NotificationToken?
     
     // CRUD
+    func getOriginParents(_ origin: Origin) async -> (Host, Source)?
     func addMangaToLibrary(_ manga: Manga) async -> Void
-    
     func removeMangaFromLibrary(_ manga: Manga) async -> Void
+    func addOriginToMangaOrigins(manga: Manga, origin: Origin) async -> Void
     
-    // Actions
+    // Networking
     func fetchChapterContent(_ chapter: Chapter) async throws -> [URL]
 }

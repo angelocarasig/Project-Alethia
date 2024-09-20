@@ -7,112 +7,112 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "151FF537-BBD7-4CFD-858F-B3C435EE8A14"
+            uuid = "98E49B79-3069-4D4F-B3EE-A252A857D634"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Alethia/Data/Repositories/HostRepositoryImplementation.swift"
+            filePath = "Alethia/Presentation/Scenes/SourceContent/SourceContent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "fetchHostSourceManga(host:source:listManga:)"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "ContentView()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1C0C49E7-2DA5-4B90-B410-F6972BC83E22"
+            uuid = "FCB3DD54-3527-4B2C-9EA1-981562F3260F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Alethia/Data/Repositories/HostRepositoryImplementation.swift"
+            filePath = "Alethia/Presentation/Common/Components/MangaCard.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "fetchHostSourceManga(host:source:listManga:)"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "53D0490C-1340-4FF2-86B2-DCE1C21F291F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Alethia/Presentation/Scenes/MangaDetails/MangaDetailsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "fetchNewOriginData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "86F5B669-0CAF-48CD-A22A-911BAE2D5A42"
+            uuid = "0EDD1856-AF90-42E0-BFDC-40475A46279D"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Alethia/Data/Repositories/HostRepositoryImplementation.swift"
+            filePath = "Alethia/Data/Data Sources/Local/MangaLocalDataSource.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "fetchHostSourceManga(host:source:listManga:)"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "observeSourceManga(roots:paths:callback:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "44182CEC-722A-4444-BC08-1E3F66E093E6"
+            uuid = "533AE4F7-0A16-462B-8B62-B8B9A23F3084"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Alethia/Data/Data Sources/Local/HostLocalDataSource.swift"
+            filePath = "Alethia/Data/Data Sources/Remote/HostRemoteDataSource.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "fetchNewOriginData(host:source:slug:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EC404211-C584-4E4D-867B-415EBEECA379"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Alethia/Data/Data Sources/Remote/HostRemoteDataSource.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
             endingLineNumber = "53"
-            landmarkName = "getManga(listManga:)"
+            landmarkName = "fetchNewOriginData(host:source:slug:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "96920257-93F0-4FEC-8D4F-9D5279DD3A0E"
+            uuid = "4FE189B1-A705-4297-AEB2-1F48096BD34F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Alethia/Data/Data Sources/Local/HostLocalDataSource.swift"
+            filePath = "Alethia/Data/Data Sources/Remote/HostRemoteDataSource.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "getManga(listManga:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5A00C4D1-4668-4014-8804-799AD70BBB18"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Alethia/Application/ColorCacheManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "11"
-            endingLineNumber = "11"
-            landmarkName = "ColorCacheManager"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "007993D4-E4CE-4222-BE71-34286BC9F28A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Alethia/Presentation/Scenes/Reader/ReaderViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
-            landmarkName = "getChapterContent()"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "fetchNewOriginData(host:source:slug:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

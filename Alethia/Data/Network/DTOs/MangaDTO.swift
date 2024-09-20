@@ -57,6 +57,9 @@ struct MangaDTO: Decodable {
                     updatedAt: updatedAt,
                     createdAt: createdAt,
                     url: url,
+                    // Since this is a DTO object, when mapped to domain there is only 1 cover url anyway,
+                    // otherwise it would've been fetched already from local so safe to call it here
+                    coverUrl: coverUrl,
                     chapters: chapters.map { $0.toDomain(mangaSlug: slug, originId: originId) }
                 )
             ]

@@ -51,7 +51,7 @@ struct Manga {
     /// A list of sources registered for this manga.
     /// When an update is triggered, if a source throws a 404/410 error, the source gets detached from the source list of this manga.
     let origins: Array<Origin>
-    
+
     func toLocalListManga() -> ListManga {
         return ListManga(
             id: id,

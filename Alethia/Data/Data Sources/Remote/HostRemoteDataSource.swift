@@ -45,4 +45,14 @@ extension HostRemoteDataSource {
     func getChapterContent(host: Host, source: Source, chapter: Chapter) async throws -> [URL] {
         return try await networkService.getChapterContent(host: host, source: source, chapter: chapter)
     }
+    
+    func fetchNewOriginData(host: Host, source: Source, slug: String) async throws -> OriginCellData {
+        let result = try await networkService.fetchSourceManga(host: host, source: source, slug: slug)
+        
+        return OriginCellData(
+            origin: result.toDomain(source: source).origins.first!,
+            host: host,
+            source: source
+        )
+    }
 }

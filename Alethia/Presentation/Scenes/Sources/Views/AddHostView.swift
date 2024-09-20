@@ -85,34 +85,3 @@ struct AddHostView: View {
         }
     }
 }
-
-#Preview {
-    let source1 = Source(
-        id: UUID().uuidString,
-        name: "Some Source",
-        referer: "Some referer",
-        path: "/some_path",
-        routes: [],
-        enabled: true
-    )
-    
-    let host = Host(
-        name: "Some Host",
-        sources: [source1],
-        baseUrl: "https://some.host"
-    )
-    
-    return AddHostView(
-        testAction: { url in
-            Task {
-                try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
-            }
-            print("Returning Host for URL: \(url)")
-            return host
-        },
-        saveAction: { host in
-            print("Host saved: \(host.name)")
-        },
-        errorMessage: .constant("Some sample message")
-    )
-}

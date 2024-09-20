@@ -67,26 +67,3 @@ private extension SourceContent {
         }
     }
 }
-
-#Preview {
-    let source1 = Source(
-        id: UUID().uuidString,
-        name: "Some enabled source",
-        referer: "Some referer",
-        path: "/source1",
-        routes: [],
-        enabled: true
-    )
-    
-    let host = Host(name: "Some Host", sources: [source1], baseUrl: "Some URL")
-    
-    let useCaseFactory = UseCaseFactory.shared
-    
-    return SourceContent(
-        vm: SCVM(
-            fetchHostSourceContentUseCase: useCaseFactory.makeFetchHostSourceContentUseCase(),
-            observeSourceMangaUseCase: useCaseFactory.makeObserveSourceMangaUseCase(),
-            activeHost: host,
-            activeSource: source1
-        ))
-}

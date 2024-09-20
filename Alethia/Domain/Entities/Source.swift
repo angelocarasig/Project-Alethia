@@ -14,6 +14,9 @@ struct Source: Equatable, Identifiable {
     /// Display name of source for a repository
     let name: String
     
+    /// Path to icon
+    let icon: String
+    
     /// A header to add when content is blocked by referer
     let referer: String
     
