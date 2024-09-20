@@ -16,20 +16,21 @@ struct MangaDetailsScreen: View {
             if let manga = vm.manga {
                 ContentView(manga)
                     .blur(radius: vm.isFullScreen ? 6 : 0)
-                    .animation(.easeInOut(duration: 0.3), value: vm.isFullScreen)
-                    .transition(.blurReplace(.downUp))
+                    .transition(.opacity)
                 
                 ChapterPlayer(
                     chapters: manga.origins.first?.chapters ?? [],
                     imageURL: URL(string: manga.coverUrl)!,
                     isFullScreen: $vm.isFullScreen
                 )
+                .transition(.opacity)
             } else {
                 SkeletonView()
-                    .transition(.blurReplace(.downUp))
+                    .transition(.opacity)
             }
         }
-        // So chapter player takes up as much width as it can with respect to stack toolbar
+        // Attach the animation to the ZStack, triggered by changes in vm.manga
+        .animation(.easeInOut(duration: 0.5), value: vm.manga != nil)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             Task {
@@ -42,7 +43,7 @@ struct MangaDetailsScreen: View {
         .alert(isPresented: $vm.showAlert) {
             Alert(
                 title: Text("Remove Manga from Library?"),
-                message: Text("You will be redireced to the previous screen after removal. Are you sure you want to remove this manga?"),
+                message: Text("You will be redirected to the previous screen after removal. Are you sure you want to remove this manga?"),
                 primaryButton: .destructive(Text("Remove"), action: {
                     Task {
                         await removeFrom()
@@ -163,6 +164,9 @@ private extension MangaDetailsScreen {
                     Gap(12)
                     
                     Divider().frame(height: 6)
+                    
+                    // Gap for chapter player height
+                    Gap(60)
                 }
                 .padding(.leading, 12)
                 .padding(.trailing, 16)
@@ -212,3 +216,4 @@ private extension MangaDetailsScreen {
     
     return MangaDetailsScreen(vm: vm)
 }
+

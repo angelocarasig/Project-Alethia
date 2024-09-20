@@ -14,10 +14,16 @@ final class ViewModelFactory {
     
     private let useCaseFactory = UseCaseFactory.shared
     
-    private var mangaDetailsVMCache = [String: MangaDetailsViewModel]()
+    // NSCache benefit: https://developer.apple.com/documentation/foundation/nscache
+    private let MDVMCache: NSCache<NSString, MangaDetailsViewModel> = {
+        let cache = NSCache<NSString, MangaDetailsViewModel>()
+        cache.countLimit = 100
+        return cache
+    }()
+
     
     func makeMangaDetailsViewModel(for manga: ListManga) -> MangaDetailsViewModel {
-        if let cachedViewModel = mangaDetailsVMCache[manga.id] {
+        if let cachedViewModel = MDVMCache.object(forKey: manga.id as NSString) {
             return cachedViewModel
         }
         
@@ -29,13 +35,18 @@ final class ViewModelFactory {
             removeMangaFromLibraryUseCase: useCaseFactory.makeRemoveMangaFromLibraryUseCase()
         )
         
-        mangaDetailsVMCache[manga.id] = viewModel
+        MDVMCache.setObject(viewModel, forKey: manga.id as NSString)
         return viewModel
+    }
+    
+    func removeMangaDetailsViewModel(for mangaID: String) {
+        print("Killed MDVM with ID \(mangaID)")
+        MDVMCache.removeObject(forKey: mangaID as NSString)
     }
     
     func makeReaderViewModel(for chapter: Chapter) -> ReaderViewModel {
         return ReaderViewModel(
-            fetchChapterContentUseCase: useCaseFactory.makeFetchChapterContentUseCase(), 
+            fetchChapterContentUseCase: useCaseFactory.makeFetchChapterContentUseCase(),
             chapter: chapter
         )
     }

@@ -9,22 +9,32 @@ import SwiftUI
 import Kingfisher
 import LucideIcons
 
+// Lazy init only when required
+struct LazyView<Content: View>: View {
+    let build: () -> Content
+    
+    init(_ build: @escaping () -> Content) {
+        self.build = build
+    }
+    
+    var body: Content {
+        build()
+    }
+}
+
 struct MangaCard: View {
     let item: ListManga
     var isInLibrary: Bool = false
-    
-    @ViewBuilder
-    func toMangaDetails(_ manga: ListManga) -> some View {
-        let viewModelFactory = ViewModelFactory.shared
-        MangaDetailsScreen(vm: viewModelFactory.makeMangaDetailsViewModel(for: manga))
-    }
     
     @State private var isImageLoading: Bool = true
     
     var body: some View {
         let dimensions = DimensionsCache.shared.dimensions
         
-        NavigationLink(destination: toMangaDetails(item).id(item.id)) {
+        NavigationLink(destination: LazyView {
+            MangaDetailsScreen(vm: ViewModelFactory.shared.makeMangaDetailsViewModel(for: item))
+                .id(item.id)
+        }) {
             VStack(alignment: .leading) {
                 ZStack(alignment: .topLeading) {
                     if isImageLoading {

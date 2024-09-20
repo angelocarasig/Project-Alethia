@@ -148,7 +148,6 @@ private extension ChapterButtons {
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.black.opacity(0.5)))
                 }
                 
                 Button(action: {
@@ -164,7 +163,6 @@ private extension ChapterButtons {
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.black.opacity(0.5)))
                 }
             }
             
@@ -189,7 +187,6 @@ private extension ChapterButtons {
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.black.opacity(0.5)))
                 }
                 
                 Button(action: {
@@ -205,15 +202,13 @@ private extension ChapterButtons {
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.black.opacity(0.5)))
                 }
             }
         } label: {
             Image(systemName: "ellipsis.circle")
                 .font(.title2)
-                .foregroundColor(.white)
+                .foregroundColor(Color("TextColor"))
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 16).fill(Color.black))
         }
         .menuStyle(BorderlessButtonMenuStyle())
     }

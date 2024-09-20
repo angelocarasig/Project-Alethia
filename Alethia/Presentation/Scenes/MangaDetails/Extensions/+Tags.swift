@@ -14,7 +14,7 @@ extension MangaDetailsScreen {
         HFlow {
             ForEach(tags, id: \.self) { tag in
                 Text(tag)
-                    .font(.system(size: 16))
+                    .font(.system(size: 14))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
                     .foregroundColor(Color("TextColor"))

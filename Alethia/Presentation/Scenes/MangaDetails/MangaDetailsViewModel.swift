@@ -48,6 +48,11 @@ final class MangaDetailsViewModel {
         self.removeMangaFromLibraryUseCase = removeMangaFromLibraryUseCase
     }
     
+    deinit {
+        print("De-initialized.")
+        observer?.invalidate()
+    }
+    
     func onOpen() async throws {
         // TODO: On Appear check the current manga details (manga details from source tabs chapters are showing in a manga from home tab
         try await fetchMangaDetails()
@@ -55,28 +60,22 @@ final class MangaDetailsViewModel {
     
     func onClose() {
         observer?.invalidate()
-        observer = nil
         manga = nil
-        fetchedManga = nil
+        // Don't set fetchedManga as nil or else it will retrigger observer generation
         inLibrary = false
         sourcePresent = false
+        
+        // Kill yourself
+        ViewModelFactory.shared.removeMangaDetailsViewModel(for: listManga.id)
     }
     
     /// Fetch manga details from host and source using the ActiveHostManager
     func fetchMangaDetails() async throws {
-        print("Fetching Manga Details for \(listManga.title)")
         fetchedManga = try await fetchHostSourceMangaUseCase.execute(
             host: ActiveHostManager.shared.getActiveHost(),
             source: ActiveHostManager.shared.getActiveSource(),
             listManga: listManga
         )
-        
-        if let fetchedManga = fetchedManga {
-            print("Fetched Manga: \(fetchedManga.title), Chapters: \(fetchedManga.origins.first?.chapters.count ?? 0)")
-            print("Last Chapter is Number \(fetchedManga.origins.first?.chapters.last?.chapterNumber) with title \(fetchedManga.origins.first?.chapters.last?.chapterTitle)")
-        } else {
-            print("Fetched Manga is nil for \(listManga.title)")
-        }
     }
     
     /// When fetchedManga is set, this function should be called as a side-effect
@@ -105,11 +104,6 @@ final class MangaDetailsViewModel {
         
         // After observer initialized, set manga to the fetched manga to be displayed in UI
         self.manga = fetchedManga
-    }
-    
-    deinit {
-        print("De-initialized.")
-        observer?.invalidate()
     }
     
     func addToLibrary() async {

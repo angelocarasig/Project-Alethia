@@ -73,11 +73,7 @@ struct ChapterPlayer: View {
                         }
                         .padding(.trailing, 10)
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(isFullScreen ? Color("BackgroundColor") : backgroundColor.opacity(0.9))
-                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: -2)
-                    )
+                    // Player Height
                     .frame(height: 60)
                     .padding(.horizontal, 16)
                     .transition(.move(edge: .bottom))

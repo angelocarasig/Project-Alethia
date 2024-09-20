@@ -29,7 +29,8 @@ struct SourceContentGrid: View {
                         columns: [GridItem(.adaptive(minimum: dimensions.width), spacing: 0)],
                         spacing: 0
                     ) {
-                        ForEach(vm.pathResults, id: \.id) { sourceManga in
+                        // A level of uniqueness when using slug instead of ID
+                        ForEach(vm.pathResults, id: \.slug) { sourceManga in
                             let manga = sourceManga.toListManga()
                             
                             // TODO: not updating until onAppear again
