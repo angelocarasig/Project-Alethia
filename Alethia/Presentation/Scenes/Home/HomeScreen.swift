@@ -24,17 +24,6 @@ struct HomeScreen: View {
             ContentView()
                 .navigationTitle("Home")
                 .navigationBarTitleDisplayMode(.large)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
-                            Haptics.impact()
-                            print("Changelog!")
-                        } label: {
-                            Image(uiImage: Lucide.gitPullRequestCreate)
-                                .lucide(color: Color("TextColor"))
-                        }
-                    }
-                }
             
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {

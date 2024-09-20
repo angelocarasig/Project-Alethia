@@ -129,37 +129,7 @@ private extension MangaDetailsScreen {
                     
                     Gap(22)
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Content Rating")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text(manga.contentRating.rawValue)
-                            .font(.system(size: 16))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 8)
-                            .foregroundColor(Color("TextColor"))
-                            .background(Color("TintColor"))
-                            .cornerRadius(8)
-                    }
-                    
-                    Gap(20)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Content Status")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text(manga.contentStatus.rawValue)
-                            .font(.system(size: 16))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 8)
-                            .foregroundColor(Color("TextColor"))
-                            .background(Color("TintColor"))
-                            .cornerRadius(8)
-                    }
+                    Additional(manga)
                     
                     Gap(12)
                     
