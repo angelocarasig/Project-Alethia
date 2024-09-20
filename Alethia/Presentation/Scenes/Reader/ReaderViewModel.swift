@@ -80,7 +80,9 @@ final class ReaderViewModel {
     }
     
     private func getChapterContent() async throws {
+        print("Fetching Chapter Content!")
         chapterContent = try await fetchChapterContentUseCase.execute(chapter)
+        print("Chapter content has count \(chapterContent.count)!")
     }
     
     private func prefetchImages() {

@@ -20,7 +20,7 @@ struct ChapterDTO: Decodable {
     
     func toDomain() -> Chapter {
         return Chapter(
-            originId: "DETACHED SOURCE ID",
+            originId: "DETACHED ORIGIN ID",
             slug: slug,
             mangaSlug: "DETACHED MANGA SLUG",
             chapterNumber: chapterNumber,
@@ -30,9 +30,9 @@ struct ChapterDTO: Decodable {
         )
     }
     
-    func toDomain(mangaSlug: String, sourceId: String) -> Chapter {
+    func toDomain(mangaSlug: String, originId: String) -> Chapter {
         return Chapter(
-            originId: sourceId,
+            originId: originId,
             slug: slug,
             mangaSlug: mangaSlug,
             chapterNumber: chapterNumber,

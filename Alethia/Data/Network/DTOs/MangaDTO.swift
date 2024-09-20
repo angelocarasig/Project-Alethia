@@ -31,6 +31,7 @@ struct MangaDTO: Decodable {
     
     func toDomain(source: Source) -> Manga {
         let mangaId = UUID().uuidString
+        let originId = UUID().uuidString
         let sourceId = source.id
         
         return Manga(
@@ -49,14 +50,14 @@ struct MangaDTO: Decodable {
             groups: [],
             origins: [
                 Origin(
-                    id: UUID().uuidString,
+                    id: originId,
                     sourceId: sourceId,
                     mangaId: mangaId,
                     slug: slug,
                     updatedAt: updatedAt,
                     createdAt: createdAt,
                     url: url,
-                    chapters: chapters.map { $0.toDomain(mangaSlug: slug, sourceId: sourceId) }
+                    chapters: chapters.map { $0.toDomain(mangaSlug: slug, originId: originId) }
                 )
             ]
         )

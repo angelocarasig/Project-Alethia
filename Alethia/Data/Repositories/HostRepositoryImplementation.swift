@@ -40,7 +40,7 @@ extension HostRepositoryImplementation: HostRepository {
     func fetchHostSourceManga(host: Host?, source: Source?, listManga: ListManga) async throws -> Manga {
         // Attempt to fetch from local storage first
         if let localManga = await local.getManga(listManga: listManga) {
-             print("Fetched from Local!")
+            print("Fetched from Local!")
             return localManga
         }
         
@@ -50,7 +50,7 @@ extension HostRepositoryImplementation: HostRepository {
         }
         
         // If not found locally, fetch from remote
-         print("Fetched from Remote!")
+        print("Fetched from Remote!")
         return try await remote.fetchSourceManga(host: host, source: source, listManga: listManga)
     }
     
@@ -59,6 +59,7 @@ extension HostRepositoryImplementation: HostRepository {
             throw NetworkError.inactiveRepository
         }
         
+        print("Host and manager unavailable (request coming from a non-sources tab), fetching via chapter metadata...")
         do {
             let localContent = try await local.getChapterContent(host: host, source: source, chapter: chapter)
             
@@ -69,6 +70,7 @@ extension HostRepositoryImplementation: HostRepository {
             print("Failed to fetch local content: \(error). Fetching from remote.")
         }
         
+        print("Could not fetch chapter content from local data source... fetching from remote...")
         return try await remote.getChapterContent(host: host, source: source, chapter: chapter)
     }
 }

@@ -40,26 +40,34 @@ extension MangaRepositoryImplementation: MangaRepository {
     }
     
     func fetchChapterContent(_ chapter: Chapter) async throws -> [URL] {
+        if let activeHost = ActiveHostManager.shared.getActiveHost(),
+           let activeSource = ActiveHostManager.shared.getActiveSource() {
+            print("Using active host and source from manager...")
+            return try await remote.fetchChapterContent(host: activeHost, source: activeSource, chapter: chapter)
+        }
+        
+        print("Active Host Manager is unset. Fetching from Realm Chapter metadata...")
+        
         guard let origin = await local.getChapterOrigin(chapter) else {
             print("Could not find an origin when fetching chapter content!")
             throw LocalError.notFound
         }
         
-        print("Origin: ", origin)
+        print("Origin ID: ", origin.id)
         
         guard let source = await local.getChapterSource(origin) else {
             print("Could not find a source when fetching chapter content!")
             throw LocalError.notFound
         }
         
-        print("Source: ", source)
+        print("Source ID: ", source.id)
         
         guard let host = await local.getChapterHost(source) else {
             print("Could not find a host when fetching chapter content!")
             throw LocalError.notFound
         }
         
-        print("Host: ", host)
+        print("Host: ", host.name)
         
         return try await remote.fetchChapterContent(host: host, source: source, chapter: chapter)
     }

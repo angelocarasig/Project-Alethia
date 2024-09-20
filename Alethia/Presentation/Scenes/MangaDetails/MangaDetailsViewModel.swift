@@ -59,14 +59,16 @@ final class MangaDetailsViewModel {
     }
     
     func onClose() {
-        observer?.invalidate()
-        manga = nil
-        // Don't set fetchedManga as nil or else it will retrigger observer generation
-        inLibrary = false
-        sourcePresent = false
+        // Don't do anything for now
         
-        // Kill yourself
-        ViewModelFactory.shared.removeMangaDetailsViewModel(for: listManga.id)
+//        observer?.invalidate()
+//        manga = nil
+//        // Don't set fetchedManga as nil or else it will retrigger observer generation
+//        inLibrary = false
+//        sourcePresent = false
+//        
+//        // Kill yourself
+//        ViewModelFactory.shared.removeMangaDetailsViewModel(for: listManga.id)
     }
     
     /// Fetch manga details from host and source using the ActiveHostManager
