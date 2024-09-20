@@ -42,7 +42,7 @@ final class MangaLocalDataSource {
         
         return realmHost.toDomain()
     }
-
+    
     
     @RealmActor
     func addMangaToLibrary(_ manga: RealmManga, update: Bool = false) async -> Void {
@@ -185,7 +185,16 @@ final class MangaLocalDataSource {
                 
                 // # 2 - If the origins is not empty or if manga doesn't exist, source is not present (false)
                 // print("Current manga has \(manga?.origins.isEmpty ?? false ? "non-empty (\(manga!.origins.count))" : "empty") source list!")
-                callback(MangaEvent.sourcePresent( manga?.origins.isEmpty ?? false ))
+                if let activeSource = ActiveHostManager.shared.getActiveSource() {
+                    
+                    // Return true if the active source is present in the manga's origins.
+                    // Default to false if manga.origins is []
+                    callback(MangaEvent.sourcePresent(manga?.origins.contains(where: { $0.sourceId == activeSource.id }) ?? false ))
+                } else {
+                    // Return true if activeSource is null (meaning this is coming from a different tab)
+                    callback(MangaEvent.sourcePresent(true))
+                }
+                
                 
             case .error(let error):
                 print("Error when observing manga: \(error)")

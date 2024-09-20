@@ -17,6 +17,7 @@ final class HomeViewModel {
     
     private var observer: NotificationToken?
     private var isLoading: Bool = false
+    var contentLoaded: Bool = false
     
     private let observeLibraryMangaUseCase: ObserveLibraryMangaUseCase
     
@@ -32,6 +33,9 @@ final class HomeViewModel {
     }
     
     func onOpen() async {
+        // If content already loaded just return
+        guard !contentLoaded else { return }
+        
         observer = await observeLibraryMangaUseCase.execute { manga in
             self.manga = manga
             
@@ -39,6 +43,8 @@ final class HomeViewModel {
             self.recentlyReadManga = Array(manga.sorted(by: { $0.lastReadAt > $1.lastReadAt }).prefix(10))
             
             self.selectCategoriedManga(manga)
+            
+            self.contentLoaded = true
         }
     }
     

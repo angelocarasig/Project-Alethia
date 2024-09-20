@@ -19,6 +19,8 @@ struct RetryableImage: View {
         ZStack {
             // KFImage with a unique ID to force reloads
             KFImage(url)
+                // TODO: modify referer to use the source object value
+                .requestModifier(RefererModifier(referer: "https://chapmanganato.to/"))
                 .onProgress { receivedSize, totalSize in
                     let progress = Double(receivedSize) / Double(totalSize)
                     loadingProgress = progress

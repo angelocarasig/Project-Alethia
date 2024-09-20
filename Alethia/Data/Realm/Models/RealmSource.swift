@@ -29,6 +29,7 @@ class RealmSource: Object, Identifiable {
             // just needs to be unique in this case
             id: id,
             name: name,
+            referer: "Some referer",
             path: path,
             routes: routes.map { $0.toDomain() },
             enabled: enabled

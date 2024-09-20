@@ -94,6 +94,9 @@ final class SCVM { // TODO: Refactor name
         // Don't trigger if content already present
         guard rootResults.isEmpty else { return }
         
+        // Case where navigating to this page from a different tab that sets active host back to nil
+        ActiveHostManager.shared.setActiveHost(host: activeHost, source: activeSource)
+        
         Task {
             await fetchRootContent()
         }
@@ -106,6 +109,9 @@ final class SCVM { // TODO: Refactor name
             self.activePath = path
             resetPathContent()
         }
+        
+        // Case where navigating to this page from a different tab that sets active host back to nil
+        ActiveHostManager.shared.setActiveHost(host: activeHost, source: activeSource)
         
         // Don't trigger if content already present
         guard pathResults.isEmpty else { return }

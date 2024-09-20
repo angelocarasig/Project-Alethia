@@ -24,7 +24,6 @@ struct HomeScreen: View {
             ContentView()
                 .navigationTitle("Home")
                 .navigationBarTitleDisplayMode(.large)
-            
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
@@ -35,7 +34,6 @@ struct HomeScreen: View {
                         }
                     }
                 }
-            
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
@@ -47,7 +45,6 @@ struct HomeScreen: View {
                         }
                     }
                 }
-            
                 .onAppear {
                     Task {
                         await vm.onOpen()
@@ -60,20 +57,28 @@ struct HomeScreen: View {
 extension HomeScreen {
     @ViewBuilder
     func ContentView() -> some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 15) {
-                carouselSection()
-                
-                recentlyReadSection()
-                
-                recentlyAddedSection()
-                
-                ForEach(vm.categoriedManga) { manga in
-                    categoriedSection(manga)
+        if !vm.contentLoaded {
+            ProgressView()
+        }
+        else if vm.manga.isEmpty {
+            Text("No Manga In Library")
+        }
+        else {
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 15) {
+                    carouselSection()
+                    
+                    recentlyReadSection()
+                    
+                    recentlyAddedSection()
+                    
+                    ForEach(vm.categoriedManga) { manga in
+                        categoriedSection(manga)
+                    }
                 }
             }
+            .ignoresSafeArea(.container, edges: .top)
         }
-        .ignoresSafeArea(.container, edges: .top)
     }
     
     @ViewBuilder

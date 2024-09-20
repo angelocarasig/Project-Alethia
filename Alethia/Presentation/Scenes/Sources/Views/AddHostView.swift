@@ -90,6 +90,7 @@ struct AddHostView: View {
     let source1 = Source(
         id: UUID().uuidString,
         name: "Some Source",
+        referer: "Some referer",
         path: "/some_path",
         routes: [],
         enabled: true

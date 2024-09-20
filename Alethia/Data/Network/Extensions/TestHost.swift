@@ -1,5 +1,5 @@
 //
-//  NetworkService+AddRepository.swift
+//  TestHost.swift
 //  Alethia
 //
 //  Created by Angelo Carasig on 4/9/2024.
@@ -26,7 +26,14 @@ extension NetworkService: TestHostProtocol {
             
             // Base Path/Source/{Route}
             let routes = routesDTO.routes.map { SourceRoute(name: $0.name, path: $0.path) }
-            let sourceItem = Source(id: UUID().uuidString, name: sourceDTO.source, path: sourceDTO.path, routes: routes, enabled: true)
+            let sourceItem = Source(
+                id: UUID().uuidString,
+                name: sourceDTO.source,
+                referer: routesDTO.referer,
+                path: sourceDTO.path,
+                routes: routes,
+                enabled: true
+            )
             
             sources.append(sourceItem)
         }

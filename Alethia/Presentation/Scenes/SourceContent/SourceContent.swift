@@ -72,6 +72,7 @@ private extension SourceContent {
     let source1 = Source(
         id: UUID().uuidString,
         name: "Some enabled source",
+        referer: "Some referer",
         path: "/source1",
         routes: [],
         enabled: true

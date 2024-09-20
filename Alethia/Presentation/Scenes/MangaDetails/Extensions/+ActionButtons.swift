@@ -54,9 +54,9 @@ extension MangaDetailsScreen {
             .fontWeight(.medium)
             .padding(.vertical, 14)
             .frame(maxWidth: .infinity)
-            .foregroundStyle(vm.inLibrary ? Color("BackgroundColor") : .white)
-            .background(vm.inLibrary ? Color("TextColor") : Color("TintColor"), in: .rect(cornerRadius: 12, style: .continuous))
-            .animation(.easeInOut(duration: 0.3), value: vm.inLibrary)
+            .foregroundStyle(vm.sourcePresent ? Color("BackgroundColor") : .white)
+            .background(vm.sourcePresent ? Color("TextColor") : Color("TintColor"), in: .rect(cornerRadius: 12, style: .continuous))
+            .animation(.easeInOut(duration: 0.3), value: vm.sourcePresent)
         }
     }
 }
