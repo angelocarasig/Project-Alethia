@@ -23,31 +23,24 @@ struct ReaderScreen: View {
         if vm.config.readerDirection == ReaderDirection.LTR || vm.config.readerDirection == ReaderDirection.RTL {
             HorizontalReaderView(
                 currentPage: $vm.currentPage,
+                toggleOverlay: $vm.displayOverlay,
                 chapter: vm.chapter,
+                referer: vm.referer,
+                nextChapter: vm.nextChapter,
+                previousChapter: vm.previousChapter,
                 isRTL: vm.config.readerDirection == .RTL,
-                chapterContent: vm.chapterContent
+                chapterContent: vm.chapterContent,
+                onLoadNextChapter: { Task { await vm.goToNextChapter() }},
+                onLoadPreviousChapter: {Task { await vm.goToPreviousChapter() }}
             )
         } else {
             VerticalReaderView(
                 currentPage: $vm.currentPage,
                 chapter: vm.chapter,
                 isPaginated: vm.config.readerDirection == .Vertical,
-                chapterContent: vm.chapterContent
+                chapterContent: vm.chapterContent,
+                referer: vm.referer
             )
         }
     }
-}
-
-#Preview {
-    let chapter = Chapter(
-        originId: "Some ID",
-        slug: "Some Slug",
-        mangaSlug: "Some Manga Slug",
-        chapterNumber: -1,
-        chapterTitle: "Some Title",
-        author: "Some Author",
-        date: Date()
-    )
-    
-    return ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(for: chapter))
 }

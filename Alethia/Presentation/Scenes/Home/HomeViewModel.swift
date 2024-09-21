@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 @Observable
-final class HomeViewModel {    
+final class HomeViewModel {
     var manga: [Manga] = []
     var recentlyAddedManga: [Manga] = []
     var recentlyReadManga: [Manga] = []
@@ -25,6 +25,9 @@ final class HomeViewModel {
     )
     {
         self.observeLibraryMangaUseCase = observeLibraryMangaUseCase
+        
+        // Define user defaults here for now
+        UserDefaultsHelper.shared.saveChapterPriority(ChapterPriority.firstSource)
     }
     
     deinit {

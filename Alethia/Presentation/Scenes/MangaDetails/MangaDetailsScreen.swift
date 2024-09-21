@@ -21,6 +21,7 @@ struct MangaDetailsScreen: View {
                 
                 ChapterPlayer(
                     chapters: manga.origins.first?.chapters ?? [],
+                    origins: manga.origins,
                     imageURL: URL(string: manga.coverUrl)!,
                     isFullScreen: $vm.isFullScreen
                 )

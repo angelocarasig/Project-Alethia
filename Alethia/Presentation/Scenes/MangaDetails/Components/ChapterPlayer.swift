@@ -12,8 +12,10 @@ import DominantColors
 
 struct ChapterPlayer: View {
     let chapters: [Chapter]
+    let origins: [Origin]
+    
     var latestChapter: Chapter? {
-        chapters.last
+        chapters.first
     }
     
     let imageURL: URL?
@@ -45,7 +47,7 @@ struct ChapterPlayer: View {
                                     .transition(.move(edge: .bottom))
                             }
                             else {
-                                NavigationLink(destination: ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(for: chapter))) {
+                                NavigationLink(destination: ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(chapter: chapter, origins: origins))) {
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text("Chapter \(Int(chapter.chapterNumber)) \(chapter.chapterTitle.isEmpty ? "" : " - \(chapter.chapterTitle)")")
                                             .font(.headline)
@@ -123,7 +125,7 @@ private extension ChapterPlayer {
     
     func FullScreenView() -> some View {
         ScrollView {
-            ChapterButtons(chapters: chapters)
+            ChapterButtons(chapters: chapters, origins: origins)
         }
     }
 }
@@ -150,7 +152,7 @@ private extension ChapterPlayer {
                     sorting: .darkness
                 ), !cgColors.isEmpty else { return }
                 
-                let color = cgColors.first!
+                let color = cgColors.count > 1 ? cgColors[1] : cgColors[0]
                 
                 ColorCacheManager.shared.setColor(color, for: url)
                 backgroundColor = Color(uiColor: color)

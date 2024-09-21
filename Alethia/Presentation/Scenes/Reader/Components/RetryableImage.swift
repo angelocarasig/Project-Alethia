@@ -11,6 +11,7 @@ import Kingfisher
 struct RetryableImage: View {
     let url: URL
     let index: Int
+    let referer: String
     
     @State private var loadingProgress: Double? = nil
     @State private var reloadID = UUID()
@@ -20,7 +21,7 @@ struct RetryableImage: View {
             // KFImage with a unique ID to force reloads
             KFImage(url)
                 // TODO: modify referer to use the source object value
-                .requestModifier(RefererModifier(referer: "https://chapmanganato.to/"))
+                .requestModifier(RefererModifier(referer: referer))
                 .onProgress { receivedSize, totalSize in
                     let progress = Double(receivedSize) / Double(totalSize)
                     loadingProgress = progress
@@ -31,6 +32,7 @@ struct RetryableImage: View {
                 .onFailure { _ in
                     loadingProgress = 0.0
                 }
+                .retry(maxCount: 5, interval: .seconds(0.5))
                 .resizable()
                 .id(reloadID) // Forces KFImage to reload when reloadID changes
                 .tag(index)

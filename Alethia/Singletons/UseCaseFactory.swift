@@ -27,6 +27,13 @@ final class UseCaseFactory {
         
         return HostRepositoryImplementation(local: local, remote: remote)
     }()
+    
+    private lazy var chapterRepository: ChapterRepository = {
+        let local = ChapterLocalDataSource()
+        let remote = ChapterRemoteDataSource()
+        
+        return ChapterRepositoryImplementation(local: local, remote: remote)
+    }()
 }
 
 // MARK - Host Repository
@@ -90,5 +97,21 @@ extension UseCaseFactory {
     
     func makeFetchChapterContentUseCase() -> FetchChapterContentUseCase {
         return FetchChapterContentImpl(repo: mangaRepository)
+    }
+}
+
+// MARK - Chapter Repository
+
+extension UseCaseFactory {
+    func makeGetChapterRefererUseCase() -> GetChapterRefererUseCase {
+        return GetChapterRefererImpl(repo: chapterRepository)
+    }
+    
+    func makeGetNextChapterUseCase() -> GetNextChapterUseCase {
+        return GetNextChapterImpl(repo: chapterRepository)
+    }
+    
+    func makeGetPreviousChapterUseCase() -> GetPreviousChapterUseCase {
+        return GetPreviousChapterImpl(repo: chapterRepository)
     }
 }

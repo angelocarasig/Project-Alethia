@@ -10,6 +10,8 @@ import LucideIcons
 
 struct ChapterButtons: View {
     let chapters: [Chapter]
+    let origins: [Origin]
+    
     let chapterColumns = [GridItem(.flexible())]
     
     @State private var sortOption: SortOptions = .chapterNumber
@@ -90,7 +92,7 @@ private extension ChapterButtons {
     
     @ViewBuilder
     private func ChapterRow(chapter: Chapter) -> some View {
-        NavigationLink(destination: ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(for: chapter))) {
+        NavigationLink(destination: ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(chapter: chapter, origins: origins))) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Chapter \(chapter.chapterNumber.clean)\(chapter.chapterTitle.isEmpty ? "" : " - \(chapter.chapterTitle)")")

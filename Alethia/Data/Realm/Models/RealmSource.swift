@@ -13,6 +13,7 @@ class RealmSource: Object, Identifiable {
     @Persisted var name: String
     @Persisted var icon: String
     @Persisted var path: String
+    @Persisted var referer: String
     @Persisted var routes: List<RealmSourceRoute>
     @Persisted var enabled: Bool
     
@@ -22,6 +23,7 @@ class RealmSource: Object, Identifiable {
         self.name = sourceObject.name
         self.icon = sourceObject.icon
         self.path = sourceObject.path
+        self.referer = sourceObject.referer
         self.routes.append(objectsIn: sourceObject.routes.map { RealmSourceRoute($0) })
         self.enabled = sourceObject.enabled
     }
@@ -32,7 +34,7 @@ class RealmSource: Object, Identifiable {
             id: id,
             name: name,
             icon: icon,
-            referer: "Some referer",
+            referer: referer,
             path: path,
             routes: routes.map { $0.toDomain() },
             enabled: enabled

@@ -23,6 +23,7 @@ struct VerticalReaderView: View {
     let chapter: Chapter
     let isPaginated: Bool
     let chapterContent: [URL]
+    let referer: String
     
     @State private var scrollPosition: Int?
     
@@ -32,7 +33,7 @@ struct VerticalReaderView: View {
             ScrollView {
                 VTabView(selection: $currentPage) {
                     ForEach(chapterContent.indices, id: \.self) { index in
-                        RetryableImage(url: chapterContent[index], index: index)
+                        RetryableImage(url: chapterContent[index], index: index, referer: referer)
                             .tag(index)
                     }
                 }
@@ -49,7 +50,7 @@ struct VerticalReaderView: View {
                 ScrollViewReader { scrollViewProxy in
                     LazyVStack(spacing: 0) {
                         ForEach(chapterContent.indices, id: \.self) { index in
-                            RetryableImage(url: chapterContent[index], index: index)
+                            RetryableImage(url: chapterContent[index], index: index, referer: referer)
                                 .id(index)
                                 .frame(maxWidth: .infinity)
                                 .background(

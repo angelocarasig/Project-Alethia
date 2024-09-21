@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Used to determine 
 final class ColorCacheManager {
     static let shared = ColorCacheManager()
     

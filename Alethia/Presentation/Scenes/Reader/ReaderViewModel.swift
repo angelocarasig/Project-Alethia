@@ -26,10 +26,21 @@ let defaultConfig: ReaderConfig = ReaderConfig(
 
 @Observable
 final class ReaderViewModel {
-    let chapter: Chapter
+    var chapter: Chapter
+    private var origins: [Origin]
+    
+    var nextChapter: Chapter?
+    var previousChapter: Chapter?
+    
+    // Referer header to add to retryable-image
+    var referer: String = ""
+    
     var chapterContent: [URL] = []
     
     private var fetchChapterContentUseCase: FetchChapterContentUseCase
+    private var getChapterRefererUseCase: GetChapterRefererUseCase
+    private var getNextChapterUseCase: GetNextChapterUseCase
+    private var getPreviousChapterUseCase: GetPreviousChapterUseCase
     
     private var imagePrefetcher: ImagePrefetcher?
     private let prefetchRange = 5 // Number of images to prefetch before and after current page
@@ -46,10 +57,20 @@ final class ReaderViewModel {
     
     init(
         fetchChapterContentUseCase: FetchChapterContentUseCase,
-        chapter: Chapter
+        getChapterRefererUseCase: GetChapterRefererUseCase,
+        getNextChapterUseCase: GetNextChapterUseCase,
+        getPreviousChapterUseCase: GetPreviousChapterUseCase,
+        chapter: Chapter,
+        origins: [Origin]
     ) {
         self.fetchChapterContentUseCase = fetchChapterContentUseCase
+        self.getChapterRefererUseCase = getChapterRefererUseCase
+        self.getNextChapterUseCase = getNextChapterUseCase
+        self.getPreviousChapterUseCase = getPreviousChapterUseCase
+        
         self.chapter = chapter
+        self.origins = origins
+        
         self.displayOverlay = true
     }
     
@@ -62,6 +83,8 @@ final class ReaderViewModel {
     func onOpen() {
         Task {
             try await getChapterContent()
+            await referer = getChapterRefererUseCase.execute(chapter)
+            await fetchAdjacentChapters()
             prefetchImages() // Start prefetching after content is loaded
         }
     }
@@ -84,6 +107,64 @@ final class ReaderViewModel {
         chapterContent = try await fetchChapterContentUseCase.execute(chapter)
         print("Chapter content has count \(chapterContent.count)!")
     }
+    
+    private func fetchAdjacentChapters() async {
+        print("Fetching adjacent chapters...")
+        do {
+            print("Current Chapter is \(chapter.chapterNumber) - \(chapter.chapterTitle)")
+            
+            nextChapter = try await getNextChapterUseCase.execute(chapter: chapter, origins: origins)
+            print("Next Chapter is \(nextChapter?.chapterNumber) - \(nextChapter?.chapterTitle)")
+            
+            previousChapter = try await getPreviousChapterUseCase.execute(chapter: chapter, origins: origins)
+            print("Previous Chapter is \(previousChapter?.chapterNumber) - \(previousChapter?.chapterTitle)")
+        } catch {
+            print("Error fetching adjacent chapters: \(error)")
+        }
+    }
+    
+    func goToNextChapter() async {
+        print("Going to next chapter...")
+        guard let nextChapter = nextChapter else {
+            print("No next chapter available.")
+            return
+        }
+        
+        // Update chapter synchronously
+        chapter = nextChapter
+        chapterContent = []
+        
+        do {
+            try await getChapterContent()
+            currentPage = 0 // Just set to first page
+            await referer = getChapterRefererUseCase.execute(chapter)
+            await fetchAdjacentChapters()
+        } catch {
+            print("Error navigating to next chapter: \(error)")
+        }
+    }
+    
+    func goToPreviousChapter() async {
+        print("Going to previous chapter...")
+        guard let previousChapter = previousChapter else {
+            print("No previous chapter available.")
+            return
+        }
+        
+        // Update chapter synchronously
+        chapter = previousChapter
+        chapterContent = []
+        
+        do {
+            try await getChapterContent()
+            currentPage = chapterContent.count - 1 // Set to the last page of the previous chapter
+            await referer = getChapterRefererUseCase.execute(chapter)
+            await fetchAdjacentChapters()
+        } catch {
+            print("Error navigating to previous chapter: \(error)")
+        }
+    }
+    
     
     private func prefetchImages() {
         // Cancel any ongoing prefetching tasks

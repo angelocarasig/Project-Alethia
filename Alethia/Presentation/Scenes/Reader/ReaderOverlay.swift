@@ -25,6 +25,10 @@ struct ReaderOverlay<Content: View>: View {
         )
     }
     
+    private func isViewingContent() -> Bool {
+        return vm.currentPage >= 0 && vm.currentPage < vm.chapterContent.count
+    }
+    
     var body: some View {
         ZStack {
             if vm.chapterContent.count <= 0 {
@@ -40,6 +44,7 @@ struct ReaderOverlay<Content: View>: View {
                     }
             }
             
+            // Just display it
             if vm.displayOverlay {
                 // Top Overlay
                 VStack {
@@ -73,41 +78,47 @@ struct ReaderOverlay<Content: View>: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 
-                // Bottom Overlay
-                VStack {
-                    Spacer()
-                    
+                // Bottom Overlay - only display when viewing content
+                if isViewingContent() {
                     VStack {
-                        // only show once chapter content is loaded
-                        if vm.chapterContent.count > 0 {
-                            // If not last page, show slider
-                            if vm.currentPage < vm.chapterContent.count {
-                                Slider(
-                                    value: pageBinding,
-                                    // Handle 1 page chapters
-                                    in: 0...Double(max(1, vm.chapterContent.count - 1)),
-                                    step: 1
-                                )
-                                .padding([.leading, .trailing], 20)
-                                .onChange(of: vm.currentPage) {
-                                    Haptics.selection()
+                        Spacer()
+                        
+                        VStack {
+                            // only show once chapter content is loaded
+                            if vm.chapterContent.count > 0 {
+                                // only show if viewing content
+                                if isViewingContent() {
+                                    HStack {
+                                        PreviousChapterButton()
+                                        Slider(
+                                            value: pageBinding,
+                                            // Handle 1 page chapters
+                                            in: 0...Double(max(1, vm.chapterContent.count - 1)),
+                                            step: 1
+                                        )
+                                        .padding([.leading, .trailing], 20)
+                                        .onChange(of: vm.currentPage) {
+                                            Haptics.selection()
+                                        }
+                                        NextChapterButton()
+                                    }
+                                    
+                                    Text("Page \(vm.currentPage + 1) of \(vm.chapterContent.count)")
+                                        .foregroundColor(.white)
                                 }
                                 
-                                Text("Page \(vm.currentPage + 1) of \(vm.chapterContent.count)")
+                            } else {
+                                Text("Loading pages...")
                                     .foregroundColor(.white)
+                                    .padding()
                             }
-                            
-                        } else {
-                            Text("Loading pages...")
-                                .foregroundColor(.white)
-                                .padding()
                         }
+                        .padding()
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(8)
                     }
-                    .padding()
-                    .background(Color.black.opacity(0.5))
-                    .cornerRadius(8)
+                    .frame(maxWidth: .infinity, alignment: .bottom)
                 }
-                .frame(maxWidth: .infinity, alignment: .bottom)
             }
         }
         .onAppear {
@@ -117,5 +128,41 @@ struct ReaderOverlay<Content: View>: View {
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .edgesIgnoringSafeArea(.bottom)
+    }
+}
+
+private extension ReaderOverlay {
+    @ViewBuilder
+    func PreviousChapterButton() -> some View {
+        Button {
+            Task {
+                Haptics.impact()
+                await vm.goToPreviousChapter()
+            }
+        } label: {
+            HStack {
+                Image(systemName: "chevron.left")
+            }
+            .foregroundColor(vm.previousChapter != nil ? AppColors.text : AppColors.tint)
+            .cornerRadius(8)
+        }
+        .disabled(vm.previousChapter == nil)
+    }
+    
+    @ViewBuilder
+    func NextChapterButton() -> some View {
+        Button {
+            Task {
+                Haptics.impact()
+                await vm.goToNextChapter()
+            }
+        } label: {
+            HStack {
+                Image(systemName: "chevron.right")
+            }
+            .foregroundColor(vm.nextChapter != nil ? AppColors.text : AppColors.tint)
+            .cornerRadius(8)
+        }
+        .disabled(vm.nextChapter == nil)
     }
 }

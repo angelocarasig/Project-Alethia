@@ -46,10 +46,14 @@ final class ViewModelFactory {
         MDVMCache.removeObject(forKey: mangaID as NSString)
     }
     
-    func makeReaderViewModel(for chapter: Chapter) -> ReaderViewModel {
+    func makeReaderViewModel(chapter: Chapter, origins: [Origin]) -> ReaderViewModel {
         return ReaderViewModel(
             fetchChapterContentUseCase: useCaseFactory.makeFetchChapterContentUseCase(),
-            chapter: chapter
+            getChapterRefererUseCase: useCaseFactory.makeGetChapterRefererUseCase(),
+            getNextChapterUseCase: useCaseFactory.makeGetNextChapterUseCase(),
+            getPreviousChapterUseCase: useCaseFactory.makeGetPreviousChapterUseCase(),
+            chapter: chapter,
+            origins: origins
         )
     }
     
