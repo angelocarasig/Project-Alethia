@@ -56,15 +56,10 @@ struct HorizontalReaderView: View {
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .edgesIgnoringSafeArea(.all)
         .onChange(of: currentPage) { newValue, oldValue in
-            // If currently on index -2 go to previous
-            if newValue == -2, let previous = previousChapter {
-                print("Loading Previous Chapter \(previous.chapterNumber)...")
+            if newValue == -1, let previous = previousChapter {
                 onLoadPreviousChapter()
             }
-            
-            // Same with index of count + 1
-            else if newValue == chapterContent.count + 1, let next = nextChapter {
-                print("Loading Next Chapter \(next.chapterNumber)...")
+            else if newValue == chapterContent.count, let next = nextChapter {
                 onLoadNextChapter()
             }
         }

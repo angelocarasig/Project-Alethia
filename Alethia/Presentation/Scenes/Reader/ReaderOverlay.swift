@@ -11,10 +11,12 @@ struct ReaderOverlay<Content: View>: View {
     @Bindable var vm: ReaderViewModel
     @Environment(\.dismiss) private var dismiss // Used to dismiss from nav stack
     
+    let title: String
     let content: Content
     
-    init(vm: ReaderViewModel, @ViewBuilder content: () -> Content) {
+    init(vm: ReaderViewModel, title: String, @ViewBuilder content: () -> Content) {
         self._vm = Bindable(vm)
+        self.title = title
         self.content = content()
     }
     
@@ -32,7 +34,7 @@ struct ReaderOverlay<Content: View>: View {
     var body: some View {
         ZStack {
             if vm.chapterContent.count <= 0 {
-                Text("Loading Content...")
+                Text("Loading \(title)")
             } else {
                 content
                 // On tap functions

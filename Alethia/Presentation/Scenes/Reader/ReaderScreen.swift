@@ -13,7 +13,7 @@ struct ReaderScreen: View {
     @Bindable var vm: ReaderViewModel
     
     var body: some View {
-        ReaderOverlay(vm: vm) {
+        ReaderOverlay(vm: vm, title: vm.chapter.toString()) {
             readerView
         }
     }
