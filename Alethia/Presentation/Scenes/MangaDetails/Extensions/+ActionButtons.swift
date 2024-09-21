@@ -33,10 +33,9 @@ extension MangaDetailsScreen {
                 Text(vm.inLibrary ? "In Library" : "Add to Library")
             }
             .fontWeight(.medium)
-            .padding(.vertical, 14)
-            .frame(maxWidth: .infinity)
-            .foregroundStyle(vm.inLibrary ? Color("BackgroundColor") : .white)
-            .background(vm.inLibrary ? Color("TextColor") : Color("TintColor"), in: .rect(cornerRadius: 12, style: .continuous))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundStyle(vm.inLibrary ? AppColors.background : .white)
+            .background(vm.inLibrary ? AppColors.text : AppColors.tint, in: .rect(cornerRadius: 12, style: .continuous))
             .animation(.easeInOut(duration: 0.3), value: vm.inLibrary)
             
             // TODO: If ActiveHost is nil, need a prompt to confirm, and if done, pops the stack and goes back to wherever they came from
@@ -57,10 +56,36 @@ extension MangaDetailsScreen {
             }
             .disabled(!vm.inLibrary)
             .fontWeight(.medium)
-            .padding(.vertical, 14)
-            .frame(maxWidth: .infinity)
-            .foregroundStyle(vm.sourcePresent ? Color("BackgroundColor") : .white)
-            .background(vm.sourcePresent ? Color("TextColor") : Color("TintColor"), in: .rect(cornerRadius: 12, style: .continuous))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundStyle(vm.sourcePresent ? AppColors.background : .white)
+            .background(vm.sourcePresent ? AppColors.text : AppColors.tint, in: .rect(cornerRadius: 12, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(Color.gray.opacity(vm.inLibrary ? 0 : 0.4), lineWidth: 1)
+            )
+            .opacity(vm.inLibrary ? 1.0 : 0.5)
+            .animation(.easeInOut(duration: 0.3), value: vm.sourcePresent)
+            
+            Button {
+                Task {
+                    if (vm.sourcePresent) {
+                        Haptics.impact()
+                        print("Removed!")
+                    }
+                    else {
+                        Haptics.impact()
+                        await addOrigin()
+                    }
+                }
+            } label: {
+                Image(uiImage: vm.inLibrary ? Lucide.mapPinCheckInside : Lucide.mapPinOff)
+                    .lucide(color: vm.inLibrary ? AppColors.background : AppColors.text)
+            }
+            .disabled(!vm.inLibrary)
+            .fontWeight(.medium)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .aspectRatio(1, contentMode: .fit)
+            .background(vm.sourcePresent ? AppColors.text : AppColors.tint, in: .rect(cornerRadius: 12, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .stroke(Color.gray.opacity(vm.inLibrary ? 0 : 0.4), lineWidth: 1)
@@ -68,5 +93,6 @@ extension MangaDetailsScreen {
             .opacity(vm.inLibrary ? 1.0 : 0.5)
             .animation(.easeInOut(duration: 0.3), value: vm.sourcePresent)
         }
+        .frame(height: 45)
     }
 }

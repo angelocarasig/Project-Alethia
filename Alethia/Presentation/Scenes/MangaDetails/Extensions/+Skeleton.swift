@@ -67,15 +67,15 @@ extension MangaDetailsScreen {
                     VStack(spacing: 0) {
                         LinearGradient(
                             gradient: Gradient(stops: [
-                                .init(color: Color("BackgroundColor").opacity(0.0), location: 0.0),
-                                .init(color: Color("BackgroundColor").opacity(1.0), location: 1.0)
+                                .init(color: AppColors.background.opacity(0.0), location: 0.0),
+                                .init(color: AppColors.background.opacity(1.0), location: 1.0)
                             ]),
                             startPoint: .top,
                             endPoint: .center
                         )
                         .frame(height: 700)
                         
-                        Color("BackgroundColor")
+                        AppColors.background
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                         .frame(width: geometry.size.width)

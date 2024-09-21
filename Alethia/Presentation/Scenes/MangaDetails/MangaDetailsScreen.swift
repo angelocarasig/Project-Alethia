@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LucideIcons
 
 struct MangaDetailsScreen: View {
     @Bindable var vm: MangaDetailsViewModel
@@ -117,10 +118,10 @@ private extension MangaDetailsScreen {
                     
                     Divider().frame(height: 6)
                     
-                    ExpandableList(name: "Sources") {
+                    ExpandableList(name: "Sources", isExpanded: $vm.expandedSources) {
                         VStack(spacing: 8) {
                             ForEach(vm.originData, id: \.origin.id) { origin in
-                                // If theres an active host
+                                // If there's an active host
                                 if ActiveHostManager.shared.hasActiveHost() && origin.origin.slug == vm.newOriginData?.origin.slug {
                                     OriginCell(data: origin, sourcePresent: vm.sourcePresent)
                                 }
@@ -129,34 +130,97 @@ private extension MangaDetailsScreen {
                                 }
                             }
                         }
+                        Gap(4)
                     }
                     
-                    Gap(12)
+                    Gap(8)
                     
-                    Divider().frame(height: 6)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Alternative Titles")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        ForEach(manga.alternativeTitles, id: \.self) { title in
-                            Text(title)
-                                .font(.system(size: 16))
-                                .foregroundColor(Color("TextColor").opacity(0.75))
-                            
-                            Gap(2)
+                    // TODO: Figure out why the origincelldata ExpandableList can't be hidden when this open
+                    // Tracking, will refactor later
+                    ExpandableList(name: "Tracking", isExpanded: $vm.expandedTracking) {
+                        VStack(spacing: 8) {
+                            ZStack {
+                                Image("AniList")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .blur(radius: 16)
+                                    .overlay(AppColors.background.opacity(0.3))
+                                    .cornerRadius(15)
+                                    .clipped()
+                                    .frame(height: 100)
+                                
+                                HStack {
+                                    Image("AniList")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 60, height: 60)
+                                        .cornerRadius(4)
+                                        .clipped()
+                                    
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(vm.manga!.title)
+                                            .font(.title2)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(AppColors.text)
+                                            .lineLimit(1)
+                                        
+                                        Text("\(vm.manga?.author ?? "No Author"), \(vm.manga?.artist ?? "No Artist")")
+                                            .font(.subheadline)
+                                            .foregroundColor(AppColors.text.opacity(0.75))
+                                            .lineLimit(1)
+                                        
+                                        HStack {
+                                            Text("1/\(vm.manga!.origins.first!.chapters.count) Chapters")
+                                                .font(.subheadline)
+                                                .foregroundColor(AppColors.text)
+                                                .lineLimit(1)
+                                                .truncationMode(.middle)
+                                            
+                                            Text("Reading")
+                                                .font(.system(size: 14))
+                                                .fontWeight(.medium)
+                                                .padding(.horizontal, 10)
+                                                .padding(.vertical, 8)
+                                                .foregroundColor(AppColors.text)
+                                                .background(Color.orange)
+                                                .cornerRadius(8)
+                                        }
+                                    }
+                                    .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                    
+                                    VStack {
+                                        Image(uiImage: Lucide.ellipsisVertical)
+                                            .lucide(color: AppColors.text)
+                                        
+                                        Spacer()
+                                        
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(AppColors.text)
+                                    }
+                                    .padding(.trailing, 10)
+                                }
+                                .padding()
+                            }
+                            .background(Color.clear)
+                            .cornerRadius(15)
+                            .shadow(radius: 2)
+                            .grayscale(vm.inLibrary ? 0 : 1)
                         }
                     }
                     
-                    Gap(22)
+                    Gap(8)
                     
                     Additional(manga)
                     
+                    Gap(18)
+                    
+                    Divider().background(AppColors.text)
+                    
                     Gap(12)
                     
-                    Divider().frame(height: 6)
+                    AlternativeTitles(titles: manga.alternativeTitles)
                     
                     // Gap for chapter player height
                     Gap(60)
@@ -167,15 +231,15 @@ private extension MangaDetailsScreen {
                     VStack(spacing: 0) {
                         LinearGradient(
                             gradient: Gradient(stops: [
-                                .init(color: Color("BackgroundColor").opacity(0.0), location: 0.0),
-                                .init(color: Color("BackgroundColor").opacity(1.0), location: 1.0)
+                                .init(color: AppColors.background.opacity(0.0), location: 0.0),
+                                .init(color: AppColors.background.opacity(1.0), location: 1.0)
                             ]),
                             startPoint: .top,
                             endPoint: .center
                         )
                         .frame(height: 700)
                         
-                        Color("BackgroundColor")
+                        AppColors.background
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                         .frame(width: geometry.size.width)

@@ -17,8 +17,8 @@ extension MangaDetailsScreen {
                     .font(.system(size: 14))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
-                    .foregroundColor(Color("TextColor"))
-                    .background(Color("TintColor"))
+                    .foregroundColor(AppColors.text)
+                    .background(AppColors.tint)
                     .cornerRadius(8)
             }
         }

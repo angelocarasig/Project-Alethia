@@ -30,6 +30,9 @@ final class MangaDetailsViewModel {
     var showAlert: Bool = false
     var isFullScreen: Bool = false
     
+    var expandedSources: Bool = false
+    var expandedTracking: Bool = false
+    
     var fetchedManga: Manga? {
         didSet {
             Task {

@@ -18,7 +18,7 @@ struct ChapterPlayer: View {
     
     let imageURL: URL?
     @Binding var isFullScreen: Bool
-    @State private var backgroundColor: Color = Color("BackgroundColor")
+    @State private var backgroundColor: Color = AppColors.background
     
     var body: some View {
         VStack {
@@ -40,20 +40,25 @@ struct ChapterPlayer: View {
                                 Text("Chapter List")
                                     .font(.title2)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(Color("TextColor"))
+                                    .foregroundColor(AppColors.text)
                                     .lineLimit(1)
                                     .transition(.move(edge: .bottom))
                             }
                             else {
-                                Text("Chapter \(Int(chapter.chapterNumber)) \(chapter.chapterTitle.isEmpty ? "" : " - \(chapter.chapterTitle)")")
-                                    .font(.headline)
-                                    .foregroundColor(Color("TextColor"))
-                                    .lineLimit(1)
-                                
-                                Text(chapter.author)
-                                    .font(.subheadline)
-                                    .foregroundColor(Color("TextColor").opacity(0.7))
-                                    .lineLimit(1)
+                                NavigationLink(destination: ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(for: chapter))) {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Chapter \(Int(chapter.chapterNumber)) \(chapter.chapterTitle.isEmpty ? "" : " - \(chapter.chapterTitle)")")
+                                            .font(.headline)
+                                            .foregroundColor(AppColors.text)
+                                            .lineLimit(1)
+                                        
+                                        Text(chapter.author)
+                                            .font(.subheadline)
+                                            .foregroundColor(AppColors.text.opacity(0.7))
+                                            .lineLimit(1)
+                                    }
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
                         }
                         .padding(.vertical, 8)
@@ -68,7 +73,7 @@ struct ChapterPlayer: View {
                             }
                         }) {
                             Image(uiImage: isFullScreen ? Lucide.chevronDown : Lucide.chevronUp)
-                                .lucide(color: Color("TextColor"))
+                                .lucide(color: AppColors.text)
                                 .frame(width: 30, height: 30)
                         }
                         .padding(.trailing, 10)
@@ -80,7 +85,7 @@ struct ChapterPlayer: View {
                     .overlay(
                         Rectangle()
                             .frame(height: 2)
-                            .foregroundColor(Color("TextColor")),
+                            .foregroundColor(AppColors.text),
                         alignment: .bottom
                     )
                     
@@ -89,7 +94,7 @@ struct ChapterPlayer: View {
                     }
                 }
                 .frame(maxHeight: isFullScreen ? .infinity : nil)
-                .background(isFullScreen ? Color("BackgroundColor").opacity(0.9) : backgroundColor)
+                .background(isFullScreen ? AppColors.background.opacity(0.9) : backgroundColor)
                 .cornerRadius(isFullScreen ? 0 : 12)
                 .onAppear {
                     extractDominantColor()
@@ -104,11 +109,11 @@ private extension ChapterPlayer {
     func RadialProgress(progress: Double) -> some View {
         ZStack {
             Circle()
-                .stroke(Color("TintColor").opacity(0.3), lineWidth: 2.5)
+                .stroke(AppColors.tint.opacity(0.3), lineWidth: 2.5)
             
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(progress, 1.0)))
-                .stroke(Color("TextColor"), style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                .stroke(AppColors.text, style: StrokeStyle(lineWidth: 4, lineCap: .round))
                 .rotationEffect(Angle(degrees: -90))
                 .animation(.linear, value: progress)
         }

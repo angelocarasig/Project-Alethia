@@ -64,7 +64,7 @@ struct MangaCard: View {
                     
                     if isInLibrary {
                         Image(uiImage: Lucide.badgeCheck)
-                            .lucide(color: .green)
+                            .lucide(color: .green) // Use default green color
                             .padding(.top, 4)
                             .padding(.leading, 4)
                     }

@@ -30,18 +30,16 @@ struct HomeScreen: View {
                             print("Settings tapped")
                         }) {
                             Text(Image(systemName: "gearshape"))
-                                .foregroundStyle(Color("TextColor"))
+                                .foregroundStyle(AppColors.text)
                         }
                     }
-                }
-                .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             Haptics.impact()
                             print("Notifications!")
                         } label: {
                             Image(uiImage: Lucide.bell)
-                                .lucide(color: Color("TextColor"))
+                                .lucide(color: AppColors.text)
                         }
                     }
                 }

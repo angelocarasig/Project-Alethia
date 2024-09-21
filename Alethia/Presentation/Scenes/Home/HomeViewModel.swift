@@ -16,7 +16,6 @@ final class HomeViewModel {
     var categoriedManga: [CategoriedManga] = []
     
     private var observer: NotificationToken?
-    private var isLoading: Bool = false
     var contentLoaded: Bool = false
     
     private let observeLibraryMangaUseCase: ObserveLibraryMangaUseCase

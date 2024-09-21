@@ -31,8 +31,8 @@ extension MangaDetailsScreen {
                     
                     LinearGradient(
                         gradient: Gradient(stops: [
-                            .init(color: Color("BackgroundColor").opacity(0.0), location: 0.0),
-                            .init(color: Color("BackgroundColor").opacity(1.0), location: 1.0)
+                            .init(color: AppColors.background.opacity(0.0), location: 0.0),
+                            .init(color: AppColors.background.opacity(1.0), location: 1.0)
                         ]),
                         startPoint: .center,
                         endPoint: .bottom

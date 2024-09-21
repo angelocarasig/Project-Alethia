@@ -37,7 +37,7 @@ struct CarouselView: View {
                             .opacity(0.5)
                         
                         // Make BG darker
-                        Color("BackgroundColor")
+                        AppColors.background
                             .opacity(0.5)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         
@@ -60,13 +60,13 @@ struct CarouselView: View {
                                         .font(.headline)
                                         .fontWeight(.bold)
                                         .lineLimit(2)
-                                        .foregroundColor(Color("TextColor"))
+                                        .foregroundColor(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     
                                     Text(manga[index].synopsis)
                                         .font(.subheadline)
                                         .lineLimit(8)
-                                        .foregroundColor(Color("TextColor").opacity(0.75))
+                                        .foregroundColor(AppColors.text.opacity(0.75))
                                     
                                     Spacer()
                                     
@@ -82,9 +82,9 @@ struct CarouselView: View {
                                                 .lineLimit(1)
                                                 .padding(.vertical, 14)
                                                 .frame(maxWidth: .infinity)
-                                                .foregroundStyle(Color("BackgroundColor"))
+                                                .foregroundStyle(AppColors.background)
                                                 .background(
-                                                    Color("TextColor").opacity(0.85),
+                                                    AppColors.text.opacity(0.85),
                                                     in: RoundedRectangle(cornerRadius: 12, style: .continuous)
                                                 )
                                         }
@@ -94,10 +94,10 @@ struct CarouselView: View {
                                             print("Continue Reading!")
                                         } label: {
                                             Image(uiImage: Lucide.bookOpen)
-                                                .lucide(color: Color("BackgroundColor"))
+                                                .lucide(color: AppColors.background)
                                         }
                                         .padding(12)
-                                        .background(Color("TextColor").opacity(0.85))
+                                        .background(AppColors.text.opacity(0.85))
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                     }
                                 }
@@ -136,7 +136,7 @@ struct CarouselView: View {
                 HStack {
                     ForEach(Array(manga.indices), id: \.self) { index in
                         Rectangle()
-                            .fill(currentIndex == index ? Color("TextColor") : Color("TintColor"))
+                            .fill(currentIndex == index ? AppColors.text : AppColors.tint)
                             .frame(width: (geo.size.width / 1.25) / CGFloat(manga.count), height: 2)
                             .animation(.easeInOut, value: currentIndex)
                     }

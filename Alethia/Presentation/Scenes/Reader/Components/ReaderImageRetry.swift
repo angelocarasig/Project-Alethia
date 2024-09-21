@@ -18,7 +18,7 @@ struct ReaderImageRetry: View {
                 .font(.system(size: 16))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 8)
-                .background(Color("AlertColor"))
+                .background(AppColors.red)
                 .foregroundColor(.white)
                 .cornerRadius(8)
         }

@@ -39,6 +39,10 @@
 		AA4648522C9D973400168F6B /* OriginCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4648512C9D973400168F6B /* OriginCellData.swift */; };
 		AA4648542C9D9BD500168F6B /* AddOriginToMangaOriginsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4648532C9D9BD500168F6B /* AddOriginToMangaOriginsUseCase.swift */; };
 		AA4648562C9DBBB900168F6B /* AlternativeHostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4648552C9DBBB900168F6B /* AlternativeHostManager.swift */; };
+		AA4648582C9E41EB00168F6B /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4648572C9E41EB00168F6B /* Search.swift */; };
+		AA46485A2C9E6B8400168F6B /* +AlternativeTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4648592C9E6B8400168F6B /* +AlternativeTitles.swift */; };
+		AA46485C2C9E786A00168F6B /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46485B2C9E786A00168F6B /* AppColors.swift */; };
+		AA46485F2C9E8B3A00168F6B /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46485E2C9E8B3A00168F6B /* SplashScreen.swift */; };
 		AA5ACC882C8DEC91002EA38F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = AA9325042C893CBE006338E8 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AA5AF4D22C9709D3002BD0A7 /* VTabView in Frameworks */ = {isa = PBXBuildFile; productRef = AA5AF4D12C9709D3002BD0A7 /* VTabView */; };
 		AA5AF5082C9C042D002BD0A7 /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = AA5AF5072C9C042D002BD0A7 /* DominantColors */; };
@@ -178,6 +182,11 @@
 		AA4648512C9D973400168F6B /* OriginCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginCellData.swift; sourceTree = "<group>"; };
 		AA4648532C9D9BD500168F6B /* AddOriginToMangaOriginsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOriginToMangaOriginsUseCase.swift; sourceTree = "<group>"; };
 		AA4648552C9DBBB900168F6B /* AlternativeHostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeHostManager.swift; sourceTree = "<group>"; };
+		AA4648572C9E41EB00168F6B /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		AA4648592C9E6B8400168F6B /* +AlternativeTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+AlternativeTitles.swift"; sourceTree = "<group>"; };
+		AA46485B2C9E786A00168F6B /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		AA46485D2C9E863200168F6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AA46485E2C9E8B3A00168F6B /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		AA5AF4AE2C954EBB002BD0A7 /* SourceManga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceManga.swift; sourceTree = "<group>"; };
 		AA5AF4B02C954F1C002BD0A7 /* SourceResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceResult.swift; sourceTree = "<group>"; };
 		AA5AF4B22C95A43C002BD0A7 /* SourceContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceContentViewModel.swift; sourceTree = "<group>"; };
@@ -370,6 +379,7 @@
 		AA5AF4AD2C954EB1002BD0A7 /* Types */ = {
 			isa = PBXGroup;
 			children = (
+				AA4648572C9E41EB00168F6B /* Search.swift */,
 				AA5AF4AE2C954EBB002BD0A7 /* SourceManga.swift */,
 				AA5AF4F22C9BBB39002BD0A7 /* CategoriedManga.swift */,
 				AA5AF4B62C969045002BD0A7 /* MangaEvent.swift */,
@@ -465,6 +475,7 @@
 		AA9324DC2C893BEB006338E8 /* Alethia */ = {
 			isa = PBXGroup;
 			children = (
+				AA46485D2C9E863200168F6B /* Info.plist */,
 				AA93259D2C896DAC006338E8 /* Application */,
 				AA46484D2C9D89DC00168F6B /* Singletons */,
 				AA9325922C896C8A006338E8 /* Presentation */,
@@ -666,6 +677,7 @@
 			isa = PBXGroup;
 			children = (
 				AA9324DD2C893BEB006338E8 /* AlethiaApp.swift */,
+				AA46485E2C9E8B3A00168F6B /* SplashScreen.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -687,6 +699,7 @@
 				AA9325FA2C8C15ED006338E8 /* Double+Clean.swift */,
 				AA5AF4CE2C9706A0002BD0A7 /* View+If.swift */,
 				AA9325C72C89CBF6006338E8 /* Haptics+.swift */,
+				AA46485B2C9E786A00168F6B /* AppColors.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -738,6 +751,7 @@
 				AA9325E82C8AE7DE006338E8 /* +ActionButtons.swift */,
 				AA9325EA2C8C11BB006338E8 /* +Backdrop.swift */,
 				AA4647F82C9CFD0000168F6B /* +Additional.swift */,
+				AA4648592C9E6B8400168F6B /* +AlternativeTitles.swift */,
 				AA9325F82C8C144E006338E8 /* +Tags.swift */,
 			);
 			path = Extensions;
@@ -870,6 +884,7 @@
 				AA46483C2C9D21DA00168F6B /* FetchHostSourceMangaUseCase.swift in Sources */,
 				AA5AF5562C9C35B6002BD0A7 /* RetryableImage.swift in Sources */,
 				AA5AF5572C9C35B6002BD0A7 /* ReaderImageProgress.swift in Sources */,
+				AA46485A2C9E6B8400168F6B /* +AlternativeTitles.swift in Sources */,
 				AA4648542C9D9BD500168F6B /* AddOriginToMangaOriginsUseCase.swift in Sources */,
 				AA4648402C9D21DA00168F6B /* FetchChapterContent.swift in Sources */,
 				AA5AF5582C9C35B6002BD0A7 /* ReaderImageRetry.swift in Sources */,
@@ -891,6 +906,7 @@
 				AA5AF54E2C9C359A002BD0A7 /* +Backdrop.swift in Sources */,
 				AA46483D2C9D21DA00168F6B /* RemoveHostUseCase.swift in Sources */,
 				AA5AF54F2C9C359A002BD0A7 /* +Tags.swift in Sources */,
+				AA46485C2C9E786A00168F6B /* AppColors.swift in Sources */,
 				AA5AF5502C9C359A002BD0A7 /* MangaDetailsScreen.swift in Sources */,
 				AA5AF5512C9C359A002BD0A7 /* MangaDetailsViewModel.swift in Sources */,
 				AA5AF5522C9C359A002BD0A7 /* MangaDetailsDescription.swift in Sources */,
@@ -912,6 +928,8 @@
 				AA5AF53E2C9C3474002BD0A7 /* LocalError.swift in Sources */,
 				AA5AF53F2C9C3474002BD0A7 /* HostLocalDataSource.swift in Sources */,
 				AA5AF5402C9C3474002BD0A7 /* MangaLocalDataSource.swift in Sources */,
+				AA4648582C9E41EB00168F6B /* Search.swift in Sources */,
+				AA46485F2C9E8B3A00168F6B /* SplashScreen.swift in Sources */,
 				AA5AF5412C9C3474002BD0A7 /* HostRemoteDataSource.swift in Sources */,
 				AA5AF5422C9C3474002BD0A7 /* MangaRemoteDataSource.swift in Sources */,
 				AA4648482C9D803000168F6B /* ExpandableList.swift in Sources */,
@@ -1094,6 +1112,7 @@
 				DEVELOPMENT_TEAM = V2NAC76HWU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Alethia/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1127,6 +1146,7 @@
 				DEVELOPMENT_TEAM = V2NAC76HWU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Alethia/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

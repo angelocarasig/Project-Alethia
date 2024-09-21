@@ -72,8 +72,6 @@ extension NetworkService: TestHostProtocol {
             }
         }
         
-        print("Sources: ", sources)
-        
         return Host(name: hostDTO.repository, sources: sources, baseUrl: hostURL.absoluteString)
     }
 }

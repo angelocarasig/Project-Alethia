@@ -9,9 +9,8 @@ import SwiftUI
 
 struct ExpandableList<Content: View>: View {
     let name: String
+    @Binding var isExpanded: Bool
     @ViewBuilder let content: () -> Content
-    
-    @State private var isExpanded: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -19,12 +18,12 @@ struct ExpandableList<Content: View>: View {
                 Text(name)
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color("TextColor"))
+                    .foregroundColor(AppColors.text)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Image(systemName: "chevron.right")
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Color("TextColor"))
+                    .foregroundColor(AppColors.text)
                     .rotationEffect(.degrees(isExpanded ? 90 : 0))
                     .animation(.easeInOut(duration: 0.2), value: isExpanded)
             }
@@ -42,7 +41,7 @@ struct ExpandableList<Content: View>: View {
 
             Gap(12)
             
-            Divider().background(Color("TextColor"))
+            Divider().background(AppColors.text)
             
             Gap(12)
             

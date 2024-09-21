@@ -13,18 +13,18 @@ struct ReaderImageProgress: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color("TintColor").opacity(0.3), lineWidth: 8)
+                .stroke(AppColors.tint.opacity(0.3), lineWidth: 8)
             
             Circle()
                 .trim(from: 0, to: CGFloat(progress))
-                .stroke(Color("TextColor"), style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                .stroke(AppColors.text, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                 .rotationEffect(.degrees(-90)) // Start progress from the top
                 .animation(.easeInOut, value: progress)
             
             Text("\(Int(progress * 100))%")
                 .font(.caption)
                 .bold()
-                .foregroundColor(Color("TextColor")) // Text in white
+                .foregroundColor(AppColors.text) // Text in white
         }
         .frame(width: 50, height: 50) // Size of the progress view
     }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension Image {
-    func lucide(size: CGFloat? = 24, color: Color = Color("TextColor")) -> some View {
+    func lucide(size: CGFloat? = 24, color: Color = AppColors.text) -> some View {
         self
             .renderingMode(.template)
             .resizable()

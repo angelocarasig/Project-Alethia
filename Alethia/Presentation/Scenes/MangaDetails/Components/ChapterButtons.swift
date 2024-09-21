@@ -116,7 +116,7 @@ private extension ChapterButtons {
                         .font(.system(size: 16))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 8)
-                        .background(Color("AlertColor"))
+                        .background(AppColors.red)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
@@ -207,7 +207,7 @@ private extension ChapterButtons {
         } label: {
             Image(systemName: "ellipsis.circle")
                 .font(.title2)
-                .foregroundColor(Color("TextColor"))
+                .foregroundColor(AppColors.text)
                 .padding()
         }
         .menuStyle(BorderlessButtonMenuStyle())

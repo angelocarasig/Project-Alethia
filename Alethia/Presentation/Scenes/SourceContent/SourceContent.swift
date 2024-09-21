@@ -21,6 +21,15 @@ struct SourceContent: View {
             }
         }
         .navigationTitle(vm.activeSource.name)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    print("Settings tapped")
+                }) {
+                    Text(Image(systemName: "gearshape"))
+                }
+            }
+        }
         .onAppear {
             vm.onRootPageLoad()
         }

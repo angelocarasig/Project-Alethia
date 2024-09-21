@@ -14,9 +14,7 @@ struct OriginCell: View {
     let sourcePresent: Bool
     
     var body: some View {
-        print("Current Origin BG: ", data.origin.coverUrl)
-        
-        return ZStack {
+        ZStack {
             KFImage(URL(string: data.origin.coverUrl))
                 .resizable()
                 .scaledToFill()
