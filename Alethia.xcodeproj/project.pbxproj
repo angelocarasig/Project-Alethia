@@ -53,6 +53,7 @@
 		AA4648702C9E9E5D00168F6B /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46486F2C9E9E5D00168F6B /* UserDefaultKeys.swift */; };
 		AA4648732C9E9F7B00168F6B /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4648722C9E9F7B00168F6B /* UserDefaultsHelper.swift */; };
 		AA4648752C9EC46400168F6B /* GetChapterRefererUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4648742C9EC46400168F6B /* GetChapterRefererUseCase.swift */; };
+		AA4648782C9F06F600168F6B /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = AA4648772C9F06F600168F6B /* Zoomable */; };
 		AA5ACC882C8DEC91002EA38F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = AA9325042C893CBE006338E8 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AA5AF4D22C9709D3002BD0A7 /* VTabView in Frameworks */ = {isa = PBXBuildFile; productRef = AA5AF4D12C9709D3002BD0A7 /* VTabView */; };
 		AA5AF5082C9C042D002BD0A7 /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = AA5AF5072C9C042D002BD0A7 /* DominantColors */; };
@@ -300,6 +301,7 @@
 				AA5AF4D22C9709D3002BD0A7 /* VTabView in Frameworks */,
 				AA9325052C893CBE006338E8 /* RealmSwift in Frameworks */,
 				AA9324FF2C893C85006338E8 /* Kingfisher in Frameworks */,
+				AA4648782C9F06F600168F6B /* Zoomable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,6 +835,7 @@
 				AA9325E12C8AE632006338E8 /* Flow */,
 				AA5AF4D12C9709D3002BD0A7 /* VTabView */,
 				AA5AF5072C9C042D002BD0A7 /* DominantColors */,
+				AA4648772C9F06F600168F6B /* Zoomable */,
 			);
 			productName = Alethia;
 			productReference = AA9324DA2C893BEB006338E8 /* Alethia.app */;
@@ -870,6 +873,7 @@
 				AA5AF4D02C9709D3002BD0A7 /* XCRemoteSwiftPackageReference "swiftui-vertical-tab-view" */,
 				AA5AF5032C9C0180002BD0A7 /* XCRemoteSwiftPackageReference "ColorKit" */,
 				AA5AF5062C9C042D002BD0A7 /* XCRemoteSwiftPackageReference "DominantColors" */,
+				AA4648762C9F06F600168F6B /* XCRemoteSwiftPackageReference "Zoomable" */,
 			);
 			productRefGroup = AA9324DB2C893BEB006338E8 /* Products */;
 			projectDirPath = "";
@@ -1161,6 +1165,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Alethia/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Alethia needs permission to save this photo to your Photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1195,6 +1200,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Alethia/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Alethia needs permission to save this photo to your Photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1241,6 +1247,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AA4648762C9F06F600168F6B /* XCRemoteSwiftPackageReference "Zoomable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ryohey/Zoomable.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		AA5AF4D02C9709D3002BD0A7 /* XCRemoteSwiftPackageReference "swiftui-vertical-tab-view" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-vertical-tab-view";
@@ -1300,6 +1314,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AA4648772C9F06F600168F6B /* Zoomable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA4648762C9F06F600168F6B /* XCRemoteSwiftPackageReference "Zoomable" */;
+			productName = Zoomable;
+		};
 		AA5AF4D12C9709D3002BD0A7 /* VTabView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AA5AF4D02C9709D3002BD0A7 /* XCRemoteSwiftPackageReference "swiftui-vertical-tab-view" */;
