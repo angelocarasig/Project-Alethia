@@ -115,6 +115,7 @@ struct ReaderOverlay<Content: View>: View {
                             }
                         }
                         .padding()
+                        .padding(.bottom, 10) // Make space for home bar
                         .background(Color.black.opacity(0.5))
                         .cornerRadius(8)
                     }

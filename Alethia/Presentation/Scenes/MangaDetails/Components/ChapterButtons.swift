@@ -92,6 +92,11 @@ private extension ChapterButtons {
     
     @ViewBuilder
     private func ChapterRow(chapter: Chapter) -> some View {
+        let didDownload = Bool.random()
+        let isDownloading = Bool.random()
+        let downloadFailed = Bool.random()
+        let didRead = Bool.random()
+        
         NavigationLink(destination: ReaderScreen(vm: ViewModelFactory.shared.makeReaderViewModel(chapter: chapter, origins: origins))) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
@@ -113,18 +118,40 @@ private extension ChapterButtons {
                 
                 Spacer()
                 
-                if isNew(chapter: chapter) {
-                    Text("NEW")
-                        .font(.system(size: 16))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 8)
-                        .background(AppColors.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
+                HStack(spacing: 10) {
+                    if isNew(chapter: chapter) {
+                        Text("NEW")
+                            .font(.system(size: 16))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 8)
+                            .background(AppColors.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    
+                    if didDownload {
+                        Circle()
+                            .fill(.green)
+                            .frame(width: 10, height: 10)
+                    }
+                    else if isDownloading {
+                        Circle()
+                            .fill(.orange)
+                            .frame(width: 10, height: 10)
+                    }
+                    else if downloadFailed {
+                        Circle()
+                            .fill(.red)
+                            .frame(width: 10, height: 10)
+                    }
                 }
+                .frame(alignment: .center)
             }
             .padding(.vertical, 8)
             .contentShape(Rectangle())
+            .overlay(
+                didRead ? AppColors.background.opacity(0.55) : Color.clear
+            )
         }
         .buttonStyle(PlainButtonStyle())
     }

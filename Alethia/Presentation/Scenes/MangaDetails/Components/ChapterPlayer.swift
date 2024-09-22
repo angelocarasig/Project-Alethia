@@ -29,7 +29,7 @@ struct ChapterPlayer: View {
             }
             
             if let chapter = latestChapter {
-                VStack {
+                VStack(spacing: 0) {
                     HStack(alignment: .center, spacing: 16) {
                         if !isFullScreen {
                             RadialProgress(progress: 0.75)

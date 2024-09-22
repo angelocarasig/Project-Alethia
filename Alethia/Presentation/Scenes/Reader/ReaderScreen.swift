@@ -17,10 +17,10 @@ struct ReaderScreen: View {
         ReaderOverlay(vm: vm, title: vm.chapter.toString()) {
             ReaderView()
                 .zoomable(
-                                        minZoomScale: 1,
-                                        doubleTapZoomScale: 2,
-                                        outOfBoundsColor: AppColors.background
-                                    )
+                    minZoomScale: 1,
+                    doubleTapZoomScale: 2,
+                    outOfBoundsColor: AppColors.background
+                )
         }
     }
     
