@@ -42,7 +42,7 @@ final class HomeViewModel {
             self.manga = manga
             
             self.recentlyAddedManga = Array(manga.sorted(by: { $0.addedAt > $1.addedAt }).prefix(10))
-            self.recentlyReadManga = Array(manga.sorted(by: { $0.lastReadAt > $1.lastReadAt }).prefix(10))
+            self.recentlyReadManga = Array(manga.shuffled().prefix(10).sorted(by: { $0.addedAt > $1.addedAt }))
             
             self.selectCategoriedManga(manga)
             

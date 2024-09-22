@@ -84,7 +84,6 @@ final class MangaDetailsViewModel {
     }
     
     func onOpen() async throws {
-        // TODO: On Appear check the current manga details (manga details from source tabs chapters are showing in a manga from home tab
         try await fetchMangaDetails()
         try await fetchNewOriginData()
     }

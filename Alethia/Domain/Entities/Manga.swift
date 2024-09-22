@@ -27,9 +27,6 @@ struct Manga {
     /// A short synopsis or description of the manga's storyline or content.
     let synopsis: String
     
-    /// The date and time when the user last read this manga.
-    let lastReadAt: Date
-    
     /// The date and time when this manga was added to the user's library.
     let addedAt: Date
     

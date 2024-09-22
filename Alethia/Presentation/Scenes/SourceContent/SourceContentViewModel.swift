@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 @Observable
-final class SCVM { // TODO: Refactor name
+final class SourceContentViewModel {
     // Use Cases
     private var fetchHostSourceContentUseCase: FetchHostSourceContentUseCase
     private var observeSourceMangaUseCase: ObserveSourceMangaUseCase

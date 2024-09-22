@@ -46,8 +46,8 @@
             filePath = "Alethia/Presentation/Scenes/MangaDetails/MangaDetailsViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "fetchNewOriginData()"
             landmarkType = "7">
          </BreakpointContent>

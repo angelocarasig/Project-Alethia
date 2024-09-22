@@ -19,6 +19,7 @@ struct MangaDetailsScreen: View {
                     .blur(radius: vm.isFullScreen ? 6 : 0)
                     .transition(.opacity)
                 
+                // TODO: Display chapter list based on chapter priority
                 ChapterPlayer(
                     chapters: manga.origins.first?.chapters ?? [],
                     origins: manga.origins,

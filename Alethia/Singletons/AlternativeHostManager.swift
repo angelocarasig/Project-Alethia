@@ -34,6 +34,16 @@ final class AlternativeHostManager {
         mappings = [:]
     }
     
+    func setPreviousHost(host: Host?) {
+        print("Set previous host to \(host?.name)")
+        previousHost = host
+    }
+    
+    func setPreviousSource(source: Source?) {
+        print("Set previous source to \(source?.name)")
+        previousSource = source
+    }
+    
     func getPreviousHostSource() -> (Host?, Source?) {
         return (previousHost, previousSource)
     }

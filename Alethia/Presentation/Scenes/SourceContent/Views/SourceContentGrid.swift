@@ -10,7 +10,7 @@ import SwiftUI
 struct SourceContentGrid: View {
     let title: String
     let path: String
-    @Bindable var vm: SCVM
+    @Bindable var vm: SourceContentViewModel
     
     let useCaseFactory = UseCaseFactory.shared
     let dimensions = DimensionsCache.shared.dimensions

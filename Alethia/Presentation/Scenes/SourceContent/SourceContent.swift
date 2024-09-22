@@ -10,7 +10,7 @@ import LucideIcons
 
 struct SourceContent: View {
     // Use @Bindable not @State: https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro
-    @Bindable var vm: SCVM
+    @Bindable var vm: SourceContentViewModel
     
     var body: some View {
         VStack {

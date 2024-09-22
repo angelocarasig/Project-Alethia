@@ -20,7 +20,6 @@ final class RealmManga: Object {
     @Persisted var artist: String
     @Persisted var synopsis: String
     
-    @Persisted var lastReadAt: Date
     @Persisted var addedAt: Date
     
     @Persisted var contentRating: ContentRating
@@ -41,7 +40,6 @@ final class RealmManga: Object {
         author = manga.author
         artist = manga.artist
         synopsis = manga.synopsis
-        lastReadAt = manga.lastReadAt
         addedAt = manga.addedAt
         contentRating = manga.contentRating
         contentStatus = manga.contentStatus
@@ -70,7 +68,6 @@ final class RealmManga: Object {
             author: author,
             artist: artist,
             synopsis: synopsis,
-            lastReadAt: lastReadAt,
             addedAt: addedAt,
             contentRating: contentRating,
             contentStatus: contentStatus,

@@ -62,7 +62,7 @@ private extension SourcesScreen {
                 ForEach(hosts) { host in
                     ForEach(host.sources) { source in
                         NavigationLink(destination: SourceContent(
-                            vm: SCVM(
+                            vm: SourceContentViewModel(
                                 fetchHostSourceContentUseCase: useCaseFactory.makeFetchHostSourceContentUseCase(),
                                 observeSourceMangaUseCase: useCaseFactory.makeObserveSourceMangaUseCase(),
                                 activeHost: host,
