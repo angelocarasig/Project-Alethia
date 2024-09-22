@@ -47,6 +47,8 @@ extension HostRemoteDataSource {
     }
     
     func fetchNewOriginData(host: Host, source: Source, slug: String) async throws -> OriginCellData {
+        print("Fetching New Origin Data for Slug: \(slug) with Source: \(source.name)")
+        
         let result = try await networkService.fetchSourceManga(host: host, source: source, slug: slug)
         
         return OriginCellData(

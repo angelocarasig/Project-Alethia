@@ -16,6 +16,7 @@ final class SourceContentViewModel {
     
     // To be displayed in SourceContent
     var rootResults: [SourceResult]
+    
     /// When fetchedRootResults is set, re-init the observer
     private var fetchedRootResults: [SourceResult] {
         didSet {
@@ -27,6 +28,7 @@ final class SourceContentViewModel {
     
     // To be displayed in SourceContentGrid
     var pathResults: [SourceManga]
+    
     /// When fetchedPathResults is set, re-init the observer
     private var fetchedPathResults: [SourceManga] {
         didSet {
@@ -91,11 +93,18 @@ final class SourceContentViewModel {
     
     // Use when root page loads
     func onRootPageLoad() {
-        // Don't trigger if content already present
-        guard rootResults.isEmpty else { return }
-        
         // Case where navigating to this page from a different tab that sets active host back to nil
         ActiveHostManager.shared.setActiveHost(host: activeHost, source: activeSource)
+        
+        // Don't trigger if content already present
+        guard rootResults.isEmpty else {
+            print("Root Results already exist. Recreating observer and skipping...")
+            Task {
+                await generateObserver()
+            }
+            
+            return
+        }
         
         Task {
             await fetchRootContent()
@@ -114,7 +123,13 @@ final class SourceContentViewModel {
         ActiveHostManager.shared.setActiveHost(host: activeHost, source: activeSource)
         
         // Don't trigger if content already present
-        guard pathResults.isEmpty else { return }
+        guard pathResults.isEmpty else {
+            print("Grid Results already exist. Recreating observer and skipping...")
+            Task {
+                await generateObserver()
+            }
+            return
+        }
         
         Task {
             await fetchPathContent(path: path)
@@ -147,7 +162,7 @@ final class SourceContentViewModel {
                         host: self.activeHost,
                         source: self.activeSource,
                         path: route.path,
-                        page: 0
+                        page: 0 // always page 0 for root content
                     )
                     
                     // return mapped result

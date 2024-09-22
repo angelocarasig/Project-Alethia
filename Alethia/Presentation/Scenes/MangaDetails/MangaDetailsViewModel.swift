@@ -13,17 +13,15 @@ final class MangaDetailsViewModel {
     var manga: Manga?
     
     // List of origins with their respective hosts/sources
-    var originData: [OriginCellData] = []
+    var originData: [OriginCellData] = [] {
+        didSet {
+            print("Origin Data was set. Count \(originData.count)")
+        }
+    }
     
     // On open we should fetch so that even if the active manga is in library,
     // the current active host/source may not be in its origins
-    var newOriginData: OriginCellData? {
-        didSet {
-            Task {
-                await mergeOriginData()
-            }
-        }
-    }
+    var newOriginData: OriginCellData?
     
     var inLibrary: Bool = false
     var sourcePresent: Bool = false
@@ -33,20 +31,11 @@ final class MangaDetailsViewModel {
     var expandedSources: Bool = false
     var expandedTracking: Bool = false
     
-    var fetchedManga: Manga? {
-        didSet {
-            Task {
-                // Once fetched init the observer
-                await generateObserver()
-                
-                // Only needs to be triggered once realistically
-                await getOriginParents()
-            }
-        }
-    }
+    var fetchedManga: Manga?
+    
+    // Inputs
     let listManga: ListManga
     private var observer: NotificationToken?
-    
     private let observeMangaUseCase: ObserveMangaUseCase
     private let fetchHostSourceMangaUseCase: FetchHostSourceMangaUseCase
     private let fetchNewOriginDataUseCase: FetchNewOriginDataUseCase
@@ -67,7 +56,7 @@ final class MangaDetailsViewModel {
     ) {
         self.listManga = listManga
         
-        print("New MDVM for \(listManga.title)")
+        print("Init new MDVM for \(listManga.title)")
         
         self.observeMangaUseCase = observeMangaUseCase
         self.fetchHostSourceMangaUseCase = fetchHostSourceMangaUseCase
@@ -88,42 +77,55 @@ final class MangaDetailsViewModel {
         try await fetchNewOriginData()
     }
     
-    func onClose() {
-        // Don't do anything for now
-        
-        //        observer?.invalidate()
-        //        manga = nil
-        //        // Don't set fetchedManga as nil or else it will retrigger observer generation
-        //        inLibrary = false
-        //        sourcePresent = false
-        //
-        //        // Kill yourself
-        //        ViewModelFactory.shared.removeMangaDetailsViewModel(for: listManga.id)
-    }
+    func onClose() { }
     
-    /// Fetch manga details from host and source using the ActiveHostManager
+    /// Fetch returns either the local manga's details or a fresh one from remote
     func fetchMangaDetails() async throws {
         fetchedManga = try await fetchHostSourceMangaUseCase.execute(
             host: ActiveHostManager.shared.getActiveHost(),
             source: ActiveHostManager.shared.getActiveSource(),
             listManga: listManga
         )
+        
+        // Once fetched, first create an observer to listen for changes
+        await generateObserver()
+        
+        //
+        // First get all origins parents
+        await getOriginParents()
+        
+        // Fetch new origin data if needed
+        // If origins is non-empty empty and data was actually fetched,
+        // trigger a merge side-effect from new origin data into the origindata array
+        try await fetchNewOriginData()
     }
     
-    func fetchNewOriginData() async throws {
+    func fetchNewOriginData() async {
         guard let host = ActiveHostManager.shared.getActiveHost(),
               let source = ActiveHostManager.shared.getActiveSource()
         else {
-            print("Won't be fetching new origin data. ActiveHostManager is nil.")
+            print("Fetching New Origin Data: Won't be fetching new origin data. ActiveHostManager is nil.")
             return
         }
         
-        newOriginData = try await fetchNewOriginDataUseCase.execute(
-            host: host,
-            source: source,
-            slug: AlternativeHostManager.shared.findOriginalMapping(replacement: listManga.id) ?? listManga.id
-        )
+        do {
+            newOriginData = try await fetchNewOriginDataUseCase.execute(
+                host: host,
+                source: source,
+                slug: AlternativeHostManager.shared.findOriginalMapping(replacement: listManga.id) ?? listManga.id
+            )
+            
+            if let newData = newOriginData {
+                print("Received new origin data from \(newData.host.name)... Merging Origin Data...")
+                await mergeOriginData()
+            } else {
+                print("Received new origin data is nil.")
+            }
+        } catch {
+            print("Error fetching new origin data: \(error)")
+        }
     }
+    
     
     /// When fetchedManga is set, this function should be called as a side-effect
     private func generateObserver() async {
@@ -160,6 +162,9 @@ final class MangaDetailsViewModel {
         guard let manga = manga else { return }
         
         var results: [OriginCellData] = []
+        
+        print("Get Origin Parents: Manga origins count is \(manga.origins.count)")
+        print("Get Origin Parents: ListManga origin is \(listManga.origin == .Local ? "Local" : "Remote")")
         
         // If manga contains just the origin it was fetched from
         if manga.origins.count == 1 && listManga.origin != .Local {
@@ -206,11 +211,16 @@ final class MangaDetailsViewModel {
     }
     
     private func mergeOriginData() async {
+        print("Merge Origin Data: Merging Origin Data...")
         guard let fetched = newOriginData,
               !originData.isEmpty
-        else { return }
+        else {
+            print("Merge Origin Data: Origin Data is empty.")
+            return
+        }
         
         if !originData.contains(where: { $0.origin.slug == fetched.origin.slug }) {
+            print("Merge Origin Data: Origin Data is appending origin from \(fetched.source.name)!")
             originData.append(fetched)
         }
     }

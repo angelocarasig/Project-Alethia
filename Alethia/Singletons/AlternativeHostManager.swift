@@ -13,38 +13,33 @@ import Foundation
 final class AlternativeHostManager {
     private var mappings: [String:String] = [:]
     
-    private var previousHost: Host?
-    private var previousSource: Source?
-    
     static let shared = AlternativeHostManager()
     
     private init() { }
     
     func addAlternativeMapping(original: String, replacement: String) -> Void {
-        print("Added new mapping where '\(replacement)' points to '\(original)'")
         mappings[replacement] = original
     }
     
     func findOriginalMapping(replacement: String) -> String? {
+        print("findOriginalMapping called with replacement: '\(replacement)'")
+        print("Current Mappings:")
+        for (replacementKey, originalValue) in mappings {
+            print("'\(replacementKey)' : '\(originalValue)'")
+        }
+        
+        let original = mappings[replacement]
+        if let original = original {
+            print("Mapping found: '\(replacement)' maps to '\(original)'!")
+        } else {
+            print("No mapping found for '\(replacement)'...")
+        }
+
         return mappings[replacement]
     }
     
     func clearMappings() -> Void {
         print("Cleared mappings")
         mappings = [:]
-    }
-    
-    func setPreviousHost(host: Host?) {
-        print("Set previous host to \(host?.name)")
-        previousHost = host
-    }
-    
-    func setPreviousSource(source: Source?) {
-        print("Set previous source to \(source?.name)")
-        previousSource = source
-    }
-    
-    func getPreviousHostSource() -> (Host?, Source?) {
-        return (previousHost, previousSource)
     }
 }

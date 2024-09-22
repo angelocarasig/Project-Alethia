@@ -79,7 +79,8 @@ extension MangaDetailsScreen {
                 }
             } label: {
                 Image(uiImage: vm.inLibrary ? Lucide.mapPinCheckInside : Lucide.mapPinOff)
-                    .lucide(color: vm.inLibrary ? AppColors.background : AppColors.text)
+                    // TODO: Fix logic
+                    .lucide(color: vm.sourcePresent ? AppColors.background : AppColors.text)
             }
             .disabled(!vm.inLibrary)
             .fontWeight(.medium)

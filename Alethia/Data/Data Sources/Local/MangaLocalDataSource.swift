@@ -74,22 +74,44 @@ final class MangaLocalDataSource {
     }
     
     @RealmActor
-    func removeMangaFromLibrary(_ manga: Manga) async -> Void {
-        guard let storage = await realmProvider.realm() else { return }
+    func removeMangaFromLibrary(_ manga: Manga) async {
+        guard let storage = await realmProvider.realm() else {
+            print("Failed to obtain Realm instance.")
+            return
+        }
         
         do {
+            // Fetch the RealmManga object to delete
             if let mangaToDelete = storage.object(ofType: RealmManga.self, forPrimaryKey: manga.id) {
+                
                 try storage.write {
+                    // Step 1: Delete all RealmChapter objects associated with each RealmOrigin
+                    for origin in mangaToDelete.origins {
+                        let chapters = origin.chapters
+                        if !chapters.isEmpty {
+                            storage.delete(chapters)
+                            print("Deleted \(chapters.count) chapters from origin with slug: \(origin.slug)")
+                        }
+                    }
+                    
+                    // Step 2: Delete all RealmOrigin objects associated with the RealmManga
+                    if !mangaToDelete.origins.isEmpty {
+                        storage.delete(mangaToDelete.origins)
+                        print("Deleted \(mangaToDelete.origins.count) origins associated with manga: \(manga.title)")
+                    }
+                    
+                    // Step 3: Delete the RealmManga object itself
                     storage.delete(mangaToDelete)
-                    print("Manga successfully removed from library.")
+                    print("Manga '\(manga.title)' successfully removed from library along with its origins and chapters.")
                 }
             } else {
-                print("Manga not found in the library.")
+                print("Manga with ID \(manga.id) not found in the library.")
             }
         } catch {
             print("Failed to remove manga: \(error.localizedDescription)")
         }
     }
+    
     
     @RealmActor
     func addOriginToMangaOrigins(manga: Manga, origin: Origin) async {
@@ -131,9 +153,9 @@ final class MangaLocalDataSource {
                     let isInLibrary = data.keys.contains(title)
                     
                     // If change happens, add a mapping
-                    let og = root.results[index]
                     if root.results[index].inLibrary != isInLibrary && result.slug != data[title]!
                     {
+                        print("Title '\(result.title)' already exists in library with ID \(data[title]!)! Creating mapping where \(result.slug) points to \(data[title]!)...")
                         AlternativeHostManager.shared.addAlternativeMapping(
                             original: result.slug,
                             replacement: data[title]!
