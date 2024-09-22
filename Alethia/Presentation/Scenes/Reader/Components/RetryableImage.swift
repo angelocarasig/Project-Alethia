@@ -14,6 +14,8 @@ struct RetryableImage: View {
     let index: Int
     let referer: String
     
+    let readerDirection: ReaderDirection
+    
     @State private var loadingProgress: Double? = nil
     @State private var reloadID = UUID()
     
@@ -27,6 +29,7 @@ struct RetryableImage: View {
             KFImage(url)
                 // Use referer when requesting images
                 .requestModifier(RefererModifier(referer: referer))
+            
                 // Progress handlers
                 .onProgress { receivedSize, totalSize in
                     let progress = Double(receivedSize) / Double(totalSize)
@@ -41,19 +44,16 @@ struct RetryableImage: View {
                     loadedImage = nil // Clear the image if failed
                 }
                 .retry(maxCount: 5, interval: .seconds(0.5))
+            
                 // Take up entire width of screen
                 .resizable()
-                .id(reloadID)
-                .tag(index)
+                .aspectRatio(contentMode: readerDirection == .Webtoon ? .fill : .fit)
                 .frame(maxWidth: .infinity)
-                .scaledToFit()
-                .edgesIgnoringSafeArea(.all)
-                // Gesture props
-                .zoomable(
-                    minZoomScale: 1,
-                    doubleTapZoomScale: 2,
-                    outOfBoundsColor: AppColors.background
-                )
+                .tag(index)
+                .id(reloadID)
+                
+                // NOTE: Can't apply .zoomable to this or else webtoon-view breaks!
+                
                 // Context menu
                 .contextMenu {
                     if let _ = loadedImage {
@@ -72,6 +72,8 @@ struct RetryableImage: View {
             
             ProgressHandler()
         }
+        .frame(maxWidth: .infinity)
+        .background(AppColors.background)
         .alert(isPresented: $showingAlert) {
             Alert(title: Text("Action Completed"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }

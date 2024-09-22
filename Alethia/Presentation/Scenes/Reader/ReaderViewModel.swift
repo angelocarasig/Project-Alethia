@@ -185,10 +185,7 @@ final class ReaderViewModel {
         imagePrefetcher = ImagePrefetcher(
             urls: urlsToPrefetch,
             options: [.cacheOriginalImage],
-            progressBlock: nil,
-            completionHandler: { skippedResources, failedResources, completedResources in
-                print("Prefetched images: \(completedResources.count)")
-            }
+            progressBlock: nil
         )
         imagePrefetcher?.start()
     }

@@ -37,7 +37,6 @@ struct ReaderOverlay<Content: View>: View {
                 Text("Loading \(title)")
             } else {
                 content
-                // On tap functions
                     .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation {

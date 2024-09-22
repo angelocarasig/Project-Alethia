@@ -7,78 +7,202 @@
 import SwiftUI
 import Kingfisher
 import VTabView
+import Zoomable
 
-private struct ViewOffsetKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue: CGFloat = 0
-    
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
-}
-
-/// A view that displays the reader in vertical mode, supporting both paginated and continuous scrolling.
 struct VerticalReaderView: View {
     @Binding var currentPage: Int
+    @Binding var toggleOverlay: Bool
     let chapter: Chapter
+    let referer: String
+    let nextChapter: Chapter?
+    let previousChapter: Chapter?
     let isPaginated: Bool
     let chapterContent: [URL]
-    let referer: String
     
-    @State private var scrollPosition: Int?
+    let onLoadNextChapter: () -> Void
+    let onLoadPreviousChapter: () -> Void
     
     var body: some View {
         if isPaginated {
-            // Paginated (single page within screen)
-            ScrollView {
-                VTabView(selection: $currentPage) {
-                    ForEach(chapterContent.indices, id: \.self) { index in
-                        RetryableImage(url: chapterContent[index], index: index, referer: referer)
-                            .tag(index)
-                    }
-                }
-                .frame(
-                    width: UIScreen.main.bounds.width,
-                    height: UIScreen.main.bounds.height
-                )
-            }
-            .edgesIgnoringSafeArea(.all)
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            VerticalPaginatedView(
+                currentPage: $currentPage,
+                toggleOverlay: $toggleOverlay,
+                chapter: chapter,
+                referer: referer,
+                nextChapter: nextChapter,
+                previousChapter: previousChapter,
+                chapterContent: chapterContent,
+                onLoadNextChapter: onLoadNextChapter,
+                onLoadPreviousChapter: onLoadPreviousChapter
+            )
         } else {
-            // Infinite scroll (manhwas)
-            ScrollView {
-                ScrollViewReader { scrollViewProxy in
-                    LazyVStack(spacing: 0) {
-                        ForEach(chapterContent.indices, id: \.self) { index in
-                            RetryableImage(url: chapterContent[index], index: index, referer: referer)
-                                .id(index)
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    GeometryReader { geo in
-                                        Color.clear
-                                            .preference(key: ViewOffsetKey.self, value: geo.frame(in: .named("scroll")).minY)
-                                    }
-                                )
-                        }
-                    }
-                    .onPreferenceChange(ViewOffsetKey.self) { value in
-                        print("Preference Changed: \(value)")
-                        // Calculate the current page based on scroll position
-                        let pageHeight = UIScreen.main.bounds.height
-                        let page = max(0, Int(round(value / pageHeight)))
-                        if currentPage != page {
-                            currentPage = page
-                        }
-                    }
-                    .onChange(of: currentPage) {
-                        withAnimation(.bouncy) {
-                            scrollViewProxy.scrollTo(currentPage, anchor: .top)
-                        }
-                    }
+            // Infinite scroll mode: Display images in a vertically scrollable view
+            InfiniteScrollView(
+                currentPage: $currentPage,
+                chapterContent: chapterContent,
+                referer: referer
+            ).edgesIgnoringSafeArea(.all)
+        }
+    }
+}
+
+
+private struct InfiniteScrollView: View {
+    @Binding var currentPage: Int
+    
+    let chapterContent: [URL]
+    let referer: String
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(chapterContent.indices, id: \.self) { index in
+                    RetryableImage(
+                        url: chapterContent[index],
+                        index: index,
+                        referer: referer,
+                        readerDirection: .Webtoon
+                    )
+                    .id(index)
+                    .frame(maxWidth: .infinity)
                 }
             }
-            .coordinateSpace(name: "scroll")
-            .edgesIgnoringSafeArea(.all)
+        }
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+private struct VerticalPaginatedView: View {
+    @Binding var currentPage: Int
+    @Binding var toggleOverlay: Bool
+    let chapter: Chapter
+    let referer: String
+    let nextChapter: Chapter?
+    let previousChapter: Chapter?
+    let chapterContent: [URL]
+    
+    let onLoadNextChapter: () -> Void
+    let onLoadPreviousChapter: () -> Void
+    
+    var body: some View {
+        ScrollView {
+            VTabView(selection: $currentPage) {
+                if previousChapter != nil {
+                    Text("")
+                        .tag(-2)
+                }
+                
+                PreviousChapterView(chapter: chapter, previousChapter: previousChapter)
+                    .tag(-1)
+                    .onAppear {
+                        toggleOverlay = false
+                    }
+                
+                ForEach(chapterContent.indices, id: \.self) { index in
+                    RetryableImage(
+                        url: chapterContent[index],
+                        index: index,
+                        referer: referer,
+                        readerDirection: .Vertical
+                    )
+                    .tag(index)
+                }
+                
+                NextChapterView(chapter: chapter, nextChapter: nextChapter)
+                    .tag(chapterContent.count)
+                    .onAppear {
+                        toggleOverlay = false
+                    }
+                
+                // Swiping to this will trigger the onChange
+                if nextChapter != nil {
+                    Text("")
+                        .tag(chapterContent.count + 1)
+                }
+            }
+            .frame(
+                width: UIScreen.main.bounds.width,
+                height: UIScreen.main.bounds.height
+            )
+        }
+        .edgesIgnoringSafeArea(.all)
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .onChange(of: currentPage) { newValue, oldValue in
+            print("Old Value: \(oldValue) | New Value: \(newValue)")
+            if oldValue == -2 && previousChapter != nil {
+                onLoadPreviousChapter()
+            }
+            else if oldValue == chapterContent.count + 1 && nextChapter != nil {
+                onLoadNextChapter()
+            }
+        }
+    }
+}
+
+private struct PreviousChapterView: View {
+    let chapter: Chapter
+    let previousChapter: Chapter?
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            Text("Currently: Chapter \(chapter.chapterNumber.clean)")
+                .font(.title)
+                .foregroundColor(.primary)
+            
+            Spacer()
+            
+            if let previous = previousChapter {
+                Text("Previous: Chapter \(previous.chapterNumber.clean)")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+                
+                Text("Published by: \(previous.author)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+            } else {
+                Text("There is no previous chapter.")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+    }
+}
+
+private struct NextChapterView: View {
+    let chapter: Chapter
+    let nextChapter: Chapter?
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            Text("Completed: Chapter \(chapter.chapterNumber.clean)")
+                .font(.title)
+                .foregroundColor(.primary)
+            
+            Spacer()
+            
+            if let next = nextChapter {
+                Text("Up Next: Chapter \(next.chapterNumber.clean)")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+                
+                Text("Published by: \(next.author)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+            } else {
+                Text("There is no next chapter.")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
         }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Zoomable
 
 /// The main view for displaying the reader screen in various reading modes.
 struct ReaderScreen: View {
@@ -14,12 +15,17 @@ struct ReaderScreen: View {
     
     var body: some View {
         ReaderOverlay(vm: vm, title: vm.chapter.toString()) {
-            readerView
+            ReaderView()
+                .zoomable(
+                                        minZoomScale: 1,
+                                        doubleTapZoomScale: 2,
+                                        outOfBoundsColor: AppColors.background
+                                    )
         }
     }
     
     @ViewBuilder
-    var readerView: some View {
+    func ReaderView() -> some View {
         if vm.config.readerDirection == ReaderDirection.LTR || vm.config.readerDirection == ReaderDirection.RTL {
             HorizontalReaderView(
                 currentPage: $vm.currentPage,
@@ -36,10 +42,15 @@ struct ReaderScreen: View {
         } else {
             VerticalReaderView(
                 currentPage: $vm.currentPage,
+                toggleOverlay: $vm.displayOverlay,
                 chapter: vm.chapter,
+                referer: vm.referer,
+                nextChapter: vm.nextChapter,
+                previousChapter: vm.previousChapter,
                 isPaginated: vm.config.readerDirection == .Vertical,
                 chapterContent: vm.chapterContent,
-                referer: vm.referer
+                onLoadNextChapter: { Task { await vm.goToNextChapter() }},
+                onLoadPreviousChapter: {Task { await vm.goToPreviousChapter() }}
             )
         }
     }

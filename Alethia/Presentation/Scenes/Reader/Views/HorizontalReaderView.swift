@@ -19,7 +19,6 @@ struct HorizontalReaderView: View {
     let chapterContent: [URL]
     
     let onLoadNextChapter: () -> Void
-    
     let onLoadPreviousChapter: () -> Void
     
     var body: some View {
@@ -36,8 +35,13 @@ struct HorizontalReaderView: View {
                 }
             
             ForEach(chapterContent.indices, id: \.self) { index in
-                RetryableImage(url: chapterContent[index], index: index, referer: referer)
-                    .tag(index)
+                RetryableImage(
+                    url: chapterContent[index],
+                    index: index,
+                    referer: referer,
+                    readerDirection: isRTL ? .RTL : .LTR
+                )
+                .tag(index)
             }
             
             NextChapterView(chapter: chapter, nextChapter: nextChapter)
@@ -56,14 +60,15 @@ struct HorizontalReaderView: View {
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .edgesIgnoringSafeArea(.all)
         .onChange(of: currentPage) { newValue, oldValue in
-            if newValue == -1, let previous = previousChapter {
+            print("Old Value: \(oldValue) | New Value: \(newValue)")
+            if oldValue == -2 && previousChapter != nil {
                 onLoadPreviousChapter()
             }
-            else if newValue == chapterContent.count, let next = nextChapter {
+            else if oldValue == chapterContent.count + 1 && nextChapter != nil {
                 onLoadNextChapter()
             }
         }
-
+        
     }
 }
 
