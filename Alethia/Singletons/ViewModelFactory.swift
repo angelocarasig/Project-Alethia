@@ -62,4 +62,10 @@ final class ViewModelFactory {
             observeLibraryMangaUseCase: useCaseFactory.makeObserveLibraryMangaUseCase()
         )
     }
+    
+    func makeLibraryViewModel() -> LibraryViewModel {
+        return LibraryViewModel(
+            observeLibraryMangaUseCase: useCaseFactory.makeObserveLibraryMangaUseCase()
+        )
+    }
 }

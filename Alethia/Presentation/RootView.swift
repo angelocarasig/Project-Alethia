@@ -21,7 +21,7 @@ struct RootView: View {
                     ActiveHostManager.shared.clearActiveHost()
                 }
             
-            LibraryScreen()
+            LibraryScreen(vm: ViewModelFactory.shared.makeLibraryViewModel())
                 .tabItem {
                     Image(systemName: "books.vertical.fill")
                     Text("Library")

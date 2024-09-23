@@ -26,20 +26,21 @@ struct HomeScreen: View {
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            print("Settings tapped")
-                        }) {
-                            Text(Image(systemName: "gearshape"))
-                                .foregroundStyle(AppColors.text)
-                        }
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             Haptics.impact()
                             print("Notifications!")
                         } label: {
                             Image(uiImage: Lucide.bell)
                                 .lucide(color: AppColors.text)
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            print("Settings tapped")
+                        }) {
+                            Text(Image(systemName: "gearshape"))
+                                .foregroundStyle(AppColors.text)
                         }
                     }
                 }
