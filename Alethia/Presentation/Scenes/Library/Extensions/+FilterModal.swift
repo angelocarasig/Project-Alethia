@@ -18,18 +18,19 @@ extension LibraryScreen {
                 .padding(.leading, 16)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Gap(10)
+            Divider()
             
             VStack(alignment: .leading, spacing: 24) {
                 // Content Status Filter
                 Text("Content Status")
                     .font(.title3)
+                    .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 16)
                 
                 HStack {
                     ForEach(ContentStatus.allCases, id: \.self) { status in
-                        MultiSelectChip(text: status.rawValue, isSelected: $selectedContentStatus, filterType: status)
+                        MultiSelectChip(text: status.rawValue, isSelected: $vm.selectedContentStatus, filterType: status)
                     }
                 }
                 .padding(.horizontal, 16)
@@ -37,12 +38,13 @@ extension LibraryScreen {
                 // Content Rating Filter
                 Text("Content Rating")
                     .font(.title3)
+                    .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 16)
                 
                 HStack {
                     ForEach(ContentRating.allCases, id: \.self) { rating in
-                        MultiSelectChip(text: rating.rawValue, isSelected: $selectedContentRating, filterType: rating)
+                        MultiSelectChip(text: rating.rawValue, isSelected: $vm.selectedContentRating, filterType: rating)
                     }
                 }
                 .padding(.horizontal, 16)
@@ -50,17 +52,18 @@ extension LibraryScreen {
                 // Date Filters
                 Text("Date Filters")
                     .font(.title3)
+                    .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 16)
                 
                 VStack(spacing: 8) {
-                    DatePicker("Last Read At", selection: $lastReadAt, displayedComponents: .date)
+                    DatePicker("Last Read At", selection: $vm.lastReadAt, displayedComponents: .date)
                         .padding(.horizontal, 16)
                     
-                    DatePicker("Added At", selection: $addedAt, displayedComponents: .date)
+                    DatePicker("Added At", selection: $vm.addedAt, displayedComponents: .date)
                         .padding(.horizontal, 16)
                     
-                    DatePicker("Updated At", selection: $updatedAt, displayedComponents: .date)
+                    DatePicker("Updated At", selection: $vm.updatedAt, displayedComponents: .date)
                         .padding(.horizontal, 16)
                 }
             }

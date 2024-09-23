@@ -18,15 +18,15 @@ extension LibraryScreen {
                 .padding(.leading, 16)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Gap(10)
+            Divider()
             
             ForEach(SortOption.allCases, id: \.self) { option in
                 Entry(
                     text: option.rawValue,
-                    enabled: selectedSortOption == option,
-                    sortDirection: $selectedSortDirection,
+                    enabled: vm.selectedSortOption == option,
+                    sortDirection: $vm.selectedSortDirection,
                     onSelect: {
-                        selectedSortOption = option
+                        vm.selectedSortOption = option
                     }
                 )
             }

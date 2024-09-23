@@ -8,54 +8,26 @@
 import SwiftUI
 import LucideIcons
 
-enum SortOption: String, CaseIterable {
-    case title = "Title"
-    case addedAt = "Date Added"
-    case updatedAt = "Date Updated"
-    case lastReadAt = "Last Read At"
-}
-
-enum SortDirection {
-    case ascending
-    case descending
-}
-
 struct LibraryScreen: View {
     @Bindable var vm: LibraryViewModel
     
-    @State private var searchQuery = ""
-    @State private var tabSelection = 0
-    
-    // Modals
-    @State private var showingSortModal: Bool = false
-    @State private var showingFilterModal: Bool = false
-    
-    // Sort Options
-    @State var selectedSortOption: SortOption = .lastReadAt
-    @State var selectedSortDirection: SortDirection = .descending
-    
-    // Filter Options
-    @State var selectedContentStatus: Set<ContentStatus> = []
-    @State var selectedContentRating: Set<ContentRating> = []
-    @State var lastReadAt = Date()
-    @State var addedAt = Date()
-    @State var updatedAt = Date()
+    @State var showRefresh: Bool = false
     
     var body: some View {
         NavigationStack {
             ContentView()
+                .searchable(text: $vm.searchQuery)
                 .onAppear {
                     Task {
                         await vm.onOpen()
                     }
                 }
                 .navigationTitle("Library")
-                .searchable(text: $searchQuery)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             Haptics.impact()
-                            showingSortModal = true
+                            vm.toggleSortModal()
                         } label: {
                             Image(uiImage: Lucide.listFilter)
                                 .lucide(color: AppColors.text)
@@ -65,7 +37,7 @@ struct LibraryScreen: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             Haptics.impact()
-                            showingFilterModal = true
+                            vm.toggleFilterModal()
                         } label: {
                             Image(uiImage: Lucide.filter)
                                 .lucide(color: AppColors.text)
@@ -82,10 +54,10 @@ struct LibraryScreen: View {
                         }
                     }
                 }
-                .sheet(isPresented: $showingSortModal) {
+                .sheet(isPresented: $vm.showingSortModal) {
                     SortModal()
                 }
-                .sheet(isPresented: $showingFilterModal) {
+                .sheet(isPresented: $vm.showingFilterModal) {
                     FilterModal()
                 }
         }
@@ -93,25 +65,27 @@ struct LibraryScreen: View {
     
     @ViewBuilder
     func ContentView() -> some View {
-        TabSelectionView(tabSelection: $tabSelection)
+        // Add gap since it seems to be fat-fingering the search without it
+        Gap(8)
+        TabSelectionView(tabSelection: $vm.tabSelection)
         
-        TabView(selection: $tabSelection) {
-            DetailsView(content: vm.manga.filter { $0.contentStatus == .ongoing })
+        TabView(selection: $vm.tabSelection) {
+            DetailsView(content: vm.filteredManga(for: .ongoing))
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .tag(0)
             
-            DetailsView(content: vm.manga.filter { $0.contentStatus == .completed })
+            DetailsView(content: vm.filteredManga(for: .completed))
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .tag(1)
             
-            DetailsView(content: vm.manga.filter { $0.contentStatus == .cancelled })
+            DetailsView(content: vm.filteredManga(for: .cancelled))
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .tag(2)
             
-            DetailsView(content: vm.manga.filter { $0.contentStatus == .hiatus })
+            DetailsView(content: vm.filteredManga(for: .hiatus))
                 .font(.largeTitle)
                 .fontWeight(.black)
                 .tag(3)
@@ -119,6 +93,62 @@ struct LibraryScreen: View {
         .tabViewStyle(.page(indexDisplayMode: .never))
     }
 }
+
+private extension LibraryScreen {
+    @ViewBuilder
+    func DetailsView(content: [Manga]) -> some View {
+        let dimensions = DimensionsCache.shared.dimensions
+        
+        if vm.contentLoaded {
+            if content.isEmpty {
+                Text("No Manga For This Section.")
+                    .font(.callout)
+                    .fontWeight(.medium)
+                    .padding()
+            } else {
+                ScrollView {
+                    Spacer().frame(height: 20)
+                    
+                    LazyVGrid(
+                        columns: [GridItem(.adaptive(minimum: dimensions.width), spacing: 0)],
+                        spacing: 0
+                    ) {
+                        ForEach(content, id: \.id) { manga in
+                            MangaCard(item: manga.toLocalListManga())
+                                .transition(.opacity.combined(with: .scale))
+                        }
+                    }
+                    .padding(.horizontal, 10)
+                    .animation(.easeInOut(duration: 0.3), value: content)
+                }
+                .refreshable {
+                    showRefresh = true
+                    // Handle refresh action, for instance:
+                    // vm.fetchUpdates()
+                }
+                .alert("Update Content?", isPresented: $showRefresh, actions: {
+                    Button("Confirm", role: .none) {
+                        print("Updating!!!")
+                        // Here you can trigger the refresh action
+                    }
+                    Button("Cancel", role: .cancel) {
+                        // The refresh ends when you cancel
+                        showRefresh = false
+                    }
+                }, message: {
+                    Text("This will fetch all sources for updates for the manga in the current tab.")
+                })
+            }
+        } else {
+            VStack {
+                Text("Loading Content...")
+                ProgressView()
+            }
+            .padding()
+        }
+    }
+}
+
 
 private struct TabSelectionView: View {
     @Binding var tabSelection: Int
@@ -144,8 +174,7 @@ private struct TabSelectionView: View {
                                 .padding(.horizontal, 4)
                                 .foregroundStyle(.blue)
                                 .matchedGeometryEffect(id: "ID", in: buttonId)
-                        }
-                        else {
+                        } else {
                             EmptyView()
                                 .frame(height: 4)
                                 .matchedGeometryEffect(id: "ID", in: buttonId)
@@ -155,34 +184,9 @@ private struct TabSelectionView: View {
                 Spacer()
             }
         }
-        .scrollIndicators(.never)
-    }
-}
-
-private extension LibraryScreen {
-    @ViewBuilder
-    func DetailsView(content: [Manga]) -> some View {
-        let dimensions = DimensionsCache.shared.dimensions
-        ScrollView {
-            if vm.contentLoaded {
-                Spacer().frame(height: 20)
-                
-                LazyVGrid(
-                    columns: [GridItem(.adaptive(minimum: dimensions.width), spacing: 0)],
-                    spacing: 0
-                ) {
-                    ForEach(content, id: \.id) { manga in
-                        MangaCard(item: ListManga(id: manga.id, title: manga.title, coverUrl: manga.coverUrl, origin: ListManga.Origin.Local ))
-                    }
-                }
-                .padding(.horizontal, 10)
-            }
-            else {
-                VStack {
-                    Text("Loading Content...")
-                    ProgressView()
-                }
-            }
+        .onChange(of: tabSelection) {
+            withAnimation { }
         }
+        .scrollIndicators(.never)
     }
 }
