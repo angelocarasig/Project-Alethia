@@ -60,6 +60,23 @@ final class RealmManga: Object {
         return "|" + allTitles.joined(separator: "|") + "|"
     }
     
+    func toLibraryManga() -> LibraryManga {
+        return LibraryManga(
+            id: id,
+            title: title,
+            synopsis: synopsis,
+            coverUrl: coverUrl,
+            origin: ListManga.Origin.Local,
+            contentStatus: contentStatus,
+            addedAt: addedAt,
+            tags: Array(tags)
+        )
+    }
+    
+    func toListManga() -> ListManga {
+        return ListManga(id: id, title: title, coverUrl: coverUrl, origin: ListManga.Origin.Local)
+    }
+    
     func toDomain() -> Manga {
         return Manga(
             id: id,

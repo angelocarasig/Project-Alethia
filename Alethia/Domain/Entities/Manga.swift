@@ -7,7 +7,7 @@
 import Foundation
 
 /// Represents a presentation model for Manga object
-struct Manga: Equatable {
+struct Manga {
     /// A unique identifier for the manga.
     let id: String
     
@@ -48,8 +48,17 @@ struct Manga: Equatable {
     /// When an update is triggered, if a source throws a 404/410 error, the source gets detached from the source list of this manga.
     let origins: Array<Origin>
     
-    static func == (lhs: Manga, rhs: Manga) -> Bool {
-        lhs.id == rhs.id
+    func toLibraryManga() -> LibraryManga {
+        return LibraryManga(
+            id: id,
+            title: title,
+            synopsis: synopsis,
+            coverUrl: coverUrl,
+            origin: ListManga.Origin.Local,
+            contentStatus: contentStatus,
+            addedAt: addedAt,
+            tags: tags
+        )
     }
     
     func toLocalListManga() -> ListManga {

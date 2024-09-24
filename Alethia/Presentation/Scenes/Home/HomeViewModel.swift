@@ -10,9 +10,9 @@ import RealmSwift
 
 @Observable
 final class HomeViewModel {
-    var manga: [Manga] = []
-    var recentlyAddedManga: [Manga] = []
-    var recentlyReadManga: [Manga] = []
+    var manga: [LibraryManga] = []
+    var recentlyAddedManga: [LibraryManga] = []
+    var recentlyReadManga: [LibraryManga] = []
     var categoriedManga: [CategoriedManga] = []
     
     private var observer: NotificationToken?
@@ -38,7 +38,7 @@ final class HomeViewModel {
         // If content already loaded just return
         guard !contentLoaded else { return }
         
-        observer = await observeLibraryMangaUseCase.execute { manga in
+        observer = await observeLibraryMangaUseCase.execute(query: nil, limit: 10) { manga in
             self.manga = manga
             
             self.recentlyAddedManga = Array(manga.sorted(by: { $0.addedAt > $1.addedAt }).prefix(10))
@@ -50,7 +50,7 @@ final class HomeViewModel {
         }
     }
     
-    func selectCategoriedManga(_ manga: [Manga]) {
+    func selectCategoriedManga(_ manga: [LibraryManga]) {
         // get random sample of 10 manga
         let mangaSample = manga.shuffled().prefix(10)
         

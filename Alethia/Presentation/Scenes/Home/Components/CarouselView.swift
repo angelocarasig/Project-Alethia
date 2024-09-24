@@ -10,9 +10,9 @@ import Kingfisher
 import LucideIcons
 
 struct CarouselView: View {
-    let manga: [Manga]
+    let manga: [LibraryManga]
     
-    @State private var currentIndex = 0
+    @State private var currentSelection: String?
     @State private var isAutoScrollActive = true
     @State private var isChangingProgrammatically = false
     
@@ -23,11 +23,11 @@ struct CarouselView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            TabView(selection: $currentIndex) {
-                ForEach(manga.indices, id: \.self) { index in
+            TabView(selection: $currentSelection) {
+                ForEach(manga) { item in
                     ZStack {
                         // Background
-                        KFImage(URL(string: manga[index].coverUrl))
+                        KFImage(URL(string: item.coverUrl))
                             .resizable()
                             .scaledToFill()
                             .frame(maxWidth: .infinity)
@@ -47,7 +47,7 @@ struct CarouselView: View {
                             
                             HStack(alignment: .bottom, spacing: 12) {
                                 // Manga Cover Image
-                                KFImage(URL(string: manga[index].coverUrl))
+                                KFImage(URL(string: item.coverUrl))
                                     .resizable()
                                     .fade(duration: 0.25)
                                     .scaledToFill()
@@ -56,14 +56,14 @@ struct CarouselView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 6))
                                 
                                 VStack(alignment: .leading, spacing: 10) {
-                                    Text(manga[index].title)
+                                    Text(item.title)
                                         .font(.headline)
                                         .fontWeight(.bold)
                                         .lineLimit(2)
                                         .foregroundColor(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     
-                                    Text(manga[index].synopsis)
+                                    Text(item.synopsis)
                                         .font(.subheadline)
                                         .lineLimit(8)
                                         .foregroundColor(AppColors.text.opacity(0.75))
@@ -73,7 +73,7 @@ struct CarouselView: View {
                                     HStack(spacing: 8) {
                                         NavigationLink(
                                             destination: MangaDetailsScreen(
-                                                vm: ViewModelFactory.shared.makeMangaDetailsViewModel(for: manga[index].toLocalListManga())
+                                                vm: ViewModelFactory.shared.makeMangaDetailsViewModel(for: item.toListManga())
                                             )
                                         ) {
                                             Text("View Details")
@@ -102,18 +102,17 @@ struct CarouselView: View {
                                     }
                                 }
                             }
-                            // Used with the inner Spacer()
                             .frame(maxHeight: imageScale)
                             .padding(16)
                             .padding(.bottom, 20)
                         }
                     }
-                    .tag(index)
+                    .tag(item.id) // Use the item's id as the tag
                 }
             }
             .frame(height: carouselHeight)
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .onChange(of: currentIndex) {
+            .onChange(of: currentSelection) { _ in
                 if !isChangingProgrammatically {
                     disableAutoScrollTemporarily()
                 }
@@ -122,7 +121,11 @@ struct CarouselView: View {
                 if isAutoScrollActive, !isChangingProgrammatically {
                     withAnimation(.easeInOut(duration: 0.5)) {
                         isChangingProgrammatically = true
-                        currentIndex = (currentIndex + 1) % manga.count
+                        if let currentSelection = currentSelection,
+                           let currentIndex = manga.firstIndex(where: { $0.id == currentSelection }) {
+                            let nextIndex = (currentIndex + 1) % manga.count
+                            self.currentSelection = manga[nextIndex].id
+                        }
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                             isChangingProgrammatically = false
@@ -134,11 +137,11 @@ struct CarouselView: View {
             // Scroll Indicators
             GeometryReader { geo in
                 HStack {
-                    ForEach(Array(manga.indices), id: \.self) { index in
+                    ForEach(manga) { item in
                         Rectangle()
-                            .fill(currentIndex == index ? AppColors.text : AppColors.tint)
+                            .fill(currentSelection == item.id ? AppColors.text : AppColors.tint)
                             .frame(width: (geo.size.width / 1.25) / CGFloat(manga.count), height: 2)
-                            .animation(.easeInOut, value: currentIndex)
+                            .animation(.easeInOut, value: currentSelection)
                     }
                 }
                 .frame(width: geo.size.width, height: geo.size.height)

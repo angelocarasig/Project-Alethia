@@ -264,28 +264,39 @@ final class MangaLocalDataSource {
     }
     
     @RealmActor
-    func observeLibraryManga(callback: @escaping ([Manga]) -> Void) async -> NotificationToken? {
+    func observeLibraryManga(query: MangaQuery?, limit: Int, callback: @escaping ([LibraryManga]) -> Void) async -> NotificationToken? {
         guard let storage = await realmProvider.realm() else { return nil }
         
+        /// Available sort options: by title, addedAt, updatedAt, lastReadAt (all by desc/asc)
+        /// Available filter options: content rating, content status
+        /// search - by title
+        
+        let search = query?.query.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let searchPredicate = search.isEmpty
+        ? NSPredicate(value: true) // If search is empty, include all manga
+        : NSPredicate(format: "normalizedTitles CONTAINS[c] %@", search) // Else, filter by search
+        
+        // Create the content rating predicate using a ternary operator
+        let ratingPredicate = (query?.filters.rating.isEmpty ?? true)
+        ? NSPredicate(value: true) // If rating filters are empty, include all ratings
+        : NSPredicate(format: "contentRating IN %@", query!.filters.rating.map { $0.rawValue }) // Else, filter by ratings
+        
+        // Create the content status predicate using a ternary operator
+        let statusPredicate = (query?.filters.status.isEmpty ?? true)
+        ? NSPredicate(value: true) // If status filters are empty, include all statuses
+        : NSPredicate(format: "contentStatus IN %@", query!.filters.status.map { $0.rawValue }) // Else, filter by statuses
+        
         let observer = storage.objects(RealmManga.self)
+            .filter(searchPredicate)
+            .filter(ratingPredicate)
+            .filter(statusPredicate)
+            .sorted(byKeyPath: query?.sort.sort.keyPath ?? "addedAt", ascending: query?.sort.direction.isAscending ?? true)
         
         return observer.observe { changes in
             switch changes {
-            case let .initial(objects):
-                let manga = Array(objects.map { $0.toDomain() })
-                
-                // print("Initial Triggered!")
-                // print("Manga Count: \(manga.count)")
-                
-                callback(manga)
-                
-            case let .update(objects, _, _, _):
-                let manga = Array(objects.map { $0.toDomain() })
-                
-                // print("Update Triggered!")
-                // print("Manga Count: \(manga.count)")
-                
-                callback(manga)
+            case let .initial(objects), let .update(objects, _, _, _):
+                let manga = limit > 0 ? Array(objects.prefix(limit)) : Array(objects)
+                callback(manga.map{ $0.toLibraryManga() } )
                 
             case .error(let error):
                 print("Error while observing library manga: \(error.localizedDescription)")

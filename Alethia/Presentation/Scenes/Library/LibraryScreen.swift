@@ -96,7 +96,7 @@ struct LibraryScreen: View {
 
 private extension LibraryScreen {
     @ViewBuilder
-    func DetailsView(content: [Manga]) -> some View {
+    func DetailsView(content: [LibraryManga]) -> some View {
         let dimensions = DimensionsCache.shared.dimensions
         
         if vm.contentLoaded {
@@ -114,7 +114,7 @@ private extension LibraryScreen {
                         spacing: 0
                     ) {
                         ForEach(content, id: \.id) { manga in
-                            MangaCard(item: manga.toLocalListManga())
+                            MangaCard(item: manga.toListManga())
                                 .transition(.opacity.combined(with: .scale))
                         }
                     }
@@ -123,16 +123,13 @@ private extension LibraryScreen {
                 }
                 .refreshable {
                     showRefresh = true
-                    // Handle refresh action, for instance:
-                    // vm.fetchUpdates()
+                    // Handle refresh action
                 }
                 .alert("Update Content?", isPresented: $showRefresh, actions: {
                     Button("Confirm", role: .none) {
                         print("Updating!!!")
-                        // Here you can trigger the refresh action
                     }
                     Button("Cancel", role: .cancel) {
-                        // The refresh ends when you cancel
                         showRefresh = false
                     }
                 }, message: {
@@ -142,6 +139,10 @@ private extension LibraryScreen {
         } else {
             VStack {
                 Text("Loading Content...")
+                    .font(.callout)
+                    .fontWeight(.medium)
+                    .padding()
+                
                 ProgressView()
             }
             .padding()

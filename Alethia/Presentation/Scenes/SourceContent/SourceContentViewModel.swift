@@ -208,6 +208,18 @@ final class SourceContentViewModel {
         isLoadingPathContent = false
     }
     
+    func resetRootContent() {
+        rootResults = []
+        pathResults = []
+        
+        isLoadingRootContent = false
+        fetchedRootResults = []
+        
+        currentPage = 0
+        isLoadingPathContent = false
+        fetchedPathResults = []
+    }
+    
     func resetPathContent() {
         // Reset everything to init state
         currentPage = 0

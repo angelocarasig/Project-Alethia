@@ -12,4 +12,16 @@ enum SortOption: String, CaseIterable {
     case addedAt = "Date Added"
     case updatedAt = "Date Updated"
     case lastReadAt = "Last Read At"
+    
+    // Used in querying
+    var keyPath: String {
+        switch self {
+        case .title:
+            return "title"
+        
+        //TTODO: Expand this
+        case .addedAt, .updatedAt, .lastReadAt:
+            return "addedAt"
+        }
+    }
 }

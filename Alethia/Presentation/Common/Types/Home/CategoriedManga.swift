@@ -10,5 +10,5 @@ import Foundation
 struct CategoriedManga: Identifiable {
     var id: String
     let category: String
-    let manga: [Manga]
+    let manga: [LibraryManga]
 }

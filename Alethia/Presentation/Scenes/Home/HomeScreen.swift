@@ -99,7 +99,7 @@ extension HomeScreen {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
                 ForEach(vm.recentlyReadManga, id: \.id) { manga in
-                    MangaCard(item: manga.toLocalListManga())
+                    MangaCard(item: manga.toListManga())
                 }
             }
             .padding(.horizontal, 16)
@@ -117,7 +117,7 @@ extension HomeScreen {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
                 ForEach(vm.recentlyAddedManga, id: \.id) { manga in
-                    MangaCard(item: manga.toLocalListManga())
+                    MangaCard(item: manga.toListManga())
                 }
             }
             .padding(.horizontal, 16)
@@ -135,7 +135,7 @@ extension HomeScreen {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
                 ForEach(manga.manga, id: \.self.id) { manga in
-                    MangaCard(item: manga.toLocalListManga())
+                    MangaCard(item: manga.toListManga())
                 }
             }
             .padding(.horizontal, 16)

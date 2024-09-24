@@ -39,7 +39,7 @@ struct SourceContent: View {
 private extension SourceContent {
     func ContentView() -> some View {
         ScrollView {
-            Spacer().frame(height: 12)
+            Gap(12)
             
             ForEach(vm.rootResults) { result in
                 VStack(alignment: .leading, spacing: 20) {
@@ -73,6 +73,11 @@ private extension SourceContent {
                     .padding(.horizontal, 16)
                 }
             }
+        }
+        .refreshable {
+            Haptics.impact()
+            vm.resetRootContent()
+            vm.onRootPageLoad()
         }
     }
 }

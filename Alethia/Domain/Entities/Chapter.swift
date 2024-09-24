@@ -29,6 +29,7 @@ struct Chapter: Hashable {
     /// Date of chapter release
     let date: Date
     
+    /// For convenience
     func toString() -> String {
         return "Chapter \(chapterNumber.clean) \(chapterTitle.isEmpty ? "" : "-\(chapterTitle)")"
     }
