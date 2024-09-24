@@ -59,6 +59,7 @@ final class SourceContentViewModel {
         }
     }
     var isLoadingPathContent: Bool // Loading indicator
+    var hasInitialLoadCompleted: Bool
     
     init(
         fetchHostSourceContentUseCase: FetchHostSourceContentUseCase,
@@ -85,6 +86,7 @@ final class SourceContentViewModel {
         self.activePath = nil
         self.currentPage = 0
         self.isLoadingPathContent = false
+        self.hasInitialLoadCompleted = false
     }
     
     deinit {
@@ -206,6 +208,10 @@ final class SourceContentViewModel {
         }
         
         isLoadingPathContent = false
+        
+        if currentPage == 0 {
+            hasInitialLoadCompleted = true
+        }
     }
     
     func resetRootContent() {

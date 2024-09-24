@@ -39,7 +39,7 @@ struct SourceContent: View {
 private extension SourceContent {
     func ContentView() -> some View {
         ScrollView {
-            Gap(12)
+            Gap(1)
             
             ForEach(vm.rootResults) { result in
                 VStack(alignment: .leading, spacing: 20) {

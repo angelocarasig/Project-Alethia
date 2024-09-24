@@ -36,6 +36,8 @@ struct SourceContentGrid: View {
                             // TODO: not updating until onAppear again
                             MangaCard(item: manga, isInLibrary: sourceManga.inLibrary)
                                 .onAppear {
+                                    guard vm.hasInitialLoadCompleted else { return }
+                                    
                                     // TODO: block onLastItemAppeared() if results from recent is empty array
                                     // Or if no scroll action occurred? idk
                                     
