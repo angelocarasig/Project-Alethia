@@ -41,7 +41,7 @@ struct MangaDTO: Decodable {
             author: author,
             artist: artist,
             synopsis: synopsis ?? "No Description Available.",
-            addedAt: createdAt,
+            addedAt: Date(),
             contentRating: ContentRating(rawValue: contentRating) ?? .unknown,
             contentStatus: ContentStatus(rawValue: contentStatus) ?? .ongoing,
             coverUrl: coverUrl,

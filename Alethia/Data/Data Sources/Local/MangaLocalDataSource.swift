@@ -264,7 +264,7 @@ final class MangaLocalDataSource {
     }
     
     @RealmActor
-    func observeLibraryManga(query: MangaQuery?, limit: Int, callback: @escaping ([LibraryManga]) -> Void) async -> NotificationToken? {
+    func observeLibraryManga(query: MangaQuery?, callback: @escaping ([LibraryManga]) -> Void) async -> NotificationToken? {
         guard let storage = await realmProvider.realm() else { return nil }
         
         /// Available sort options: by title, addedAt, updatedAt, lastReadAt (all by desc/asc)
@@ -295,7 +295,7 @@ final class MangaLocalDataSource {
         return observer.observe { changes in
             switch changes {
             case let .initial(objects), let .update(objects, _, _, _):
-                let manga = limit > 0 ? Array(objects.prefix(limit)) : Array(objects)
+                let manga = Array(objects)
                 callback(manga.map{ $0.toLibraryManga() } )
                 
             case .error(let error):

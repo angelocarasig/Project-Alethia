@@ -38,7 +38,7 @@ final class HomeViewModel {
         // If content already loaded just return
         guard !contentLoaded else { return }
         
-        observer = await observeLibraryMangaUseCase.execute(query: nil, limit: 10) { manga in
+        observer = await observeLibraryMangaUseCase.execute(query: nil) { manga in
             self.manga = manga
             
             self.recentlyAddedManga = Array(manga.sorted(by: { $0.addedAt > $1.addedAt }).prefix(10))

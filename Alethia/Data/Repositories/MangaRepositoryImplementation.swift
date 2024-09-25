@@ -27,8 +27,8 @@ extension MangaRepositoryImplementation: MangaRepository {
         return await local.observeManga(manga: manga, callback: callback)
     }
     
-    func observeLibraryManga(query: MangaQuery?, limit: Int, callback: @escaping ([LibraryManga]) -> Void) async -> NotificationToken? {
-        return await local.observeLibraryManga(query: query, limit: limit, callback: callback)
+    func observeLibraryManga(query: MangaQuery?, callback: @escaping ([LibraryManga]) -> Void) async -> NotificationToken? {
+        return await local.observeLibraryManga(query: query, callback: callback)
     }
     
     func getOriginParents(_ origin: Origin) async -> (Host, Source)? {

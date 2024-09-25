@@ -104,7 +104,7 @@ final class LibraryViewModel {
         
         let query = MangaQuery(query: search, sort: sort, filters: filters)
         
-        return await observeLibraryMangaUseCase.execute(query: query, limit: nil) { [weak self] results in
+        return await observeLibraryMangaUseCase.execute(query: query) { [weak self] results in
             guard let self = self else { return }
             self.manga = results
             self.contentLoaded = true
